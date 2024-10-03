@@ -20,14 +20,14 @@ public class AttrController
 
     @Operation(summary = "新增或更新属性名称")
     @PostMapping("key/saveOrUpdate")
-    public Result saveOrUpdateAttrKey(@RequestBody final AttrKey attrKey)
+    public Result<Void> saveOrUpdateAttrKey(@RequestBody final AttrKey attrKey)
     {
         return Result.ok();
     }
 
     @Operation(summary = "新增或更新属性值")
     @PostMapping("value/saveOrUpdate")
-    public Result saveOrUpdateAttrValue(@RequestBody final AttrValue attrValue)
+    public Result<Void> saveOrUpdateAttrValue(@RequestBody final AttrValue attrValue)
     {
         return Result.ok();
     }
@@ -42,14 +42,14 @@ public class AttrController
 
     @Operation(summary = "根据id删除属性名称")
     @DeleteMapping("key/deleteById")
-    public Result removeAttrKeyById(@RequestParam final Long attrKeyId)
+    public Result<Void> removeAttrKeyById(@RequestParam final Long attrKeyId)
     {
         return Result.ok();
     }
 
     @Operation(summary = "根据id删除属性值")
     @DeleteMapping("value/deleteById")
-    public Result removeAttrValueById(@RequestParam final Long id)
+    public Result<Void> removeAttrValueById(@RequestParam final Long id)
     {
         return Result.ok();
     }

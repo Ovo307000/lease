@@ -33,14 +33,14 @@ public class LeaseAgreementController
 
     @Operation(summary = "根据id更新租约状态", description = "用于确认租约和提前退租")
     @PostMapping("updateStatusById")
-    public Result updateStatusById(@RequestParam final Long id, @RequestParam final LeaseStatus leaseStatus)
+    public Result<Void> updateStatusById(@RequestParam final Long id, @RequestParam final LeaseStatus leaseStatus)
     {
         return Result.ok();
     }
 
     @Operation(summary = "保存或更新租约", description = "用于续约")
     @PostMapping("saveOrUpdate")
-    public Result saveOrUpdate(@RequestBody final LeaseAgreement leaseAgreement)
+    public Result<Void> saveOrUpdate(@RequestBody final LeaseAgreement leaseAgreement)
     {
         return Result.ok();
     }

@@ -23,7 +23,7 @@ public class RoomController
 
     @Operation(summary = "保存或更新房间信息")
     @PostMapping("saveOrUpdate")
-    public Result saveOrUpdate(@RequestBody final RoomSubmitVo roomSubmitVo)
+    public Result<Void> saveOrUpdate(@RequestBody final RoomSubmitVo roomSubmitVo)
     {
         return Result.ok();
     }
@@ -44,14 +44,14 @@ public class RoomController
 
     @Operation(summary = "根据id删除房间信息")
     @DeleteMapping("removeById")
-    public Result removeById(@RequestParam final Long id)
+    public Result<Void> removeById(@RequestParam final Long id)
     {
         return Result.ok();
     }
 
     @Operation(summary = "根据id修改房间发布状态")
     @PostMapping("updateReleaseStatusById")
-    public Result updateReleaseStatusById(final Long id, final ReleaseStatus status)
+    public Result<Void> updateReleaseStatusById(final Long id, final ReleaseStatus status)
     {
         return Result.ok();
     }

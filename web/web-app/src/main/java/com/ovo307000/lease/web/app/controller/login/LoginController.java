@@ -16,7 +16,7 @@ public class LoginController
 
     @GetMapping("login/getCode")
     @Operation(summary = "获取短信验证码")
-    public Result getCode(@RequestParam final String phone)
+    public Result<Void> getCode(@RequestParam final String phone)
     {
         return Result.ok();
     }

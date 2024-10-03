@@ -25,7 +25,7 @@ public class LabelController
 
     @Operation(summary = "新增或修改标签信息")
     @PostMapping("saveOrUpdate")
-    public Result saveOrUpdateLabel(@RequestBody final LabelInfo labelInfo)
+    public Result<Void> saveOrUpdateLabel(@RequestBody final LabelInfo labelInfo)
     {
 
         return Result.ok();
@@ -33,7 +33,7 @@ public class LabelController
 
     @Operation(summary = "根据id删除标签信息")
     @DeleteMapping("deleteById")
-    public Result deleteLabelById(@RequestParam final Long id)
+    public Result<Void> deleteLabelById(@RequestParam final Long id)
     {
         return Result.ok();
     }

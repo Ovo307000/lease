@@ -26,14 +26,14 @@ public class FacilityController
 
     @Operation(summary = "新增或修改配套信息")
     @PostMapping("saveOrUpdate")
-    public Result saveOrUpdate(@RequestBody final FacilityInfo facilityInfo)
+    public Result<Void> saveOrUpdate(@RequestBody final FacilityInfo facilityInfo)
     {
         return Result.ok();
     }
 
     @Operation(summary = "根据id删除配套信息")
     @DeleteMapping("deleteById")
-    public Result removeFacilityById(@RequestParam final Long id)
+    public Result<Void> removeFacilityById(@RequestParam final Long id)
     {
         return Result.ok();
     }

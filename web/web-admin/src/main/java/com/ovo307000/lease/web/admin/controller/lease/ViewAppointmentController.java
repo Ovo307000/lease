@@ -28,7 +28,7 @@ public class ViewAppointmentController
 
     @Operation(summary = "根据id更新预约状态")
     @PostMapping("updateStatusById")
-    public Result updateStatusById(@RequestParam final Long id, @RequestParam final AppointmentStatus status)
+    public Result<Void> updateStatusById(@RequestParam final Long id, @RequestParam final AppointmentStatus status)
     {
         return Result.ok();
     }

@@ -26,14 +26,14 @@ public class SystemPostController
 
     @Operation(summary = "保存或更新岗位信息")
     @PostMapping("saveOrUpdate")
-    public Result saveOrUpdate(@RequestBody final SystemPost systemPost)
+    public Result<Void> saveOrUpdate(@RequestBody final SystemPost systemPost)
     {
         return Result.ok();
     }
 
     @DeleteMapping("deleteById")
     @Operation(summary = "根据id删除岗位")
-    public Result removeById(@RequestParam final Long id)
+    public Result<Void> removeById(@RequestParam final Long id)
     {
 
         return Result.ok();
@@ -55,7 +55,7 @@ public class SystemPostController
 
     @Operation(summary = "根据岗位id修改状态")
     @PostMapping("updateStatusByPostId")
-    public Result updateStatusByPostId(@RequestParam final Long id, @RequestParam final BaseStatus status)
+    public Result<Void> updateStatusByPostId(@RequestParam final Long id, @RequestParam final BaseStatus status)
     {
         return Result.ok();
     }

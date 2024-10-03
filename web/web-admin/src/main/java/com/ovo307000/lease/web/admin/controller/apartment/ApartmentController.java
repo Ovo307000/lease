@@ -24,7 +24,7 @@ public class ApartmentController
 
     @Operation(summary = "保存或更新公寓信息")
     @PostMapping("saveOrUpdate")
-    public Result saveOrUpdate(@RequestBody final ApartmentSubmitVo apartmentSubmitVo)
+    public Result<Void> saveOrUpdate(@RequestBody final ApartmentSubmitVo apartmentSubmitVo)
     {
         return Result.ok();
     }
@@ -47,14 +47,14 @@ public class ApartmentController
 
     @Operation(summary = "根据id删除公寓信息")
     @DeleteMapping("removeById")
-    public Result removeById(@RequestParam final Long id)
+    public Result<Void> removeById(@RequestParam final Long id)
     {
         return Result.ok();
     }
 
     @Operation(summary = "根据id修改公寓发布状态")
     @PostMapping("updateReleaseStatusById")
-    public Result updateReleaseStatusById(@RequestParam final Long id, @RequestParam final ReleaseStatus status)
+    public Result<Void> updateReleaseStatusById(@RequestParam final Long id, @RequestParam final ReleaseStatus status)
     {
         return Result.ok();
     }

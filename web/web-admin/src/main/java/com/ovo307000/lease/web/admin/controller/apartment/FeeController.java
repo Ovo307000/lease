@@ -20,14 +20,14 @@ public class FeeController
 
     @Operation(summary = "保存或更新杂费名称")
     @PostMapping("key/saveOrUpdate")
-    public Result saveOrUpdateFeeKey(@RequestBody final FeeKey feeKey)
+    public Result<Void> saveOrUpdateFeeKey(@RequestBody final FeeKey feeKey)
     {
         return Result.ok();
     }
 
     @Operation(summary = "保存或更新杂费值")
     @PostMapping("value/saveOrUpdate")
-    public Result saveOrUpdateFeeValue(@RequestBody final FeeValue feeValue)
+    public Result<Void> saveOrUpdateFeeValue(@RequestBody final FeeValue feeValue)
     {
         return Result.ok();
     }
@@ -42,14 +42,14 @@ public class FeeController
 
     @Operation(summary = "根据id删除杂费名称")
     @DeleteMapping("key/deleteById")
-    public Result deleteFeeKeyById(@RequestParam final Long feeKeyId)
+    public Result<Void> deleteFeeKeyById(@RequestParam final Long feeKeyId)
     {
         return Result.ok();
     }
 
     @Operation(summary = "根据id删除杂费值")
     @DeleteMapping("value/deleteById")
-    public Result deleteFeeValueById(@RequestParam final Long id)
+    public Result<Void> deleteFeeValueById(@RequestParam final Long id)
     {
         return Result.ok();
     }

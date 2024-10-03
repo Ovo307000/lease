@@ -20,7 +20,7 @@ public class LeaseAgreementController
 
     @Operation(summary = "保存或修改租约信息")
     @PostMapping("saveOrUpdate")
-    public Result saveOrUpdate(@RequestBody final LeaseAgreement leaseAgreement)
+    public Result<Void> saveOrUpdate(@RequestBody final LeaseAgreement leaseAgreement)
     {
         return Result.ok();
     }
@@ -43,14 +43,14 @@ public class LeaseAgreementController
 
     @Operation(summary = "根据id删除租约信息")
     @DeleteMapping("removeById")
-    public Result removeById(@RequestParam final Long id)
+    public Result<Void> removeById(@RequestParam final Long id)
     {
         return Result.ok();
     }
 
     @Operation(summary = "根据id更新租约状态")
     @PostMapping("updateStatusById")
-    public Result updateStatusById(@RequestParam final Long id, @RequestParam final LeaseStatus status)
+    public Result<Void> updateStatusById(@RequestParam final Long id, @RequestParam final LeaseStatus status)
     {
         return Result.ok();
     }

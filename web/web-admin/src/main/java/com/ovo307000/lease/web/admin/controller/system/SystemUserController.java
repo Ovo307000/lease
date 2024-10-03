@@ -36,7 +36,7 @@ public class SystemUserController
 
     @Operation(summary = "保存或更新后台用户信息")
     @PostMapping("saveOrUpdate")
-    public Result saveOrUpdate(@RequestBody final SystemUser systemUser)
+    public Result<Void> saveOrUpdate(@RequestBody final SystemUser systemUser)
     {
         return Result.ok();
     }
@@ -50,14 +50,14 @@ public class SystemUserController
 
     @DeleteMapping("deleteById")
     @Operation(summary = "根据ID删除后台用户信息")
-    public Result removeById(@RequestParam final Long id)
+    public Result<Void> removeById(@RequestParam final Long id)
     {
         return Result.ok();
     }
 
     @Operation(summary = "根据ID修改后台用户状态")
     @PostMapping("updateStatusByUserId")
-    public Result updateStatusByUserId(@RequestParam final Long id, @RequestParam final BaseStatus status)
+    public Result<Void> updateStatusByUserId(@RequestParam final Long id, @RequestParam final BaseStatus status)
     {
         return Result.ok();
     }
