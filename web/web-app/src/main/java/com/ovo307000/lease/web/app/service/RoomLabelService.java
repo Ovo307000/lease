@@ -1,6 +1,6 @@
 package com.ovo307000.lease.web.app.service;
 
-import com.atguigu.lease.model.entity.RoomLabel;
+import com.ovo307000.lease.model.entity.RoomLabel;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

@@ -1,10 +1,10 @@
 package com.ovo307000.lease.web.app.controller.region;
 
 
-import com.atguigu.lease.common.result.Result;
-import com.atguigu.lease.model.entity.CityInfo;
-import com.atguigu.lease.model.entity.DistrictInfo;
-import com.atguigu.lease.model.entity.ProvinceInfo;
+import com.ovo307000.lease.common.result.Result;
+import com.ovo307000.lease.model.entity.CityInfo;
+import com.ovo307000.lease.model.entity.DistrictInfo;
+import com.ovo307000.lease.model.entity.ProvinceInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.GetMapping;

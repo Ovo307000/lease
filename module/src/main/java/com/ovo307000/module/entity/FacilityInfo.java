@@ -1,6 +1,6 @@
 package com.ovo307000.module.entity;
 
-import com.atguigu.lease.model.enums.ItemType;
+import com.ovo307000.lease.model.enums.ItemType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;

@@ -1,9 +1,9 @@
 package com.ovo307000.lease.web.app.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.atguigu.lease.model.entity.DistrictInfo;
-import com.atguigu.lease.web.app.service.DistrictInfoService;
-import com.atguigu.lease.web.app.mapper.DistrictInfoMapper;
+import com.ovo307000.lease.model.entity.DistrictInfo;
+import com.ovo307000.lease.web.app.service.DistrictInfoService;
+import com.ovo307000.lease.web.app.mapper.DistrictInfoMapper;
 import org.springframework.stereotype.Service;
 
 /**

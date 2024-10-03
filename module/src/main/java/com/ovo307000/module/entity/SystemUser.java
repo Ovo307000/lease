@@ -1,7 +1,7 @@
 package com.ovo307000.module.entity;
 
-import com.atguigu.lease.model.enums.BaseStatus;
-import com.atguigu.lease.model.enums.SystemUserType;
+import com.ovo307000.lease.model.enums.BaseStatus;
+import com.ovo307000.lease.model.enums.SystemUserType;
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;

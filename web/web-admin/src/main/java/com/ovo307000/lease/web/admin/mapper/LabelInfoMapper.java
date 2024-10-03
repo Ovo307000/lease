@@ -1,7 +1,7 @@
 package com.ovo307000.lease.web.admin.mapper;
 
-import com.atguigu.lease.model.entity.LabelInfo;
-import com.atguigu.lease.model.enums.ItemType;
+import com.ovo307000.lease.model.entity.LabelInfo;
+import com.ovo307000.lease.model.enums.ItemType;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
 * @author liubo
 * @description 针对表【label_info(标签信息表)】的数据库操作Mapper
 * @createDate 2023-07-24 15:48:00
-* @Entity com.atguigu.lease.model.LabelInfo
+* @Entity com.ovo307000.lease.model.LabelInfo
 */
 public interface LabelInfoMapper extends BaseMapper<LabelInfo> {
 

@@ -1,7 +1,7 @@
 package com.ovo307000.lease.web.admin.service;
 
-import com.atguigu.lease.model.entity.FeeKey;
-import com.atguigu.lease.web.admin.vo.fee.FeeKeyVo;
+import com.ovo307000.lease.model.entity.FeeKey;
+import com.ovo307000.lease.web.admin.vo.fee.FeeKeyVo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;

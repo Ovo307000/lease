@@ -1,11 +1,11 @@
 package com.ovo307000.lease.web.admin.vo.apartment;
 
 
-import com.atguigu.lease.model.entity.ApartmentInfo;
-import com.atguigu.lease.model.entity.FacilityInfo;
-import com.atguigu.lease.model.entity.LabelInfo;
-import com.atguigu.lease.web.admin.vo.graph.GraphVo;
-import com.atguigu.lease.web.admin.vo.fee.FeeValueVo;
+import com.ovo307000.lease.model.entity.ApartmentInfo;
+import com.ovo307000.lease.model.entity.FacilityInfo;
+import com.ovo307000.lease.model.entity.LabelInfo;
+import com.ovo307000.lease.web.admin.vo.graph.GraphVo;
+import com.ovo307000.lease.web.admin.vo.fee.FeeValueVo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 

@@ -1,10 +1,10 @@
 package com.ovo307000.lease.web.admin.controller.apartment;
 
 
-import com.atguigu.lease.common.result.Result;
-import com.atguigu.lease.model.entity.FeeKey;
-import com.atguigu.lease.model.entity.FeeValue;
-import com.atguigu.lease.web.admin.vo.fee.FeeKeyVo;
+import com.ovo307000.lease.common.result.Result;
+import com.ovo307000.lease.model.entity.FeeKey;
+import com.ovo307000.lease.model.entity.FeeValue;
+import com.ovo307000.lease.web.admin.vo.fee.FeeKeyVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;

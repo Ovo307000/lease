@@ -1,8 +1,8 @@
 package com.ovo307000.lease.web.app.vo.room;
 
 
-import com.atguigu.lease.model.entity.ApartmentInfo;
-import com.atguigu.lease.model.entity.LabelInfo;
+import com.ovo307000.lease.model.entity.ApartmentInfo;
+import com.ovo307000.lease.model.entity.LabelInfo;
 import com.ovo307000.lease.web.app.vo.graph.GraphVo;
 import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.v3.oas.annotations.media.Schema;

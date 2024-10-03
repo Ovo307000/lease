@@ -1,8 +1,8 @@
 package com.ovo307000.lease.web.admin.service;
 
-import com.atguigu.lease.model.entity.ViewAppointment;
-import com.atguigu.lease.web.admin.vo.appointment.AppointmentQueryVo;
-import com.atguigu.lease.web.admin.vo.appointment.AppointmentVo;
+import com.ovo307000.lease.model.entity.ViewAppointment;
+import com.ovo307000.lease.web.admin.vo.appointment.AppointmentQueryVo;
+import com.ovo307000.lease.web.admin.vo.appointment.AppointmentVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 

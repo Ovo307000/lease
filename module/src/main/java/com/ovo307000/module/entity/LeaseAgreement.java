@@ -1,8 +1,8 @@
 package com.ovo307000.module.entity;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import com.atguigu.lease.model.enums.LeaseSourceType;
-import com.atguigu.lease.model.enums.LeaseStatus;
+import com.ovo307000.lease.model.enums.LeaseSourceType;
+import com.ovo307000.lease.model.enums.LeaseStatus;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;

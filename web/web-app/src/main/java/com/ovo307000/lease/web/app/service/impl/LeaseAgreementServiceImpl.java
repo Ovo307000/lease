@@ -1,8 +1,8 @@
 package com.ovo307000.lease.web.app.service.impl;
 
-import com.atguigu.lease.model.entity.LeaseAgreement;
-import com.atguigu.lease.web.app.mapper.LeaseAgreementMapper;
-import com.atguigu.lease.web.app.service.LeaseAgreementService;
+import com.ovo307000.lease.model.entity.LeaseAgreement;
+import com.ovo307000.lease.web.app.mapper.LeaseAgreementMapper;
+import com.ovo307000.lease.web.app.service.LeaseAgreementService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 

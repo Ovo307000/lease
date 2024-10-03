@@ -1,10 +1,10 @@
 package com.ovo307000.lease.web.app.controller.room;
 
 
-import com.atguigu.lease.common.result.Result;
-import com.atguigu.lease.web.app.vo.room.RoomDetailVo;
-import com.atguigu.lease.web.app.vo.room.RoomItemVo;
-import com.atguigu.lease.web.app.vo.room.RoomQueryVo;
+import com.ovo307000.lease.common.result.Result;
+import com.ovo307000.lease.web.app.vo.room.RoomDetailVo;
+import com.ovo307000.lease.web.app.vo.room.RoomItemVo;
+import com.ovo307000.lease.web.app.vo.room.RoomQueryVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

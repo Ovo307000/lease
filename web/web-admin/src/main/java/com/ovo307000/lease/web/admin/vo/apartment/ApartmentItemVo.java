@@ -1,6 +1,6 @@
 package com.ovo307000.lease.web.admin.vo.apartment;
 
-import com.atguigu.lease.model.entity.ApartmentInfo;
+import com.ovo307000.lease.model.entity.ApartmentInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 

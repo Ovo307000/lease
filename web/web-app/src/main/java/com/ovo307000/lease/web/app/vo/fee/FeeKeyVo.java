@@ -1,8 +1,8 @@
 package com.ovo307000.lease.web.app.vo.fee;
 
 
-import com.atguigu.lease.model.entity.FeeKey;
-import com.atguigu.lease.model.entity.FeeValue;
+import com.ovo307000.lease.model.entity.FeeKey;
+import com.ovo307000.lease.model.entity.FeeValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 

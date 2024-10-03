@@ -1,8 +1,8 @@
 package com.ovo307000.lease.web.admin.service.impl;
 
-import com.atguigu.lease.model.entity.RoomInfo;
-import com.atguigu.lease.web.admin.mapper.RoomInfoMapper;
-import com.atguigu.lease.web.admin.service.RoomInfoService;
+import com.ovo307000.lease.model.entity.RoomInfo;
+import com.ovo307000.lease.web.admin.mapper.RoomInfoMapper;
+import com.ovo307000.lease.web.admin.service.RoomInfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 

@@ -1,9 +1,9 @@
 package com.ovo307000.lease.web.app.controller.login;
 
 
-import com.atguigu.lease.common.result.Result;
-import com.atguigu.lease.web.app.vo.user.LoginVo;
-import com.atguigu.lease.web.app.vo.user.UserInfoVo;
+import com.ovo307000.lease.common.result.Result;
+import com.ovo307000.lease.web.app.vo.user.LoginVo;
+import com.ovo307000.lease.web.app.vo.user.UserInfoVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;

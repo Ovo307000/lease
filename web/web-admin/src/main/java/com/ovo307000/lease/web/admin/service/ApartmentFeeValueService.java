@@ -1,6 +1,6 @@
 package com.ovo307000.lease.web.admin.service;
 
-import com.atguigu.lease.model.entity.ApartmentFeeValue;
+import com.ovo307000.lease.model.entity.ApartmentFeeValue;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

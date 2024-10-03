@@ -1,7 +1,7 @@
 package com.ovo307000.lease.web.app.vo.attr;
 
-import com.atguigu.lease.model.entity.AttrKey;
-import com.atguigu.lease.model.entity.AttrValue;
+import com.ovo307000.lease.model.entity.AttrKey;
+import com.ovo307000.lease.model.entity.AttrValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 

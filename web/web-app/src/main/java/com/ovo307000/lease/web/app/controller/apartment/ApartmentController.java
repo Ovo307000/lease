@@ -1,8 +1,8 @@
 package com.ovo307000.lease.web.app.controller.apartment;
 
-import com.atguigu.lease.common.result.Result;
-import com.atguigu.lease.web.app.service.ApartmentInfoService;
-import com.atguigu.lease.web.app.vo.apartment.ApartmentDetailVo;
+import com.ovo307000.lease.common.result.Result;
+import com.ovo307000.lease.web.app.service.ApartmentInfoService;
+import com.ovo307000.lease.web.app.vo.apartment.ApartmentDetailVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;

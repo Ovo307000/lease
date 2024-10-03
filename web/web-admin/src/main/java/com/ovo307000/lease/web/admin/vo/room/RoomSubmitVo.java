@@ -1,6 +1,6 @@
 package com.ovo307000.lease.web.admin.vo.room;
 
-import com.atguigu.lease.model.entity.RoomInfo;
+import com.ovo307000.lease.model.entity.RoomInfo;
 import com.ovo307000.lease.web.admin.vo.graph.GraphVo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

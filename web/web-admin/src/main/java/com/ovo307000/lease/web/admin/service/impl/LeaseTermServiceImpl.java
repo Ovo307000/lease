@@ -1,9 +1,9 @@
 package com.ovo307000.lease.web.admin.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.atguigu.lease.model.entity.LeaseTerm;
-import com.atguigu.lease.web.admin.service.LeaseTermService;
-import com.atguigu.lease.web.admin.mapper.LeaseTermMapper;
+import com.ovo307000.lease.model.entity.LeaseTerm;
+import com.ovo307000.lease.web.admin.service.LeaseTermService;
+import com.ovo307000.lease.web.admin.mapper.LeaseTermMapper;
 import org.springframework.stereotype.Service;
 
 /**
