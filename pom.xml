@@ -9,12 +9,21 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
+    <!-- Spring Boot 父项目 -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.0.5</version>
+    </parent>
+
+    <!-- 子模块 -->
     <modules>
         <module>web</module>
         <module>common</module>
         <module>module</module>
     </modules>
 
+    <!-- 项目属性 -->
     <properties>
         <!-- Maven 编译配置 -->
         <maven.compiler.source>17</maven.compiler.source>
@@ -23,19 +32,18 @@
 
         <!-- 依赖版本管理 -->
         <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
-        <swagger.version>2.9.2</swagger.version>
+        <knife4j.version>4.1.0</knife4j.version>
         <jwt.version>0.11.2</jwt.version>
         <easycaptcha.version>1.6.2</easycaptcha.version>
         <minio.version>8.2.0</minio.version>
-        <knife4j.version>4.1.0</knife4j.version>
         <aliyun.sms.version>2.0.23</aliyun.sms.version>
+        <mysql.version>8.0.33</mysql.version>
     </properties>
 
     <!-- 依赖管理 -->
     <dependencyManagement>
         <dependencies>
             <!-- MyBatis Plus：增强的 MyBatis 框架 -->
-            <!-- 文档：https://baomidou.com/pages/bab2db/ -->
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
@@ -43,7 +51,6 @@
             </dependency>
 
             <!-- Knife4j：API 文档生成工具 -->
-            <!-- 文档：https://doc.xiaominfo.com/docs/quick-start -->
             <dependency>
                 <groupId>com.github.xiaoymin</groupId>
                 <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
@@ -51,7 +58,6 @@
             </dependency>
 
             <!-- JWT：用于生成和验证 JSON Web Tokens -->
-            <!-- 文档：https://github.com/jwtk/jjwt#install-jdk-maven -->
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>
                 <artifactId>jjwt-api</artifactId>
@@ -71,23 +77,20 @@
             </dependency>
 
             <!-- EasyCaptcha：图形验证码生成库 -->
-            <!-- 文档：https://gitee.com/ele-admin/EasyCaptcha -->
             <dependency>
                 <groupId>com.github.whvcse</groupId>
                 <artifactId>easy-captcha</artifactId>
                 <version>${easycaptcha.version}</version>
             </dependency>
 
-            <!-- MinIO：对象存储服务，用于存储图像等非结构化数据 -->
-            <!-- 文档：https://min.io/docs/minio/linux/developers/minio-drivers.html?ref=docs#java-sdk -->
+            <!-- MinIO：对象存储服务 -->
             <dependency>
                 <groupId>io.minio</groupId>
                 <artifactId>minio</artifactId>
                 <version>${minio.version}</version>
             </dependency>
 
-            <!-- 阿里云短信服务：用于发送短信验证码 -->
-            <!-- 文档：https://help.aliyun.com/document_detail/215759.html -->
+            <!-- 阿里云短信服务: 阿里云短信服务 SDK -->
             <dependency>
                 <groupId>com.aliyun</groupId>
                 <artifactId>dysmsapi20170525</artifactId>
