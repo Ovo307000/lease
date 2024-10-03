@@ -1,7 +1,7 @@
 package com.ovo307000.lease.web.admin.service;
 
-import com.ovo307000.lease.module.entity.PaymentType;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.ovo307000.lease.module.entity.PaymentType;
 
 /**
  * @author liubo
