@@ -14,8 +14,8 @@ public enum ItemType implements BaseEnum
 
     @EnumValue
     @JsonValue
-    private Integer code;
-    private String  name;
+    private final Integer code;
+    private final String  name;
 
     ItemType(Integer code, String name)
     {

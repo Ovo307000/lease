@@ -16,9 +16,9 @@ public enum LeaseStatus implements BaseEnum
 
     @EnumValue
     @JsonValue
-    private Integer code;
+    private final Integer code;
 
-    private String name;
+    private final String name;
 
     LeaseStatus(Integer code, String name)
     {

@@ -12,9 +12,9 @@ public enum LeaseSourceType implements BaseEnum
 
     @JsonValue
     @EnumValue
-    private Integer code;
+    private final Integer code;
 
-    private String name;
+    private final String name;
 
     LeaseSourceType(Integer code, String name)
     {

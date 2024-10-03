@@ -11,9 +11,9 @@ public enum SystemUserType implements BaseEnum
 
     @EnumValue
     @JsonValue
-    private Integer code;
+    private final Integer code;
 
-    private String name;
+    private final String name;
 
 
     SystemUserType(Integer code, String name)

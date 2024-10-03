@@ -16,10 +16,10 @@ public enum AppointmentStatus implements BaseEnum
 
     @EnumValue
     @JsonValue
-    private Integer code;
+    private final Integer code;
 
 
-    private String name;
+    private final String name;
 
     AppointmentStatus(Integer code, String name)
     {
