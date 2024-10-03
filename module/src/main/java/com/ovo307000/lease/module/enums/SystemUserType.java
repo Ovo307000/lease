@@ -16,7 +16,7 @@ public enum SystemUserType implements BaseEnum
     private final String name;
 
 
-    SystemUserType(Integer code, String name)
+    SystemUserType(final Integer code, final String name)
     {
         this.code = code;
         this.name = name;

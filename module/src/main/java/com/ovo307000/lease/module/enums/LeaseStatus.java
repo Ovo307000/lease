@@ -20,7 +20,7 @@ public enum LeaseStatus implements BaseEnum
 
     private final String name;
 
-    LeaseStatus(Integer code, String name)
+    LeaseStatus(final Integer code, final String name)
     {
         this.code = code;
         this.name = name;

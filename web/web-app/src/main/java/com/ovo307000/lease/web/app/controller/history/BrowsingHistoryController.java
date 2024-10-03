@@ -19,7 +19,7 @@ public class BrowsingHistoryController
 
     @Operation(summary = "获取浏览历史")
     @GetMapping("pageItem")
-    private Result<IPage<HistoryItemVo>> page(@RequestParam long current, @RequestParam long size)
+    private Result<IPage<HistoryItemVo>> page(@RequestParam final long current, @RequestParam final long size)
     {
         return Result.ok();
     }

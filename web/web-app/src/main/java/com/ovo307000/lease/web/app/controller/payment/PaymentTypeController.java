@@ -20,7 +20,7 @@ public class PaymentTypeController
 
     @Operation(summary = "根据房间id获取可选支付方式列表")
     @GetMapping("listByRoomId")
-    public Result<List<PaymentType>> list(@RequestParam Long id)
+    public Result<List<PaymentType>> list(@RequestParam final Long id)
     {
         return Result.ok();
     }

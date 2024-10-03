@@ -20,37 +20,37 @@ public class LeaseAgreementController
 
     @Operation(summary = "保存或修改租约信息")
     @PostMapping("saveOrUpdate")
-    public Result saveOrUpdate(@RequestBody LeaseAgreement leaseAgreement)
+    public Result saveOrUpdate(@RequestBody final LeaseAgreement leaseAgreement)
     {
         return Result.ok();
     }
 
     @Operation(summary = "根据条件分页查询租约列表")
     @GetMapping("page")
-    public Result<IPage<AgreementVo>> page(@RequestParam long current,
-                                           @RequestParam long size,
-                                           AgreementQueryVo queryVo)
+    public Result<IPage<AgreementVo>> page(@RequestParam final long current,
+                                           @RequestParam final long size,
+                                           final AgreementQueryVo queryVo)
     {
         return Result.ok();
     }
 
     @Operation(summary = "根据id查询租约信息")
     @GetMapping(name = "getById")
-    public Result<AgreementVo> getById(@RequestParam Long id)
+    public Result<AgreementVo> getById(@RequestParam final Long id)
     {
         return Result.ok();
     }
 
     @Operation(summary = "根据id删除租约信息")
     @DeleteMapping("removeById")
-    public Result removeById(@RequestParam Long id)
+    public Result removeById(@RequestParam final Long id)
     {
         return Result.ok();
     }
 
     @Operation(summary = "根据id更新租约状态")
     @PostMapping("updateStatusById")
-    public Result updateStatusById(@RequestParam Long id, @RequestParam LeaseStatus status)
+    public Result updateStatusById(@RequestParam final Long id, @RequestParam final LeaseStatus status)
     {
         return Result.ok();
     }

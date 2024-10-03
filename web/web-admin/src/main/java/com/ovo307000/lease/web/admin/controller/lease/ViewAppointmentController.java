@@ -19,16 +19,16 @@ public class ViewAppointmentController
 
     @Operation(summary = "分页查询预约信息")
     @GetMapping("page")
-    public Result<IPage<AppointmentVo>> page(@RequestParam long current,
-                                             @RequestParam long size,
-                                             AppointmentQueryVo queryVo)
+    public Result<IPage<AppointmentVo>> page(@RequestParam final long current,
+                                             @RequestParam final long size,
+                                             final AppointmentQueryVo queryVo)
     {
         return Result.ok();
     }
 
     @Operation(summary = "根据id更新预约状态")
     @PostMapping("updateStatusById")
-    public Result updateStatusById(@RequestParam Long id, @RequestParam AppointmentStatus status)
+    public Result updateStatusById(@RequestParam final Long id, @RequestParam final AppointmentStatus status)
     {
         return Result.ok();
     }

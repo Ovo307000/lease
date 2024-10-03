@@ -21,7 +21,7 @@ public enum AppointmentStatus implements BaseEnum
 
     private final String name;
 
-    AppointmentStatus(Integer code, String name)
+    AppointmentStatus(final Integer code, final String name)
     {
         this.code = code;
         this.name = name;

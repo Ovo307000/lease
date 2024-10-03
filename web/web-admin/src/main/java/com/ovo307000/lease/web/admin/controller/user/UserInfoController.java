@@ -18,16 +18,16 @@ public class UserInfoController
 
     @Operation(summary = "分页查询用户信息")
     @GetMapping("page")
-    public Result<IPage<UserInfo>> pageUserInfo(@RequestParam long current,
-                                                @RequestParam long size,
-                                                UserInfoQueryVo queryVo)
+    public Result<IPage<UserInfo>> pageUserInfo(@RequestParam final long current,
+                                                @RequestParam final long size,
+                                                final UserInfoQueryVo queryVo)
     {
         return Result.ok();
     }
 
     @Operation(summary = "根据用户id更新账号状态")
     @PostMapping("updateStatusById")
-    public Result updateStatusById(@RequestParam Long id, @RequestParam BaseStatus status)
+    public Result updateStatusById(@RequestParam final Long id, @RequestParam final BaseStatus status)
     {
         return Result.ok();
     }

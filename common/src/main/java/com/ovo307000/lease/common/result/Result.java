@@ -27,22 +27,22 @@ public class Result<T>
         return Result.ok(null);
     }
 
-    public static <T> Result<T> ok(T data)
+    public static <T> Result<T> ok(final T data)
     {
         return build(data, ResultCodeEnum.SUCCESS);
     }
 
-    public static <T> Result<T> build(T body, ResultCodeEnum resultCodeEnum)
+    public static <T> Result<T> build(final T body, final ResultCodeEnum resultCodeEnum)
     {
-        Result<T> result = build(body);
+        final Result<T> result = build(body);
         result.setCode(resultCodeEnum.getCode());
         result.setMessage(resultCodeEnum.getMessage());
         return result;
     }
 
-    private static <T> Result<T> build(T data)
+    private static <T> Result<T> build(final T data)
     {
-        Result<T> result = new Result<>();
+        final Result<T> result = new Result<>();
         if (data != null)
         {
             result.setData(data);

@@ -19,7 +19,7 @@ public class ViewAppointmentController
 
     @Operation(summary = "保存或更新看房预约")
     @PostMapping("/saveOrUpdate")
-    public Result saveOrUpdate(@RequestBody ViewAppointment viewAppointment)
+    public Result saveOrUpdate(@RequestBody final ViewAppointment viewAppointment)
     {
         return Result.ok();
     }
@@ -33,7 +33,7 @@ public class ViewAppointmentController
 
     @GetMapping("getDetailById")
     @Operation(summary = "根据ID查询预约详情信息")
-    public Result<AppointmentDetailVo> getDetailById(Long id)
+    public Result<AppointmentDetailVo> getDetailById(final Long id)
     {
         return Result.ok();
     }

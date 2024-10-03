@@ -29,14 +29,14 @@ public class RegionController
 
     @Operation(summary = "根据省份id查询城市信息列表")
     @GetMapping("city/listByProvinceId")
-    public Result<List<CityInfo>> listCityInfoByProvinceId(@RequestParam Long id)
+    public Result<List<CityInfo>> listCityInfoByProvinceId(@RequestParam final Long id)
     {
         return Result.ok();
     }
 
     @GetMapping("district/listByCityId")
     @Operation(summary = "根据城市id查询区县信息")
-    public Result<List<DistrictInfo>> listDistrictInfoByCityId(@RequestParam Long id)
+    public Result<List<DistrictInfo>> listDistrictInfoByCityId(@RequestParam final Long id)
     {
         return Result.ok();
     }

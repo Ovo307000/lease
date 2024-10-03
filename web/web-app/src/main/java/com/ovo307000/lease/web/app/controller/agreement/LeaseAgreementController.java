@@ -26,21 +26,21 @@ public class LeaseAgreementController
 
     @Operation(summary = "根据id获取租约详细信息")
     @GetMapping("getDetailById")
-    public Result<AgreementDetailVo> getDetailById(@RequestParam Long id)
+    public Result<AgreementDetailVo> getDetailById(@RequestParam final Long id)
     {
         return Result.ok();
     }
 
     @Operation(summary = "根据id更新租约状态", description = "用于确认租约和提前退租")
     @PostMapping("updateStatusById")
-    public Result updateStatusById(@RequestParam Long id, @RequestParam LeaseStatus leaseStatus)
+    public Result updateStatusById(@RequestParam final Long id, @RequestParam final LeaseStatus leaseStatus)
     {
         return Result.ok();
     }
 
     @Operation(summary = "保存或更新租约", description = "用于续约")
     @PostMapping("saveOrUpdate")
-    public Result saveOrUpdate(@RequestBody LeaseAgreement leaseAgreement)
+    public Result saveOrUpdate(@RequestBody final LeaseAgreement leaseAgreement)
     {
         return Result.ok();
     }

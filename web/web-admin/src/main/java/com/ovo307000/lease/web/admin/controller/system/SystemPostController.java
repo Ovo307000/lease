@@ -19,21 +19,21 @@ public class SystemPostController
 
     @Operation(summary = "分页获取岗位信息")
     @GetMapping("page")
-    private Result<IPage<SystemPost>> page(@RequestParam long current, @RequestParam long size)
+    private Result<IPage<SystemPost>> page(@RequestParam final long current, @RequestParam final long size)
     {
         return Result.ok();
     }
 
     @Operation(summary = "保存或更新岗位信息")
     @PostMapping("saveOrUpdate")
-    public Result saveOrUpdate(@RequestBody SystemPost systemPost)
+    public Result saveOrUpdate(@RequestBody final SystemPost systemPost)
     {
         return Result.ok();
     }
 
     @DeleteMapping("deleteById")
     @Operation(summary = "根据id删除岗位")
-    public Result removeById(@RequestParam Long id)
+    public Result removeById(@RequestParam final Long id)
     {
 
         return Result.ok();
@@ -41,7 +41,7 @@ public class SystemPostController
 
     @GetMapping("getById")
     @Operation(summary = "根据id获取岗位信息")
-    public Result<SystemPost> getById(@RequestParam Long id)
+    public Result<SystemPost> getById(@RequestParam final Long id)
     {
         return Result.ok();
     }
@@ -55,7 +55,7 @@ public class SystemPostController
 
     @Operation(summary = "根据岗位id修改状态")
     @PostMapping("updateStatusByPostId")
-    public Result updateStatusByPostId(@RequestParam Long id, @RequestParam BaseStatus status)
+    public Result updateStatusByPostId(@RequestParam final Long id, @RequestParam final BaseStatus status)
     {
         return Result.ok();
     }

@@ -16,7 +16,7 @@ public enum LeaseSourceType implements BaseEnum
 
     private final String name;
 
-    LeaseSourceType(Integer code, String name)
+    LeaseSourceType(final Integer code, final String name)
     {
         this.code = code;
         this.name = name;

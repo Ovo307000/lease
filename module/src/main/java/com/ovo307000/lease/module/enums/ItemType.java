@@ -17,7 +17,7 @@ public enum ItemType implements BaseEnum
     private final Integer code;
     private final String  name;
 
-    ItemType(Integer code, String name)
+    ItemType(final Integer code, final String name)
     {
         this.code = code;
         this.name = name;

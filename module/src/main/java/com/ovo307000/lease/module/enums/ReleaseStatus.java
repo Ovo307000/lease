@@ -17,7 +17,7 @@ public enum ReleaseStatus implements BaseEnum
     private final String name;
 
 
-    ReleaseStatus(Integer code, String name)
+    ReleaseStatus(final Integer code, final String name)
     {
         this.code = code;
         this.name = name;

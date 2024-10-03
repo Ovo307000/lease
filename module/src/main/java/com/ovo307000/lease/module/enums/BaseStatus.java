@@ -19,7 +19,7 @@ public enum BaseStatus implements BaseEnum
 
     private final String name;
 
-    BaseStatus(Integer code, String name)
+    BaseStatus(final Integer code, final String name)
     {
         this.code = code;
         this.name = name;

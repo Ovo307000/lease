@@ -23,42 +23,42 @@ public class RoomController
 
     @Operation(summary = "保存或更新房间信息")
     @PostMapping("saveOrUpdate")
-    public Result saveOrUpdate(@RequestBody RoomSubmitVo roomSubmitVo)
+    public Result saveOrUpdate(@RequestBody final RoomSubmitVo roomSubmitVo)
     {
         return Result.ok();
     }
 
     @Operation(summary = "根据条件分页查询房间列表")
     @GetMapping("pageItem")
-    public Result<IPage<RoomItemVo>> pageItem(@RequestParam long current, @RequestParam long size, RoomQueryVo queryVo)
+    public Result<IPage<RoomItemVo>> pageItem(@RequestParam final long current, @RequestParam final long size, final RoomQueryVo queryVo)
     {
         return Result.ok();
     }
 
     @Operation(summary = "根据id获取房间详细信息")
     @GetMapping("getDetailById")
-    public Result<RoomDetailVo> getDetailById(@RequestParam Long id)
+    public Result<RoomDetailVo> getDetailById(@RequestParam final Long id)
     {
         return Result.ok();
     }
 
     @Operation(summary = "根据id删除房间信息")
     @DeleteMapping("removeById")
-    public Result removeById(@RequestParam Long id)
+    public Result removeById(@RequestParam final Long id)
     {
         return Result.ok();
     }
 
     @Operation(summary = "根据id修改房间发布状态")
     @PostMapping("updateReleaseStatusById")
-    public Result updateReleaseStatusById(Long id, ReleaseStatus status)
+    public Result updateReleaseStatusById(final Long id, final ReleaseStatus status)
     {
         return Result.ok();
     }
 
     @GetMapping("listBasicByApartmentId")
     @Operation(summary = "根据公寓id查询房间列表")
-    public Result<List<RoomInfo>> listBasicByApartmentId(Long id)
+    public Result<List<RoomInfo>> listBasicByApartmentId(final Long id)
     {
         return Result.ok();
     }

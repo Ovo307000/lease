@@ -16,14 +16,14 @@ public class LoginController
 
     @GetMapping("login/getCode")
     @Operation(summary = "获取短信验证码")
-    public Result getCode(@RequestParam String phone)
+    public Result getCode(@RequestParam final String phone)
     {
         return Result.ok();
     }
 
     @PostMapping("login")
     @Operation(summary = "登录")
-    public Result<String> login(@RequestBody LoginVo loginVo)
+    public Result<String> login(@RequestBody final LoginVo loginVo)
     {
         return Result.ok();
     }

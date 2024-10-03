@@ -24,7 +24,7 @@ public class LoginController
 
     @Operation(summary = "登录")
     @PostMapping("login")
-    public Result<String> login(@RequestBody LoginVo loginVo)
+    public Result<String> login(@RequestBody final LoginVo loginVo)
     {
         return Result.ok();
     }
