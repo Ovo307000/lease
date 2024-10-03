@@ -32,7 +32,7 @@ public enum ItemType implements BaseEnum
     @Override
     public String getName()
     {
-        return name;
+        return this.name;
     }
 
 }
