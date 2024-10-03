@@ -7,12 +7,15 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
+
 @EqualsAndHashCode(callSuper = true)
 @Schema(description = "配套信息表")
 @TableName(value = "facility_info")
 @Data
 public class FacilityInfo extends BaseEntity
 {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "配套所属对象类型")

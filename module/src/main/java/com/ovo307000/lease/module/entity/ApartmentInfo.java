@@ -7,6 +7,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
+
 @EqualsAndHashCode(callSuper = true)
 @Schema(description = "公寓信息表")
 @TableName(value = "apartment_info")
@@ -14,6 +16,7 @@ import lombok.EqualsAndHashCode;
 public class ApartmentInfo extends BaseEntity
 {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "公寓名称")

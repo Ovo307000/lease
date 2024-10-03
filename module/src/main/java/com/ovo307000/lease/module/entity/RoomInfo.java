@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
 import java.math.BigDecimal;
 
 @EqualsAndHashCode(callSuper = true)
@@ -16,6 +17,7 @@ import java.math.BigDecimal;
 public class RoomInfo extends BaseEntity
 {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "房间号")

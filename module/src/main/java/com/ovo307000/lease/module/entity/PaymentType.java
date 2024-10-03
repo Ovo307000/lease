@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
+
 @EqualsAndHashCode(callSuper = true)
 @Schema(description = "支付方式表")
 @TableName(value = "payment_type")
@@ -13,6 +15,7 @@ import lombok.EqualsAndHashCode;
 public class PaymentType extends BaseEntity
 {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "付款方式名称")

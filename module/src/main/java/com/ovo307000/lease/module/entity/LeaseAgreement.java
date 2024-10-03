@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -19,6 +20,7 @@ import java.util.Date;
 public class LeaseAgreement extends BaseEntity
 {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "承租人手机号码")

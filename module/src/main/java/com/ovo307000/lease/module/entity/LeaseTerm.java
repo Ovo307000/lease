@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
+
 /**
  * @TableName lease_term
  */
@@ -16,6 +18,7 @@ import lombok.EqualsAndHashCode;
 public class LeaseTerm extends BaseEntity
 {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "租期月数")

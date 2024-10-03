@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
+
 @EqualsAndHashCode(callSuper = true)
 @Schema(description = "房间&标签关联表")
 @TableName(value = "room_label")
@@ -15,6 +17,7 @@ import lombok.EqualsAndHashCode;
 public class RoomLabel extends BaseEntity
 {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "房间id")

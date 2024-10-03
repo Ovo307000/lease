@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
+
 @EqualsAndHashCode(callSuper = true)
 @Schema(description = "房间&支付方式关联表")
 @TableName(value = "room_payment_type")
@@ -15,6 +17,7 @@ import lombok.EqualsAndHashCode;
 public class RoomPaymentType extends BaseEntity
 {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "房间id")

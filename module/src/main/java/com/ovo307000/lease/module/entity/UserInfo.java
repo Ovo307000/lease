@@ -7,6 +7,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
+
 @EqualsAndHashCode(callSuper = true)
 @Schema(description = "用户信息表")
 @TableName(value = "user_info")
@@ -14,6 +16,7 @@ import lombok.EqualsAndHashCode;
 public class UserInfo extends BaseEntity
 {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "手机号码（用做登录用户名）")

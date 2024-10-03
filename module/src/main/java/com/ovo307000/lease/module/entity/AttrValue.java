@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
+
 @EqualsAndHashCode(callSuper = true)
 @Schema(description = "房间基本属性值表")
 @TableName(value = "attr_value")
@@ -13,6 +15,7 @@ import lombok.EqualsAndHashCode;
 public class AttrValue extends BaseEntity
 {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "属性value")

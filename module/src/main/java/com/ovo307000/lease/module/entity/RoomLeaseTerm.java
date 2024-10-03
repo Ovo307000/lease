@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
+import java.io.Serial;
+
 /**
  * @TableName room_lease_term
  */
@@ -18,6 +20,7 @@ import lombok.*;
 public class RoomLeaseTerm extends BaseEntity
 {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "房间id")
