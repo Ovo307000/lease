@@ -4,7 +4,7 @@ package com.ovo307000.lease.web.admin.controller.lease;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ovo307000.lease.common.result.Result;
 import com.ovo307000.lease.module.entity.LeaseAgreement;
-import com.ovo307000.lease.model.enums.LeaseStatus;
+import com.ovo307000.lease.module.enums.LeaseStatus;
 import com.ovo307000.lease.web.admin.vo.agreement.AgreementQueryVo;
 import com.ovo307000.lease.web.admin.vo.agreement.AgreementVo;
 import io.swagger.v3.oas.annotations.Operation;

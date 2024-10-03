@@ -2,7 +2,7 @@ package com.ovo307000.lease.module.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.ovo307000.lease.model.enums.AppointmentStatus;
+import com.ovo307000.lease.module.enums.AppointmentStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 

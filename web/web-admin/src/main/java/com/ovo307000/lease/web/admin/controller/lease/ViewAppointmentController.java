@@ -3,7 +3,7 @@ package com.ovo307000.lease.web.admin.controller.lease;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ovo307000.lease.common.result.Result;
-import com.ovo307000.lease.model.enums.AppointmentStatus;
+import com.ovo307000.lease.module.enums.AppointmentStatus;
 import com.ovo307000.lease.web.admin.vo.appointment.AppointmentQueryVo;
 import com.ovo307000.lease.web.admin.vo.appointment.AppointmentVo;
 import io.swagger.v3.oas.annotations.Operation;

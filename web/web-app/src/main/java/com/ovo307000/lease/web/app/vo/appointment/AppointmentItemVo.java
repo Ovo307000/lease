@@ -1,7 +1,7 @@
 package com.ovo307000.lease.web.app.vo.appointment;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.ovo307000.lease.model.enums.AppointmentStatus;
+import com.ovo307000.lease.module.enums.AppointmentStatus;
 import com.ovo307000.lease.web.app.vo.graph.GraphVo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

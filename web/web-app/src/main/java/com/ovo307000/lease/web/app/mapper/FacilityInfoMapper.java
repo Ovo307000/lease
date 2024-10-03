@@ -7,7 +7,7 @@ import com.ovo307000.lease.module.entity.FacilityInfo;
  * @author liubo
  * @description 针对表【facility_info(配套信息表)】的数据库操作Mapper
  * @createDate 2023-07-26 11:12:39
- * @Entity com.ovo307000.lease.model.entity.FacilityInfo
+ * @Entity com.ovo307000.lease.module.entity.FacilityInfo
  */
 public interface FacilityInfoMapper extends BaseMapper<FacilityInfo>
 {

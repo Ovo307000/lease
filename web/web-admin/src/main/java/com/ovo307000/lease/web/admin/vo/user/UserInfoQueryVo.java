@@ -1,6 +1,6 @@
 package com.ovo307000.lease.web.admin.vo.user;
 
-import com.ovo307000.lease.model.enums.BaseStatus;
+import com.ovo307000.lease.module.enums.BaseStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 

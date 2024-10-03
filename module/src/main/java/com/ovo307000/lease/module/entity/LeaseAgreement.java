@@ -3,8 +3,8 @@ package com.ovo307000.lease.module.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.ovo307000.lease.model.enums.LeaseSourceType;
-import com.ovo307000.lease.model.enums.LeaseStatus;
+import com.ovo307000.lease.module.enums.LeaseSourceType;
+import com.ovo307000.lease.module.enums.LeaseStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 

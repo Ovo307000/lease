@@ -3,7 +3,7 @@ package com.ovo307000.lease.web.admin.controller.system;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ovo307000.lease.common.result.Result;
 import com.ovo307000.lease.module.entity.SystemPost;
-import com.ovo307000.lease.model.enums.BaseStatus;
+import com.ovo307000.lease.module.enums.BaseStatus;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
