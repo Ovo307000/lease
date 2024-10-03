@@ -6,7 +6,8 @@ import lombok.Data;
 
 @Data
 @Schema(description = "用户修改信息")
-public class UserSubmitVo {
+public class UserSubmitVo
+{
 
     @Schema(description = "用户昵称")
     private String nickname;

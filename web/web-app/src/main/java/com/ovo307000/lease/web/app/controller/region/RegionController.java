@@ -17,23 +17,27 @@ import java.util.List;
 @Tag(name = "地区信息")
 @RestController
 @RequestMapping("/app/region")
-public class RegionController {
+public class RegionController
+{
 
     @Operation(summary = "查询省份信息列表")
     @GetMapping("province/list")
-    public Result<List<ProvinceInfo>> listProvince() {
+    public Result<List<ProvinceInfo>> listProvince()
+    {
         return Result.ok();
     }
 
     @Operation(summary = "根据省份id查询城市信息列表")
     @GetMapping("city/listByProvinceId")
-    public Result<List<CityInfo>> listCityInfoByProvinceId(@RequestParam Long id) {
+    public Result<List<CityInfo>> listCityInfoByProvinceId(@RequestParam Long id)
+    {
         return Result.ok();
     }
 
     @GetMapping("district/listByCityId")
     @Operation(summary = "根据城市id查询区县信息")
-    public Result<List<DistrictInfo>> listDistrictInfoByCityId(@RequestParam Long id) {
+    public Result<List<DistrictInfo>> listDistrictInfoByCityId(@RequestParam Long id)
+    {
         return Result.ok();
     }
 }

@@ -14,7 +14,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class GraphVo implements Serializable {
+public class GraphVo implements Serializable
+{
 
 
     @Schema(description = "图片名称")

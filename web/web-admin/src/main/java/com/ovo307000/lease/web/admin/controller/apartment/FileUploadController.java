@@ -14,11 +14,13 @@ import org.springframework.web.multipart.MultipartFile;
 @Tag(name = "文件管理")
 @RequestMapping("/admin/file")
 @RestController
-public class FileUploadController {
+public class FileUploadController
+{
 
     @Operation(summary = "上传文件")
     @PostMapping("upload")
-    public Result<String> upload(@RequestParam MultipartFile file) {
+    public Result<String> upload(@RequestParam MultipartFile file)
+    {
         return Result.ok();
     }
 

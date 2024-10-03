@@ -1,6 +1,7 @@
 package com.ovo307000.module.enums;
 
-public interface BaseEnum {
+public interface BaseEnum
+{
 
     Integer getCode();
 

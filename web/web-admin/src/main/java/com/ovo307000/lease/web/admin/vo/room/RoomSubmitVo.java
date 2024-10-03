@@ -10,7 +10,8 @@ import java.util.List;
 
 @Data
 @Schema(description = "房间信息")
-public class RoomSubmitVo extends RoomInfo {
+public class RoomSubmitVo extends RoomInfo
+{
 
     @Schema(description = "图片列表")
     private List<GraphVo> graphVoList;

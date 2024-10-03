@@ -3,7 +3,8 @@ package com.ovo307000.module.enums;
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum SystemUserType implements BaseEnum {
+public enum SystemUserType implements BaseEnum
+{
 
     ADMIN(0, "管理员"),
     COMMON(1, "普通用户");
@@ -15,18 +16,21 @@ public enum SystemUserType implements BaseEnum {
     private String name;
 
 
-    SystemUserType(Integer code, String name) {
+    SystemUserType(Integer code, String name)
+    {
         this.code = code;
         this.name = name;
     }
 
     @Override
-    public Integer getCode() {
+    public Integer getCode()
+    {
         return this.code;
     }
 
     @Override
-    public String getName() {
+    public String getName()
+    {
         return this.name;
     }
 }

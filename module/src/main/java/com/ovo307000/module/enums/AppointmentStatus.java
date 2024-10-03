@@ -3,7 +3,8 @@ package com.ovo307000.module.enums;
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum AppointmentStatus implements BaseEnum {
+public enum AppointmentStatus implements BaseEnum
+{
 
 
     WAITING(1, "待看房"),
@@ -20,18 +21,21 @@ public enum AppointmentStatus implements BaseEnum {
 
     private String name;
 
-    AppointmentStatus(Integer code, String name) {
+    AppointmentStatus(Integer code, String name)
+    {
         this.code = code;
         this.name = name;
     }
 
     @Override
-    public Integer getCode() {
+    public Integer getCode()
+    {
         return this.code;
     }
 
     @Override
-    public String getName() {
+    public String getName()
+    {
         return this.name;
     }
 }

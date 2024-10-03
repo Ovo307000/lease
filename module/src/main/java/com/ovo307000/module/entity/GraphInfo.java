@@ -1,15 +1,16 @@
 package com.ovo307000.module.entity;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-import com.ovo307000.lease.model.enums.ItemType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.*;
+import com.ovo307000.lease.model.enums.ItemType;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 @Schema(description = "图片信息表")
 @TableName(value = "graph_info")
 @Data
-public class GraphInfo extends BaseEntity {
+public class GraphInfo extends BaseEntity
+{
 
     private static final long serialVersionUID = 1L;
 

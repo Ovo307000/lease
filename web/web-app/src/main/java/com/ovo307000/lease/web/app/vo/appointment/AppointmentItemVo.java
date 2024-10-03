@@ -1,8 +1,8 @@
 package com.ovo307000.lease.web.app.vo.appointment;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ovo307000.lease.model.enums.AppointmentStatus;
 import com.ovo307000.lease.web.app.vo.graph.GraphVo;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -11,7 +11,8 @@ import java.util.List;
 
 @Data
 @Schema(description = "APP端预约看房基本信息")
-public class AppointmentItemVo {
+public class AppointmentItemVo
+{
 
     @Schema(description = "预约Id")
     private Long id;

@@ -1,15 +1,16 @@
 package com.ovo307000.module.entity;
 
-import com.ovo307000.lease.model.enums.ItemType;
-import io.swagger.v3.oas.annotations.media.Schema;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.ovo307000.lease.model.enums.ItemType;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Schema(description = "配套信息表")
 @TableName(value = "facility_info")
 @Data
-public class FacilityInfo extends BaseEntity {
+public class FacilityInfo extends BaseEntity
+{
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "配套所属对象类型")

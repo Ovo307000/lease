@@ -6,7 +6,8 @@ import lombok.Data;
 
 @Data
 @Schema(description = "APP端登录实体")
-public class LoginVo {
+public class LoginVo
+{
 
     @Schema(description = "手机号码")
     private String phone;

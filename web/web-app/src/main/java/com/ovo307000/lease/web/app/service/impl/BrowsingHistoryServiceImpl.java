@@ -1,9 +1,9 @@
 package com.ovo307000.lease.web.app.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ovo307000.lease.model.entity.BrowsingHistory;
 import com.ovo307000.lease.web.app.mapper.BrowsingHistoryMapper;
 import com.ovo307000.lease.web.app.service.BrowsingHistoryService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,5 +13,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class BrowsingHistoryServiceImpl extends ServiceImpl<BrowsingHistoryMapper, BrowsingHistory>
-        implements BrowsingHistoryService {
+        implements BrowsingHistoryService
+{
 }

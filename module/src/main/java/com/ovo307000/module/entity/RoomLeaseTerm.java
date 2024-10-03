@@ -17,7 +17,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RoomLeaseTerm extends BaseEntity {
+public class RoomLeaseTerm extends BaseEntity
+{
 
     private static final long serialVersionUID = 1L;
 

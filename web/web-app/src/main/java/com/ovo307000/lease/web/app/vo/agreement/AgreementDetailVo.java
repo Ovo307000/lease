@@ -9,7 +9,8 @@ import java.util.List;
 
 @Data
 @Schema(description = "租约详细信息")
-public class AgreementDetailVo extends LeaseAgreement {
+public class AgreementDetailVo extends LeaseAgreement
+{
 
     @Schema(description = "公寓名称")
     private String apartmentName;

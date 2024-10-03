@@ -3,7 +3,8 @@ package com.ovo307000.module.enums;
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum LeaseStatus implements BaseEnum {
+public enum LeaseStatus implements BaseEnum
+{
 
     SIGNING(1, "签约待确认"),
     SIGNED(2, "已签约"),
@@ -19,18 +20,21 @@ public enum LeaseStatus implements BaseEnum {
 
     private String name;
 
-    LeaseStatus(Integer code, String name) {
+    LeaseStatus(Integer code, String name)
+    {
         this.code = code;
         this.name = name;
     }
 
     @Override
-    public Integer getCode() {
+    public Integer getCode()
+    {
         return this.code;
     }
 
     @Override
-    public String getName() {
+    public String getName()
+    {
         return this.name;
     }
 

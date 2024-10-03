@@ -1,9 +1,7 @@
 package com.ovo307000.lease.web.admin.mapper;
 
-import com.ovo307000.lease.model.entity.PaymentType;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-
-import java.util.List;
+import com.ovo307000.lease.model.entity.PaymentType;
 
 /**
  * @author liubo
@@ -11,7 +9,8 @@ import java.util.List;
  * @createDate 2023-07-24 15:48:00
  * @Entity com.ovo307000.lease.model.PaymentType
  */
-public interface PaymentTypeMapper extends BaseMapper<PaymentType> {
+public interface PaymentTypeMapper extends BaseMapper<PaymentType>
+{
 
 }
 

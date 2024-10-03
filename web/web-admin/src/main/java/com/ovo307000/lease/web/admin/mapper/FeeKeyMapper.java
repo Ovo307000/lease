@@ -1,18 +1,16 @@
 package com.ovo307000.lease.web.admin.mapper;
 
-import com.ovo307000.lease.model.entity.FeeKey;
-import com.ovo307000.lease.web.admin.vo.fee.FeeKeyVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-
-import java.util.List;
+import com.ovo307000.lease.model.entity.FeeKey;
 
 /**
-* @author liubo
-* @description 针对表【fee_key(杂项费用名称表)】的数据库操作Mapper
-* @createDate 2023-07-24 15:48:00
-* @Entity com.ovo307000.lease.model.FeeKey
-*/
-public interface FeeKeyMapper extends BaseMapper<FeeKey> {
+ * @author liubo
+ * @description 针对表【fee_key(杂项费用名称表)】的数据库操作Mapper
+ * @createDate 2023-07-24 15:48:00
+ * @Entity com.ovo307000.lease.model.FeeKey
+ */
+public interface FeeKeyMapper extends BaseMapper<FeeKey>
+{
 
 }
 

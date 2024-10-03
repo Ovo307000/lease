@@ -11,7 +11,8 @@ import lombok.Data;
 @TableName(value = "lease_term")
 @Data
 @Schema(description = "租期信息")
-public class LeaseTerm extends BaseEntity {
+public class LeaseTerm extends BaseEntity
+{
 
     private static final long serialVersionUID = 1L;
 

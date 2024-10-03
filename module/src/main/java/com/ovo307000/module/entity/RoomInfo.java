@@ -1,19 +1,18 @@
 package com.ovo307000.module.entity;
 
-import com.ovo307000.lease.model.enums.ReleaseStatus;
-import io.swagger.v3.oas.annotations.media.Schema;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.ovo307000.lease.model.enums.ReleaseStatus;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
 
 @Schema(description = "房间信息表")
 @TableName(value = "room_info")
 @Data
-public class RoomInfo extends BaseEntity {
+public class RoomInfo extends BaseEntity
+{
 
     private static final long serialVersionUID = 1L;
 

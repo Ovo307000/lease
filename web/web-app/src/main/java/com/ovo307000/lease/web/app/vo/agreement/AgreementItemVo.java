@@ -1,9 +1,9 @@
 package com.ovo307000.lease.web.app.vo.agreement;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ovo307000.lease.model.enums.LeaseSourceType;
 import com.ovo307000.lease.model.enums.LeaseStatus;
 import com.ovo307000.lease.web.app.vo.graph.GraphVo;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -13,7 +13,8 @@ import java.util.List;
 
 @Data
 @Schema(description = "租约基本信息")
-public class AgreementItemVo {
+public class AgreementItemVo
+{
 
     @Schema(description = "租约id")
     private Long id;
@@ -43,5 +44,5 @@ public class AgreementItemVo {
 
     @Schema(description = "租金")
     private BigDecimal rent;
-    
+
 }

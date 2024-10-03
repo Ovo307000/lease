@@ -17,7 +17,8 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BrowsingHistory extends BaseEntity {
+public class BrowsingHistory extends BaseEntity
+{
 
     private static final long serialVersionUID = 1L;
 

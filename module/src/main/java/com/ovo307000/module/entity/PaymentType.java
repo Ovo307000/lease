@@ -1,15 +1,15 @@
 package com.ovo307000.module.entity;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Builder;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Schema(description = "支付方式表")
 @TableName(value = "payment_type")
 @Data
-public class PaymentType extends BaseEntity {
+public class PaymentType extends BaseEntity
+{
 
     private static final long serialVersionUID = 1L;
 

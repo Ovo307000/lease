@@ -7,7 +7,8 @@ import java.math.BigDecimal;
 
 @Data
 @Schema(description = "房间查询实体")
-public class RoomQueryVo {
+public class RoomQueryVo
+{
 
 
     @Schema(description = "省份Id")

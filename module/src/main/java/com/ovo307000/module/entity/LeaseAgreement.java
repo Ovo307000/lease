@@ -1,11 +1,11 @@
 package com.ovo307000.module.entity;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-import com.ovo307000.lease.model.enums.LeaseSourceType;
-import com.ovo307000.lease.model.enums.LeaseStatus;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.ovo307000.lease.model.enums.LeaseSourceType;
+import com.ovo307000.lease.model.enums.LeaseStatus;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -14,7 +14,8 @@ import java.util.Date;
 @Schema(description = "租约信息表")
 @TableName(value = "lease_agreement")
 @Data
-public class LeaseAgreement extends BaseEntity {
+public class LeaseAgreement extends BaseEntity
+{
 
     private static final long serialVersionUID = 1L;
 

@@ -1,14 +1,15 @@
 package com.ovo307000.module.entity;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Schema(description = "城市信息表")
 @TableName(value = "city_info")
 @Data
-public class CityInfo extends BaseEntity {
+public class CityInfo extends BaseEntity
+{
 
     private static final long serialVersionUID = 1L;
 

@@ -7,7 +7,8 @@ import lombok.Data;
 
 @Data
 @Schema(description = "后台管理系统公寓列表实体")
-public class ApartmentItemVo extends ApartmentInfo {
+public class ApartmentItemVo extends ApartmentInfo
+{
 
     @Schema(description = "房间总数")
     private Long totalRoomCount;

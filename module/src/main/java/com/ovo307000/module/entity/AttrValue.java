@@ -1,14 +1,15 @@
 package com.ovo307000.module.entity;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Schema(description = "房间基本属性值表")
 @TableName(value = "attr_value")
 @Data
-public class AttrValue extends BaseEntity {
+public class AttrValue extends BaseEntity
+{
 
     private static final long serialVersionUID = 1L;
 

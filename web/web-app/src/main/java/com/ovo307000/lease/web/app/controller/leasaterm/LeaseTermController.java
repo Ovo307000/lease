@@ -14,11 +14,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/app/term/")
 @Tag(name = "租期信息")
-public class LeaseTermController {
+public class LeaseTermController
+{
 
     @GetMapping("listByRoomId")
     @Operation(summary = "根据房间id获取可选获取租期列表")
-    public Result<List<LeaseTerm>> list(@RequestParam Long id) {
+    public Result<List<LeaseTerm>> list(@RequestParam Long id)
+    {
         return Result.ok();
     }
 }

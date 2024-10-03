@@ -6,7 +6,8 @@ import lombok.Data;
 
 @Schema(description = "用户信息查询实体")
 @Data
-public class UserInfoQueryVo {
+public class UserInfoQueryVo
+{
 
     @Schema(description = "用户手机号码")
     private String phone;

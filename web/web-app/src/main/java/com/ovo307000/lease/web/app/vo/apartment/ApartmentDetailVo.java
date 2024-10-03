@@ -13,7 +13,8 @@ import java.util.List;
 
 @Data
 @Schema(description = "APP端公寓信息详情")
-public class ApartmentDetailVo extends ApartmentInfo {
+public class ApartmentDetailVo extends ApartmentInfo
+{
 
     @Schema(description = "图片列表")
     private List<GraphVo> graphVoList;

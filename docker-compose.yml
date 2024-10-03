@@ -1,21 +1,21 @@
 version: "3.8"                   # 指定 Docker Compose 文件格式版本，3.8 是较新的版本，支持更多功能
 
-services:                        # 定义要启动的服务（容器）
+services: # 定义要启动的服务（容器）
   # MySQL 服务配置
   lease-mysql:
     image: mysql:8.3.0           # 指定使用的 MySQL 镜像版本，8.3.0 是当前最新的稳定版本
     container_name: lease-mysql  # 设置容器的名称，方便识别和管理
     restart: always              # 设置容器的重启策略为 "always"，意味着如果容器停止了，Docker 会自动重新启动它
-    environment:                 # 设置环境变量，用于配置 MySQL
+    environment: # 设置环境变量，用于配置 MySQL
       MYSQL_ROOT_PASSWORD: root  # 设置 MySQL 的 root 用户密码，注意：在生产环境中应使用更安全的密码
-    ports:                       # 端口映射配置
+    ports: # 端口映射配置
       - "3306:3306"              # 将容器内的 3306 端口映射到主机的 3306 端口，左边是主机端口，右边是容器端口
-    volumes:                     # 数据卷配置，用于持久化存储
+    volumes: # 数据卷配置，用于持久化存储
       - mysql_data:/var/lib/mysql # 将名为 mysql_data 的卷挂载到容器的 /var/lib/mysql 目录，用于保存数据库文件
-    networks:                    # 网络配置
+    networks: # 网络配置
       - lease-network            # 将容器连接到名为 lease-network 的网络
-    healthcheck:                 # 健康检查配置，用于监控容器的健康状态
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"] # 使用 mysqladmin ping 命令检查 MySQL 是否响应
+    healthcheck: # 健康检查配置，用于监控容器的健康状态
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ] # 使用 mysqladmin ping 命令检查 MySQL 是否响应
       interval: 10s              # 每 10 秒执行一次健康检查
       timeout: 5s                # 健康检查命令超时时间为 5 秒
       retries: 5                 # 如果健康检查失败，最多重试 5 次
@@ -25,25 +25,25 @@ services:                        # 定义要启动的服务（容器）
     image: redis:7.4.0           # 指定使用的 Redis 镜像版本，7.4.0 是当前最新的稳定版本
     container_name: lease-redis  # 设置容器的名称，方便识别和管理
     restart: always              # 设置容器的重启策略为 "always"，意味着如果容器停止了，Docker 会自动重新启动它
-    ports:                       # 端口映射配置
+    ports: # 端口映射配置
       - "6379:6379"              # 将容器内的 6379 端口映射到主机的 6379 端口，左边是主机端口，右边是容器端口
-    volumes:                     # 数据卷配置，用于持久化存储
+    volumes: # 数据卷配置，用于持久化存储
       - redis_data:/data         # 将名为 redis_data 的卷挂载到容器的 /data 目录，用于保存 Redis 数据
-    networks:                    # 网络配置
+    networks: # 网络配置
       - lease-network            # 将容器连接到名为 lease-network 的网络
-    healthcheck:                 # 健康检查配置，用于监控容器的健康状态
-      test: ["CMD", "redis-cli", "ping"] # 使用 redis-cli ping 命令检查 Redis 是否响应
+    healthcheck: # 健康检查配置，用于监控容器的健康状态
+      test: [ "CMD", "redis-cli", "ping" ] # 使用 redis-cli ping 命令检查 Redis 是否响应
       interval: 10s              # 每 10 秒执行一次健康检查
       timeout: 5s                # 健康检查命令超时时间为 5 秒
       retries: 5                 # 如果健康检查失败，最多重试 5 次
 
-volumes:                         # 定义数据卷，用于持久化存储数据
-  mysql_data:                    # 定义 MySQL 数据卷
+volumes: # 定义数据卷，用于持久化存储数据
+  mysql_data: # 定义 MySQL 数据卷
     name: lease-mysql-data       # 指定卷的名称，便于在 Docker 中识别
-  redis_data:                    # 定义 Redis 数据卷
+  redis_data: # 定义 Redis 数据卷
     name: lease-redis-data       # 指定卷的名称，便于在 Docker 中识别
 
-networks:                        # 定义网络，用于容器间通信
-  lease-network:                 # 定义名为 lease-network 的网络
+networks: # 定义网络，用于容器间通信
+  lease-network: # 定义名为 lease-network 的网络
     name: lease-network          # 指定网络的名称，便于在 Docker 中识别
     driver: bridge               # 使用 bridge 驱动，这是 Docker 的默认网络驱动，适用于大多数场景

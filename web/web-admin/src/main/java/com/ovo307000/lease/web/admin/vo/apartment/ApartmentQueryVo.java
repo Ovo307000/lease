@@ -5,7 +5,8 @@ import lombok.Data;
 
 @Data
 @Schema(description = "公寓查询实体")
-public class ApartmentQueryVo {
+public class ApartmentQueryVo
+{
 
     @Schema(description = "省份id")
     private Long provinceId;

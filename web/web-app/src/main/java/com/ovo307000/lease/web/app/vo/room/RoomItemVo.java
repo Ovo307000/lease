@@ -4,7 +4,6 @@ package com.ovo307000.lease.web.app.vo.room;
 import com.ovo307000.lease.model.entity.ApartmentInfo;
 import com.ovo307000.lease.model.entity.LabelInfo;
 import com.ovo307000.lease.web.app.vo.graph.GraphVo;
-import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -13,7 +12,8 @@ import java.util.List;
 
 @Schema(description = "APP房间列表实体")
 @Data
-public class RoomItemVo {
+public class RoomItemVo
+{
 
     @Schema(description = "房间id")
     private Long id;

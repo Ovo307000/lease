@@ -3,7 +3,8 @@ package com.ovo307000.module.enums;
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum ReleaseStatus implements BaseEnum {
+public enum ReleaseStatus implements BaseEnum
+{
 
     RELEASED(1, "已发布"),
     NOT_RELEASED(0, "未发布");
@@ -16,19 +17,22 @@ public enum ReleaseStatus implements BaseEnum {
     private String name;
 
 
-    ReleaseStatus(Integer code, String name) {
+    ReleaseStatus(Integer code, String name)
+    {
         this.code = code;
         this.name = name;
     }
 
 
     @Override
-    public Integer getCode() {
+    public Integer getCode()
+    {
         return this.code;
     }
 
     @Override
-    public String getName() {
+    public String getName()
+    {
         return this.name;
     }
 

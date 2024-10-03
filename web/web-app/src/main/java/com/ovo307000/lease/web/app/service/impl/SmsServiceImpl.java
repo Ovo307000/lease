@@ -4,6 +4,7 @@ import com.ovo307000.lease.web.app.service.SmsService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SmsServiceImpl implements SmsService {
+public class SmsServiceImpl implements SmsService
+{
 
 }

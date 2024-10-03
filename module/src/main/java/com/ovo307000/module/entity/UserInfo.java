@@ -1,19 +1,16 @@
 package com.ovo307000.module.entity;
 
-import com.ovo307000.lease.model.enums.BaseStatus;
-import io.swagger.v3.oas.annotations.media.Schema;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import com.ovo307000.lease.model.enums.BaseStatus;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Schema(description = "用户信息表")
 @TableName(value = "user_info")
 @Data
-public class UserInfo extends BaseEntity {
+public class UserInfo extends BaseEntity
+{
 
     private static final long serialVersionUID = 1L;
 

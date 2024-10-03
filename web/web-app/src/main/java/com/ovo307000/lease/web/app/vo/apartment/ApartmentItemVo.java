@@ -12,7 +12,8 @@ import java.util.List;
 
 @Data
 @Schema(description = "App端公寓信息")
-public class ApartmentItemVo extends ApartmentInfo {
+public class ApartmentItemVo extends ApartmentInfo
+{
 
     private List<LabelInfo> labelInfoList;
 

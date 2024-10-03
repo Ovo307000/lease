@@ -8,7 +8,8 @@ import lombok.Data;
 
 @Data
 @Schema(description = "APP端预约看房详情")
-public class AppointmentDetailVo extends ViewAppointment {
+public class AppointmentDetailVo extends ViewAppointment
+{
 
     @Schema(description = "公寓基本信息")
     private ApartmentItemVo apartmentItemVo;

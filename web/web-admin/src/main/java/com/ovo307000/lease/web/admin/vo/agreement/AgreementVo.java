@@ -6,7 +6,8 @@ import lombok.Data;
 
 @Data
 @Schema(description = "租约信息")
-public class AgreementVo extends LeaseAgreement {
+public class AgreementVo extends LeaseAgreement
+{
 
     @Schema(description = "签约公寓信息")
     private ApartmentInfo apartmentInfo;

@@ -4,8 +4,8 @@ package com.ovo307000.lease.web.admin.vo.apartment;
 import com.ovo307000.lease.model.entity.ApartmentInfo;
 import com.ovo307000.lease.model.entity.FacilityInfo;
 import com.ovo307000.lease.model.entity.LabelInfo;
-import com.ovo307000.lease.web.admin.vo.graph.GraphVo;
 import com.ovo307000.lease.web.admin.vo.fee.FeeValueVo;
+import com.ovo307000.lease.web.admin.vo.graph.GraphVo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -13,7 +13,8 @@ import java.util.List;
 
 @Schema(description = "公寓信息")
 @Data
-public class ApartmentDetailVo extends ApartmentInfo {
+public class ApartmentDetailVo extends ApartmentInfo
+{
 
     @Schema(description = "图片列表")
     private List<GraphVo> graphVoList;

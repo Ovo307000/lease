@@ -2,7 +2,6 @@ package com.ovo307000.lease.web.app.vo.history;
 
 
 import com.ovo307000.lease.model.entity.BrowsingHistory;
-import com.ovo307000.lease.model.enums.ReleaseStatus;
 import com.ovo307000.lease.web.app.vo.graph.GraphVo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -12,7 +11,8 @@ import java.util.List;
 
 @Data
 @Schema(description = "浏览历史基本信息")
-public class HistoryItemVo extends BrowsingHistory {
+public class HistoryItemVo extends BrowsingHistory
+{
 
     @Schema(description = "房间号")
     private String roomNumber;

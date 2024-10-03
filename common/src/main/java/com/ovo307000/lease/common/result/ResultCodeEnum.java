@@ -6,7 +6,8 @@ import lombok.Getter;
  * 统一返回结果状态信息类
  */
 @Getter
-public enum ResultCodeEnum {
+public enum ResultCodeEnum
+{
 
     SUCCESS(200, "成功"),
     FAIL(201, "失败"),
@@ -46,8 +47,9 @@ public enum ResultCodeEnum {
 
     private final String message;
 
-    ResultCodeEnum(Integer code, String message) {
-        this.code = code;
+    ResultCodeEnum(Integer code, String message)
+    {
+        this.code    = code;
         this.message = message;
     }
 }

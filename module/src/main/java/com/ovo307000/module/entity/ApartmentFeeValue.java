@@ -1,6 +1,5 @@
 package com.ovo307000.module.entity;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -11,7 +10,8 @@ import lombok.Data;
 @TableName(value = "apartment_fee_value")
 @Data
 @Builder
-public class ApartmentFeeValue extends BaseEntity {
+public class ApartmentFeeValue extends BaseEntity
+{
 
     private static final long serialVersionUID = 1L;
 
