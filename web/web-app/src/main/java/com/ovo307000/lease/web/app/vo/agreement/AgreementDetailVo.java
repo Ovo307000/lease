@@ -4,9 +4,11 @@ import com.ovo307000.lease.module.entity.LeaseAgreement;
 import com.ovo307000.lease.web.app.vo.graph.GraphVo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Schema(description = "租约详细信息")
 public class AgreementDetailVo extends LeaseAgreement

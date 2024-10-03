@@ -4,7 +4,9 @@ import com.ovo307000.lease.module.entity.ApartmentInfo;
 import com.ovo307000.lease.module.entity.ViewAppointment;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Schema(description = "预约看房信息")
 public class AppointmentVo extends ViewAppointment

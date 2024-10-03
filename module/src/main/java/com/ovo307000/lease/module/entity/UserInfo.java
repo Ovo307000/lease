@@ -5,7 +5,9 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.ovo307000.lease.module.enums.BaseStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = true)
 @Schema(description = "用户信息表")
 @TableName(value = "user_info")
 @Data

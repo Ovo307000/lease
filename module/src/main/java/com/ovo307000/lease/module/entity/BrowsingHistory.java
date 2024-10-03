@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
@@ -13,6 +14,7 @@ import java.util.Date;
 /**
  * @TableName browsing_history
  */
+@EqualsAndHashCode(callSuper = true)
 @TableName(value = "browsing_history")
 @Data
 @AllArgsConstructor

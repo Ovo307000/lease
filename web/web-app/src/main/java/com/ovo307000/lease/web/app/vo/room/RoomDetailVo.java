@@ -7,9 +7,11 @@ import com.ovo307000.lease.web.app.vo.fee.FeeValueVo;
 import com.ovo307000.lease.web.app.vo.graph.GraphVo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Schema(description = "APP房间详情")
 public class RoomDetailVo extends RoomInfo

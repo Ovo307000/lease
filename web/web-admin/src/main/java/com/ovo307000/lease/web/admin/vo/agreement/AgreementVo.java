@@ -3,7 +3,9 @@ package com.ovo307000.lease.web.admin.vo.agreement;
 import com.ovo307000.lease.module.entity.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Schema(description = "租约信息")
 public class AgreementVo extends LeaseAgreement

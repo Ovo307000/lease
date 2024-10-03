@@ -5,9 +5,11 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.ovo307000.lease.module.enums.AppointmentStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
+@EqualsAndHashCode(callSuper = true)
 @Schema(description = "预约看房信息表")
 @TableName(value = "view_appointment")
 @Data

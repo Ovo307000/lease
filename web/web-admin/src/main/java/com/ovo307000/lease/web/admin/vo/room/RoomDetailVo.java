@@ -5,10 +5,12 @@ import com.ovo307000.lease.web.admin.vo.attr.AttrValueVo;
 import com.ovo307000.lease.web.admin.vo.graph.GraphVo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
 
+@EqualsAndHashCode(callSuper = true)
 @Schema(description = "房间信息")
 @Data
 public class RoomDetailVo extends RoomInfo

@@ -5,9 +5,11 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.ovo307000.lease.module.enums.ReleaseStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 
+@EqualsAndHashCode(callSuper = true)
 @Schema(description = "房间信息表")
 @TableName(value = "room_info")
 @Data

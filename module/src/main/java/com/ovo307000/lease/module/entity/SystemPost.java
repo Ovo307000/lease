@@ -5,12 +5,14 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.ovo307000.lease.module.enums.BaseStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * 岗位信息表
  *
  * @TableName system_post
  */
+@EqualsAndHashCode(callSuper = true)
 @TableName(value = "system_post")
 @Data
 public class SystemPost extends BaseEntity

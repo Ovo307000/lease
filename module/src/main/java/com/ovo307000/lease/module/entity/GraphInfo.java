@@ -5,7 +5,9 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.ovo307000.lease.module.enums.ItemType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = true)
 @Schema(description = "图片信息表")
 @TableName(value = "graph_info")
 @Data

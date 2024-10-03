@@ -7,10 +7,12 @@ import com.ovo307000.lease.module.enums.LeaseSourceType;
 import com.ovo307000.lease.module.enums.LeaseStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
+@EqualsAndHashCode(callSuper = true)
 @Schema(description = "租约信息表")
 @TableName(value = "lease_agreement")
 @Data
