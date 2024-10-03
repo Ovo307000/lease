@@ -1,6 +1,6 @@
 package com.ovo307000.lease.web.app.vo.appointment;
 
-import com.ovo307000.lease.model.entity.ViewAppointment;
+import com.ovo307000.lease.module.entity.ViewAppointment;
 import com.ovo307000.lease.web.app.vo.apartment.ApartmentItemVo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

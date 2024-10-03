@@ -1,7 +1,7 @@
 package com.ovo307000.lease.web.admin.vo.fee;
 
-import com.ovo307000.lease.model.entity.FeeKey;
-import com.ovo307000.lease.model.entity.FeeValue;
+import com.ovo307000.lease.module.entity.FeeKey;
+import com.ovo307000.lease.module.entity.FeeValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 

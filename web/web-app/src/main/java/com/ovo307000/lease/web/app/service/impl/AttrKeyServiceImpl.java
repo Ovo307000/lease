@@ -1,7 +1,7 @@
 package com.ovo307000.lease.web.app.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ovo307000.lease.model.entity.AttrKey;
+import com.ovo307000.lease.module.entity.AttrKey;
 import com.ovo307000.lease.web.app.mapper.AttrKeyMapper;
 import com.ovo307000.lease.web.app.service.AttrKeyService;
 import org.springframework.stereotype.Service;

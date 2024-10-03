@@ -1,7 +1,7 @@
 package com.ovo307000.lease.web.app.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ovo307000.lease.model.entity.LeaseTerm;
+import com.ovo307000.lease.module.entity.LeaseTerm;
 
 /**
  * @author liubo

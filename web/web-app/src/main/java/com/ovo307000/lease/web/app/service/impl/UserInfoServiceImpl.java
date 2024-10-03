@@ -1,7 +1,7 @@
 package com.ovo307000.lease.web.app.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ovo307000.lease.model.entity.UserInfo;
+import com.ovo307000.lease.module.entity.UserInfo;
 import com.ovo307000.lease.web.app.mapper.UserInfoMapper;
 import com.ovo307000.lease.web.app.service.UserInfoService;
 import org.springframework.stereotype.Service;

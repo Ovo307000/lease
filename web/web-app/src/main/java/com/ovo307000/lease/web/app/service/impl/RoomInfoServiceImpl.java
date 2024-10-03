@@ -1,7 +1,7 @@
 package com.ovo307000.lease.web.app.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ovo307000.lease.model.entity.RoomInfo;
+import com.ovo307000.lease.module.entity.RoomInfo;
 import com.ovo307000.lease.web.app.mapper.RoomInfoMapper;
 import com.ovo307000.lease.web.app.service.RoomInfoService;
 import lombok.extern.slf4j.Slf4j;

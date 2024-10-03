@@ -2,7 +2,7 @@ package com.ovo307000.lease.web.admin.controller.apartment;
 
 
 import com.ovo307000.lease.common.result.Result;
-import com.ovo307000.lease.model.entity.PaymentType;
+import com.ovo307000.lease.module.entity.PaymentType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;

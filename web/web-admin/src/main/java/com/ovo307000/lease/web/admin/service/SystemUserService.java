@@ -1,6 +1,6 @@
 package com.ovo307000.lease.web.admin.service;
 
-import com.ovo307000.lease.model.entity.SystemUser;
+import com.ovo307000.lease.module.entity.SystemUser;
 import com.ovo307000.lease.web.admin.vo.system.user.SystemUserItemVo;
 import com.ovo307000.lease.web.admin.vo.system.user.SystemUserQueryVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;

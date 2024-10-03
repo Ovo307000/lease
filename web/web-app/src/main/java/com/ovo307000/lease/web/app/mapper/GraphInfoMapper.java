@@ -1,7 +1,7 @@
 package com.ovo307000.lease.web.app.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ovo307000.lease.model.entity.GraphInfo;
+import com.ovo307000.lease.module.entity.GraphInfo;
 
 /**
  * @author liubo

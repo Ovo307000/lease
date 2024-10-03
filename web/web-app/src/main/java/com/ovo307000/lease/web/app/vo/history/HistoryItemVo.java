@@ -1,7 +1,7 @@
 package com.ovo307000.lease.web.app.vo.history;
 
 
-import com.ovo307000.lease.model.entity.BrowsingHistory;
+import com.ovo307000.lease.module.entity.BrowsingHistory;
 import com.ovo307000.lease.web.app.vo.graph.GraphVo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

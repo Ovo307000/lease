@@ -1,6 +1,6 @@
 package com.ovo307000.lease.web.app.vo.room;
 
-import com.ovo307000.lease.model.entity.*;
+import com.ovo307000.lease.module.entity.*;
 import com.ovo307000.lease.web.app.vo.apartment.ApartmentItemVo;
 import com.ovo307000.lease.web.app.vo.attr.AttrValueVo;
 import com.ovo307000.lease.web.app.vo.fee.FeeValueVo;

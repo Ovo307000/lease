@@ -1,7 +1,7 @@
 package com.ovo307000.lease.web.admin.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ovo307000.lease.model.entity.ProvinceInfo;
+import com.ovo307000.lease.module.entity.ProvinceInfo;
 import com.ovo307000.lease.web.admin.mapper.ProvinceInfoMapper;
 import com.ovo307000.lease.web.admin.service.ProvinceInfoService;
 import org.springframework.stereotype.Service;

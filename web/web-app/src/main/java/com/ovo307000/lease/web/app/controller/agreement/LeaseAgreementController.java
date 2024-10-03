@@ -1,7 +1,7 @@
 package com.ovo307000.lease.web.app.controller.agreement;
 
 import com.ovo307000.lease.common.result.Result;
-import com.ovo307000.lease.model.entity.LeaseAgreement;
+import com.ovo307000.lease.module.entity.LeaseAgreement;
 import com.ovo307000.lease.model.enums.LeaseStatus;
 import com.ovo307000.lease.web.app.vo.agreement.AgreementDetailVo;
 import com.ovo307000.lease.web.app.vo.agreement.AgreementItemVo;

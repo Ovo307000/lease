@@ -3,7 +3,7 @@ package com.ovo307000.lease.web.admin.controller.apartment;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ovo307000.lease.common.result.Result;
-import com.ovo307000.lease.model.entity.ApartmentInfo;
+import com.ovo307000.lease.module.entity.ApartmentInfo;
 import com.ovo307000.lease.model.enums.ReleaseStatus;
 import com.ovo307000.lease.web.admin.vo.apartment.ApartmentDetailVo;
 import com.ovo307000.lease.web.admin.vo.apartment.ApartmentItemVo;

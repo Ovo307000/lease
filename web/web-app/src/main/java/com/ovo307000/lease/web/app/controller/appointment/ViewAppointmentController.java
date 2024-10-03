@@ -2,7 +2,7 @@ package com.ovo307000.lease.web.app.controller.appointment;
 
 
 import com.ovo307000.lease.common.result.Result;
-import com.ovo307000.lease.model.entity.ViewAppointment;
+import com.ovo307000.lease.module.entity.ViewAppointment;
 import com.ovo307000.lease.web.app.vo.appointment.AppointmentDetailVo;
 import com.ovo307000.lease.web.app.vo.appointment.AppointmentItemVo;
 import io.swagger.v3.oas.annotations.Operation;

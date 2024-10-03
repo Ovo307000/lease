@@ -1,9 +1,9 @@
 package com.ovo307000.lease.web.admin.vo.apartment;
 
 
-import com.ovo307000.lease.model.entity.ApartmentInfo;
-import com.ovo307000.lease.model.entity.FacilityInfo;
-import com.ovo307000.lease.model.entity.LabelInfo;
+import com.ovo307000.lease.module.entity.ApartmentInfo;
+import com.ovo307000.lease.module.entity.FacilityInfo;
+import com.ovo307000.lease.module.entity.LabelInfo;
 import com.ovo307000.lease.web.admin.vo.fee.FeeValueVo;
 import com.ovo307000.lease.web.admin.vo.graph.GraphVo;
 import io.swagger.v3.oas.annotations.media.Schema;

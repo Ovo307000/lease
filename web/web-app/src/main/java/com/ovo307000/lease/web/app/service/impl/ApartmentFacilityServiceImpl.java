@@ -1,7 +1,7 @@
 package com.ovo307000.lease.web.app.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ovo307000.lease.model.entity.ApartmentFacility;
+import com.ovo307000.lease.module.entity.ApartmentFacility;
 import com.ovo307000.lease.web.app.mapper.ApartmentFacilityMapper;
 import com.ovo307000.lease.web.app.service.ApartmentFacilityService;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,7 @@
 package com.ovo307000.lease.web.admin.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ovo307000.lease.model.entity.ApartmentLabel;
+import com.ovo307000.lease.module.entity.ApartmentLabel;
 
 /**
  * @author liubo
