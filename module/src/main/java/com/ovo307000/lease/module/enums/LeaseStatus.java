@@ -2,8 +2,13 @@ package com.ovo307000.lease.module.enums;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-public enum LeaseStatus implements BaseEnum
+
+@Getter
+@AllArgsConstructor
+public enum LeaseStatus
 {
 
     SIGNING(1, "签约待确认"),
@@ -19,23 +24,4 @@ public enum LeaseStatus implements BaseEnum
     private final Integer code;
 
     private final String name;
-
-    LeaseStatus(final Integer code, final String name)
-    {
-        this.code = code;
-        this.name = name;
-    }
-
-    @Override
-    public Integer getCode()
-    {
-        return this.code;
-    }
-
-    @Override
-    public String getName()
-    {
-        return this.name;
-    }
-
 }

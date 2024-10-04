@@ -2,11 +2,13 @@ package com.ovo307000.lease.module.enums;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-public enum AppointmentStatus implements BaseEnum
+@Getter
+@AllArgsConstructor
+public enum AppointmentStatus
 {
-
-
     WAITING(1, "待看房"),
 
     CANCELED(2, "已取消"),
@@ -20,22 +22,4 @@ public enum AppointmentStatus implements BaseEnum
 
 
     private final String name;
-
-    AppointmentStatus(final Integer code, final String name)
-    {
-        this.code = code;
-        this.name = name;
-    }
-
-    @Override
-    public Integer getCode()
-    {
-        return this.code;
-    }
-
-    @Override
-    public String getName()
-    {
-        return this.name;
-    }
 }

@@ -2,10 +2,13 @@ package com.ovo307000.lease.module.enums;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-public enum SystemUserType implements BaseEnum
+@Getter
+@AllArgsConstructor
+public enum SystemUserType
 {
-
     ADMIN(0, "管理员"),
     COMMON(1, "普通用户");
 
@@ -14,23 +17,4 @@ public enum SystemUserType implements BaseEnum
     private final Integer code;
 
     private final String name;
-
-
-    SystemUserType(final Integer code, final String name)
-    {
-        this.code = code;
-        this.name = name;
-    }
-
-    @Override
-    public Integer getCode()
-    {
-        return this.code;
-    }
-
-    @Override
-    public String getName()
-    {
-        return this.name;
-    }
 }

@@ -2,9 +2,12 @@ package com.ovo307000.lease.module.enums;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-
-public enum ItemType implements BaseEnum
+@Getter
+@AllArgsConstructor
+public enum ItemType
 {
 
     APARTMENT(1, "公寓"),
@@ -16,23 +19,4 @@ public enum ItemType implements BaseEnum
     @JsonValue
     private final Integer code;
     private final String  name;
-
-    ItemType(final Integer code, final String name)
-    {
-        this.code = code;
-        this.name = name;
-    }
-
-    @Override
-    public Integer getCode()
-    {
-        return this.code;
-    }
-
-    @Override
-    public String getName()
-    {
-        return this.name;
-    }
-
 }
