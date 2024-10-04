@@ -1,14 +1,15 @@
 package com.ovo307000.lease.common.result;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
  * 统一返回结果状态信息类
  */
 @Getter
+@AllArgsConstructor
 public enum ResultCodeEnum
 {
-
     SUCCESS(200, "成功"),
     FAIL(201, "失败"),
     PARAM_ERROR(202, "参数不正确"),
@@ -22,7 +23,6 @@ public enum ResultCodeEnum
     ADMIN_CAPTCHA_CODE_ERROR(302, "验证码错误"),
     ADMIN_CAPTCHA_CODE_EXPIRED(303, "验证码已过期"),
     ADMIN_CAPTCHA_CODE_NOT_FOUND(304, "未输入验证码"),
-
 
     ADMIN_LOGIN_AUTH(305, "未登陆"),
     ADMIN_ACCOUNT_NOT_EXIST_ERROR(306, "账号不存在"),
@@ -38,18 +38,10 @@ public enum ResultCodeEnum
     APP_LOGIN_CODE_ERROR(506, "验证码错误"),
     APP_ACCOUNT_DISABLED_ERROR(507, "该用户已被禁用"),
 
-
     TOKEN_EXPIRED(601, "token过期"),
     TOKEN_INVALID(602, "token非法");
 
 
     private final Integer code;
-
     private final String message;
-
-    ResultCodeEnum(final Integer code, final String message)
-    {
-        this.code    = code;
-        this.message = message;
-    }
 }
