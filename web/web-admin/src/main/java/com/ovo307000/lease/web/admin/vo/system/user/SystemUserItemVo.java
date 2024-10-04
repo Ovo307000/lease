@@ -4,8 +4,10 @@ import com.ovo307000.lease.module.entity.SystemUser;
 import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Schema(description = "后台管理系统用户基本信息实体")
 public class SystemUserItemVo extends SystemUser {
