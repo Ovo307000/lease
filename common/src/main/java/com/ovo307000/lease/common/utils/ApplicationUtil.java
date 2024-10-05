@@ -11,14 +11,26 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
+/**
+ * 应用程序启动相关的工具类
+ */
 public class ApplicationUtil
 {
+    // 日志记录器
     private static final Logger log = LoggerFactory.getLogger(ApplicationUtil.class);
 
+    /**
+     * 记录应用程序启动日志
+     *
+     * @param context  Spring 应用程序上下文
+     * @param startTime 应用程序开始启动的时间戳
+     * @param docPath  应用程序文档路径
+     */
     public static void logApplicationStartup(final ConfigurableApplicationContext context,
                                              final long startTime,
                                              final String docPath)
     {
+        // 获取环境配置
         final ConfigurableEnvironment env                = context.getEnvironment();
         final String                  protocol           = "http";
         final String                  hostAddress        = getHostAddress();
@@ -28,6 +40,7 @@ public class ApplicationUtil
         final String                  applicationVersion = env.getProperty("spring.application.version", "1.0.0");
         final long                    startupTime        = System.currentTimeMillis() - startTime;
 
+        // 记录启动日志
         log.info(getStartupLogMessage(),
                 applicationName,
                 applicationVersion,
@@ -61,6 +74,11 @@ public class ApplicationUtil
                        .availableProcessors());
     }
 
+    /**
+     * 获取主机地址
+     *
+     * @return 主机地址，如果无法确定则返回 "localhost"
+     */
     private static String getHostAddress()
     {
         try
@@ -75,6 +93,12 @@ public class ApplicationUtil
         }
     }
 
+    /**
+     * 获取上下文路径
+     *
+     * @param env 环境配置
+     * @return 上下文路径，默认为 "/"
+     */
     private static String getContextPath(final ConfigurableEnvironment env)
     {
         String contextPath = env.getProperty("server.servlet.context-path", "/");
@@ -85,6 +109,11 @@ public class ApplicationUtil
         return contextPath;
     }
 
+    /**
+     * 构建启动日志消息模板
+     *
+     * @return 启动日志消息模板
+     */
     private static String getStartupLogMessage()
     {
         return """
@@ -109,11 +138,21 @@ public class ApplicationUtil
                """;
     }
 
+    /**
+     * 获取当前日期和时间
+     *
+     * @return 当前日期和时间的字符串表示
+     */
     private static String getCurrentDateTime()
     {
         return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
     }
 
+    /**
+     * 获取本地时区与UTC之间的时差
+     *
+     * @return 时差的字符串表示，格式为 "+/-HH:MM"
+     */
     private static String getUtcOffset()
     {
         final long offsetInMillis  = TimeZone.getDefault()
@@ -123,6 +162,11 @@ public class ApplicationUtil
         return String.format("%+03d:%02d", offsetInHours, offsetInMinutes);
     }
 
+    /**
+     * 获取当前使用的内存量（以MB为单位）
+     *
+     * @return 当前使用的内存量，单位为MB
+     */
     private static long getUsedMemoryInMB()
     {
         return Runtime.getRuntime()
