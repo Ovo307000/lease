@@ -10,9 +10,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
@@ -23,7 +20,7 @@ import java.util.List;
 @RequestMapping("/admin/payment")
 public class PaymentTypeController
 {
-    private final        PaymentTypeServiceImpl paymentTypeServiceImpl;
+    private final PaymentTypeServiceImpl paymentTypeServiceImpl;
 
     @Operation(summary = "查询全部支付方式列表")
     @GetMapping("list")
@@ -40,7 +37,19 @@ public class PaymentTypeController
     @PostMapping("saveOrUpdate")
     public Result<Void> saveOrUpdatePaymentType(@RequestBody final PaymentType paymentType)
     {
+
         log.info("保存或更新支付方式: {}", paymentType);
+
+        // TODO 2024/10/6 18:38 @solow 目前似乎日期的自动填充有问题，需要手动填充
+        if (paymentType.getId() == null)
+        {
+            paymentType.setUpdateTime(new Date());
+            paymentType.setCreateTime(new Date());
+        }
+        else
+        {
+            paymentType.setUpdateTime(new Date());
+        }
 
         return this.paymentTypeServiceImpl.saveOrUpdate(paymentType) ? Result.ok() : Result.fail();
     }

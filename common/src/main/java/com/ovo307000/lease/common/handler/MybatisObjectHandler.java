@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Date;
 
 /**
@@ -23,16 +25,8 @@ public class MybatisObjectHandler implements MetaObjectHandler
     @Override
     public void insertFill(final MetaObject metaObject)
     {
-        /*
-         * - 为实体类的 createTime 字段自动填充当前时间
-         * - 通过 MybatisPlus 的 strictInsertFill 方法实现
-         * - strictInsertFill 方法的参数：
-         *     - metaObject：    元对象，代表待插入的实体类
-         *     - "createTime"：  实体类的创建时间字段
-         *     - Date.class：    创建时间字段的类型
-         *     - new Date()：    当前时间
-         *  */
         this.strictInsertFill(metaObject, "createTime", Date.class, new Date());
+        this.strictInsertFill(metaObject, "updateTime", Date.class, new Date());
     }
 
     /**
