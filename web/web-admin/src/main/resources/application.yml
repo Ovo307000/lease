@@ -1,31 +1,27 @@
 spring:
   datasource:
-    # 数据源类型
-    type: com.zaxxer.hikari.HikariDataSource
-    # 数据库连接URL
-    url: jdbc:mysql://localhost:3306/lease?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8
-    # 数据库用户名
-    username: root
-    # 数据库密码
-    password: root
-    # Hikari连接池配置
+    type: com.zaxxer.hikari.HikariDataSource                    # 数据库连接池类型: HikariCP，一个高性能的 JDBC 连接池
+    url: jdbc:mysql://localhost:3306/lease?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8    # 数据库连接地址: 本地 MySQL，数据库名为 lease，设置编码等参数
+    username: root                                              # 数据库登录用户名: root 用户（建议在生产环境中使用更安全的账户）
+    password: root                                              # 数据库登录密码: 与用户名对应的密码
     hikari:
-      connection-test-query: SELECT 1            # 用于测试数据库连接是否有效的SQL语句
-      connection-timeout: 60000                  # 连接超时时间，单位：毫秒（默认30秒）
-      idle-timeout: 500000                       # 空闲连接最大存活时间，单位：毫秒（默认10分钟）
-      max-lifetime: 540000                       # 连接最长生命周期，单位：毫秒（默认30分钟，0表示无限生命周期）
-      maximum-pool-size: 12                      # 连接池最大连接数（默认10）
-      minimum-idle: 10                           # 最小空闲连接数
-      pool-name: SPHHikariPool                   # 连接池名称
-    driver-class-name: com.mysql.cj.jdbc.Driver  # 数据库驱动类
+      connection-test-query: SELECT 1                           # 连接测试查询: 用于检查数据库连接是否仍然有效
+      connection-timeout: 60000                                 # 连接超时时间: 60 秒，即建立连接最多等待 1 分钟
+      idle-timeout: 500000                                      # 空闲连接超时: 500 秒，即空闲连接在连接池中最多保留 8.3 分钟
+      max-lifetime: 540000                                      # 连接最大生存时间: 540 秒，即一个连接在池中最多存在 9 分钟
+      maximum-pool-size: 12                                     # 连接池最大大小: 最多同时维护 12 个数据库连接
+      minimum-idle: 10                                          # 最小空闲连接: 连接池中至少保持 10 个空闲连接
+      pool-name: SPHHikariPool                                  # 连接池名称: 用于日志和监控，方便识别不同的连接池
+    driver-class-name: com.mysql.cj.jdbc.Driver                 # MySQL 驱动类名: 用于连接 MySQL 数据库的 JDBC 驱动
 
-
-# MyBatis Plus配置
 mybatis-plus:
   configuration:
-    # 用于打印MyBatis Plus生成的SQL语句，方便调试
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl       # SQL 日志实现: 将 MyBatis 生成的 SQL 语句打印到控制台，便于调试
+  global-config:
+    db-config:
+      logic-delete-field: flag                                  # 逻辑删除字段: 数据表中表示删除状态的字段名
+      logic-delete-value: 1                                     # 逻辑删除值: 表示数据已被删除的标记值
+      logic-not-delete-value: 0                                 # 逻辑未删除值: 表示数据未被删除的标记值
 
-# 服务端口配置
 server:
-  port: 8861  # 服务端口，默认8080，如果端口被占用，可以修改为其他端口，这里修改为8861
+  port: 8861                                                    # 应用服务端口: Web 应用监听的 HTTP 端口号，默认是 8080
