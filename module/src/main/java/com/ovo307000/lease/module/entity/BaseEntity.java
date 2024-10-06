@@ -3,6 +3,7 @@ package com.ovo307000.lease.module.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -25,8 +26,9 @@ public class BaseEntity implements Serializable
     @TableField(value = "update_time")
     private Date updateTime;
 
-    @Schema(description = "逻辑删除")
+    @TableLogic
     @TableField("is_deleted")
+    @Schema(description = "逻辑删除")
     private Byte isDeleted;
 
 }
