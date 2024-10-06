@@ -18,6 +18,6 @@ public class WebAdminApplication
 
         final ConfigurableApplicationContext context = SpringApplication.run(WebAdminApplication.class, args);
 
-        ApplicationUtil.logApplicationStartup(context, startTime, "doc");
+        ApplicationUtil.logApplicationStartup(context, startTime, "doc.html");
     }
 }
