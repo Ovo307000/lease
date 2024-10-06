@@ -1,8 +1,10 @@
 package com.ovo307000.lease.web.admin.costom.configuration.converter;
 
 import com.ovo307000.lease.module.enums.ItemType;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.NonNull;
+import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 
@@ -11,6 +13,7 @@ import java.util.Arrays;
  * <p>
  * 这个类实现了Spring的Converter接口，用于将字符串转换为ItemType枚举类型。
  */
+@Configuration
 public class StringToItemTypeConverter implements Converter<String, ItemType>
 {
 
