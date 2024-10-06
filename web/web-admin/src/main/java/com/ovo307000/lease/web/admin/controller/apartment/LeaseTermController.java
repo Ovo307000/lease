@@ -53,6 +53,7 @@ public class LeaseTermController
     {
         log.info("保存或更新租期信息: {}", leaseTerm);
 
+        // TODO 2024/10/6 23:20 @solow 目前似乎日期的自动填充有问题，需要手动填充
         if (leaseTerm.getId() == null)
         {
             leaseTerm.setCreateTime(new Date());

@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -70,6 +71,17 @@ public class LabelController
     public Result<Void> saveOrUpdateLabel(@RequestBody final LabelInfo labelInfo)
     {
         log.info("新增或修改标签信息: {}", labelInfo);
+
+        // TODO 2024/10/6 23:20 @solow 目前似乎日期的自动填充有问题，需要手动填充
+        if (labelInfo.getId() == null)
+        {
+            labelInfo.setCreateTime(new Date());
+            labelInfo.setUpdateTime(new Date());
+        }
+        else
+        {
+            labelInfo.setUpdateTime(new Date());
+        }
 
         final boolean saved = this.labelInfoServiceImpl.saveOrUpdate(labelInfo);
 
