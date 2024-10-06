@@ -27095,3 +27095,6 @@ VALUES
 
 SET
     FOREIGN_KEY_CHECKS = 1;
+
+-- 修复表结构，添加默认值
+alter table payment_type alter column is_deleted set default 0;
