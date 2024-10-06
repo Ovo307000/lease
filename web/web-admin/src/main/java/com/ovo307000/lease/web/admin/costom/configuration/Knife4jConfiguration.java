@@ -1,4 +1,4 @@
-package com.ovo307000.lease.common.configuration;
+package com.ovo307000.lease.web.admin.costom.configuration;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
