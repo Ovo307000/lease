@@ -22,11 +22,11 @@ public class BaseEntity implements Serializable
 
     @JsonIgnore
     @Schema(description = "更新时间")
-    @TableField(value = "update_time")
+    @TableField(value = "update_time", fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
 
     @TableLogic
     @Schema(description = "逻辑删除")
-    @TableField(value = "is_deleted", fill = FieldFill.UPDATE)
+    @TableField(value = "is_deleted")
     private Byte isDeleted;
 }
