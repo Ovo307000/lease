@@ -10,13 +10,21 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "esModuleInterop": true,
-    "lib": ["ESNext", "DOM"],
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
     "skipLibCheck": true,
     "noEmit": true,
-    "types": ["element-plus/global", "node"],
+    "types": [
+      "element-plus/global",
+      "node"
+    ],
     "baseUrl": "./",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": [
+        "src/*"
+      ]
     },
     "allowSyntheticDefaultImports": true
   },
@@ -27,6 +35,10 @@
     "src/**/*.vue",
     "vite.config.ts"
   ],
-  "exclude": ["node_modules", "dist", "**/*.js"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/*.js"
+  ]
   // "references": [{ "path": "./tsconfig.node.json" }]
 }

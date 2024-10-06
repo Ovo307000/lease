@@ -1,75 +1,75 @@
 <template>
-  <div class="login-container">
+  <div class = "login-container">
     <el-alert
-      v-show="false"
-      :title="getEnvByName('VITE_APP_TITLE')"
-      type="success"
-      :closable="false"
-      style="position: fixed"
+        v-show = "false"
+        :closable = "false"
+        :title = "getEnvByName('VITE_APP_TITLE')"
+        style = "position: fixed"
+        type = "success"
     ></el-alert>
     <el-row>
-      <el-col :xs="24" :sm="24" :md="12" :lg="14" :xl="14">
-        <div style="color: transparent">左侧区域占位符</div>
+      <el-col :lg = "14" :md = "12" :sm = "24" :xl = "14" :xs = "24">
+        <div style = "color: transparent">左侧区域占位符</div>
       </el-col>
-      <el-col :xs="24" :sm="24" :md="12" :lg="10" :xl="10">
+      <el-col :lg = "10" :md = "12" :sm = "24" :xl = "10" :xs = "24">
         <el-form
-          ref="ruleFormRef"
-          :model="ruleForm"
-          status-icon
-          :rules="rules"
-          class="login-form"
+            ref = "ruleFormRef"
+            :model = "ruleForm"
+            :rules = "rules"
+            class = "login-form"
+            status-icon
         >
-          <div class="form-header">
-            <div class="title">hello !</div>
-            <div class="title-tips">
+          <div class = "form-header">
+            <div class = "title">hello !</div>
+            <div class = "title-tips">
               欢迎来到{{ getEnvByName('VITE_APP_TITLE') }}！
             </div>
           </div>
-          <el-form-item prop="username">
+          <el-form-item prop = "username">
             <el-input
-              v-model.trim="ruleForm.username"
-              :prefix-icon="User"
-              autocomplete="off"
-              placeholder="请输入用户名"
+                v-model.trim = "ruleForm.username"
+                :prefix-icon = "User"
+                autocomplete = "off"
+                placeholder = "请输入用户名"
             />
           </el-form-item>
-          <el-form-item prop="password">
+          <el-form-item prop = "password">
             <el-input
-              v-model.trim="ruleForm.password"
-              type="password"
-              show-password
-              :prefix-icon="Lock"
-              autocomplete="off"
-              placeholder="请输入密码"
+                v-model.trim = "ruleForm.password"
+                :prefix-icon = "Lock"
+                autocomplete = "off"
+                placeholder = "请输入密码"
+                show-password
+                type = "password"
             />
           </el-form-item>
-          <el-form-item prop="captchaCode">
+          <el-form-item prop = "captchaCode">
             <el-row>
-              <el-col :span="15">
+              <el-col :span = "15">
                 <el-input
-                  v-model.trim="ruleForm.captchaCode"
-                  autocomplete="off"
-                  placeholder="请输入验证码"
+                    v-model.trim = "ruleForm.captchaCode"
+                    autocomplete = "off"
+                    placeholder = "请输入验证码"
                 />
               </el-col>
-              <el-col :span="8" :offset="1">
+              <el-col :offset = "1" :span = "8">
                 <el-image
-                  fit="contain"
-                  style="height: 100%; background: white"
-                  class="pointer"
-                  :src="captcha.image"
-                  @click="getCaptcha"
+                    :src = "captcha.image"
+                    class = "pointer"
+                    fit = "contain"
+                    style = "height: 100%; background: white"
+                    @click = "getCaptcha"
                 />
               </el-col>
             </el-row>
           </el-form-item>
           <el-form-item>
             <el-button
-              class="login-btn"
-              type="primary"
-              size="large"
-              :loading="loading"
-              @click="submitForm(ruleFormRef)"
+                :loading = "loading"
+                class = "login-btn"
+                size = "large"
+                type = "primary"
+                @click = "submitForm(ruleFormRef)"
             >
               登陆
             </el-button>
@@ -80,27 +80,28 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-import { useUserStore } from '@/store/modules/user'
-import type { FormInstance } from 'element-plus'
-import { User, Lock } from '@element-plus/icons-vue'
-import { ElNotification } from 'element-plus'
-import { HOME_URL } from '@/config/config'
-import { timeFix } from '@/utils/index'
-import { getCode, getUserInfo, login } from '@/api/user'
-import { getEnvByName } from '@/utils/getEnv'
+<script lang = "ts" setup>
+import {onMounted, reactive, ref}    from 'vue'
+import {useRoute, useRouter}         from 'vue-router'
+import {useUserStore}                from '@/store/modules/user'
+import type {FormInstance}           from 'element-plus'
+import {ElNotification}              from 'element-plus'
+import {Lock, User}                  from '@element-plus/icons-vue'
+import {HOME_URL}                    from '@/config/config'
+import {timeFix}                     from '@/utils/index'
+import {getCode, getUserInfo, login} from '@/api/user'
+import {getEnvByName}                from '@/utils/getEnv'
+
 const router = useRouter()
 const route = useRoute()
 const ruleFormRef = ref<FormInstance>()
 const userStore = useUserStore()
 const ruleForm = reactive({
-  username: 'user',
-  password: '123456',
-  captchaKey: '',
-  captchaCode: '',
-})
+                            username: 'user',
+                            password: '123456',
+                            captchaKey: '',
+                            captchaCode: '',
+                          })
 const loading = ref(false)
 const validateUsername = (rule: any, value: string, callback: any) => {
   if (value === '') {
@@ -129,19 +130,28 @@ const validateCaptchaCode = (rule: any, value: string, callback: any) => {
   }
 }
 const rules = reactive({
-  username: [{ required: true, validator: validateUsername }],
-  password: [{ required: true, validator: validatePassword }],
-  captchaCode: [{ required: true, validator: validateCaptchaCode }],
-})
+                         username: [{
+                           required: true,
+                           validator: validateUsername
+                         }],
+                         password: [{
+                           required: true,
+                           validator: validatePassword
+                         }],
+                         captchaCode: [{
+                           required: true,
+                           validator: validateCaptchaCode
+                         }],
+                       })
 // 验证码数据
 const captcha = ref({
-  image: '',
-  key: '',
-})
+                      image: '',
+                      key: '',
+                    })
 // 获取验证码
 const getCaptcha = async () => {
   try {
-    const { data } = await getCode()
+    const {data} = await getCode()
     captcha.value = data
     ruleForm.captchaKey = data.key
   } catch (error) {
@@ -154,7 +164,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
     if (!valid) return
     try {
       loading.value = true
-      const { data } = await login(ruleForm)
+      const {data} = await login(ruleForm)
       userStore.setToken(data)
       router.replace((route.query.redirect as string) || HOME_URL)
 
@@ -162,10 +172,10 @@ const submitForm = (formEl: FormInstance | undefined) => {
       userStore.setUserInfo(userInfo.data)
 
       ElNotification({
-        title: `hi,${timeFix()}!`,
-        message: `欢迎回来`,
-        type: 'success',
-      })
+                       title: `hi,${timeFix()}!`,
+                       message: `欢迎回来`,
+                       type: 'success',
+                     })
     } finally {
       loading.value = false
     }
@@ -176,6 +186,6 @@ onMounted(() => {
 })
 </script>
 
-<style scoped lang="scss">
-@import './index';
+<style lang = "scss" scoped>
+@import "./index";
 </style>

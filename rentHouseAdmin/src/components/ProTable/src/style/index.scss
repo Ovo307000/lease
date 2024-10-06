@@ -1,32 +1,38 @@
-.card {
-  padding: 20px;
-  background-color: #fff;
+.card
+{
+    background-color : #ffffff;
+    padding          : 20px;
 
-  .table-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    margin-bottom: 20px;
+    .table-header
+    {
+        align-items     : center;
+        display         : flex;
+        justify-content : space-between;
+        margin-bottom   : 20px;
+        width           : 100%;
 
-    :deep(.el-icon) {
-      margin-left: 12px;
-      cursor: pointer;
+        :deep(.el-icon)
+        {
+            cursor      : pointer;
+            margin-left : 12px;
+            }
+        }
+
+    .header-right
+    {
+        align-items : center;
+        display     : flex;
+        }
+
+    .pagination
+    {
+        display         : flex;
+        justify-content : flex-end;
+        margin-top      : 20px;
+        }
+
+    .table-empty
+    {
+        padding-top : 20px;
+        }
     }
-  }
-
-  .header-right {
-    display: flex;
-    align-items: center;
-  }
-
-  .pagination {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 20px;
-  }
-
-  .table-empty {
-    padding-top: 20px;
-  }
-}

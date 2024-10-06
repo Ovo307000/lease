@@ -1,28 +1,29 @@
 <template>
-  <el-drawer title="主题设置" v-model="drawerVisible" size="300px">
-    <el-divider class="divider" content-position="center">全局主题</el-divider>
-    <div class="theme-item">
+  <el-drawer v-model = "drawerVisible" size = "300px" title = "主题设置">
+    <el-divider class = "divider" content-position = "center">全局主题</el-divider>
+    <div class = "theme-item">
       <span>主题颜色</span>
       <el-color-picker
-        v-model="themeConfig.primary"
-        :predefine="colorList"
-        @change="changePrimary"
+          v-model = "themeConfig.primary"
+          :predefine = "colorList"
+          @change = "changePrimary"
       />
     </div>
-    <div class="theme-item">
+    <div class = "theme-item">
       <span>暗黑模式</span>
-      <SwitchDark />
+      <SwitchDark/>
     </div>
   </el-drawer>
 </template>
 
-<script setup lang="ts">
-import { ref, computed } from 'vue'
-import mittBus from '@/utils/mittBus'
-import { DEFAULT_PRIMARY } from '@/config/config'
-import { useSettingsStore } from '@/store/modules/settings'
-import { useTheme } from '@/hooks/useTheme'
-const { changePrimary } = useTheme()
+<script lang = "ts" setup>
+import {ref, computed}    from 'vue'
+import mittBus            from '@/utils/mittBus'
+import {DEFAULT_PRIMARY}  from '@/config/config'
+import {useSettingsStore} from '@/store/modules/settings'
+import {useTheme}         from '@/hooks/useTheme'
+
+const {changePrimary} = useTheme()
 
 // 预定义主题颜色
 const colorList = [
@@ -48,11 +49,12 @@ mittBus.on('openThemeDrawer', () => {
 })
 </script>
 
-<style scoped lang="scss">
-.theme-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 14px 0;
-}
+<style lang = "scss" scoped>
+.theme-item
+{
+  align-items     : center;
+  display         : flex;
+  justify-content : space-between;
+  margin          : 14px 0;
+  }
 </style>

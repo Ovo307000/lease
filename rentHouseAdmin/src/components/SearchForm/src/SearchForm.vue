@@ -1,38 +1,38 @@
 <template>
-  <div class="card table-search" v-if="columns.length">
-    <el-form ref="formRef" :model="searchParam">
+  <div v-if = "columns.length" class = "card table-search">
+    <el-form ref = "formRef" :model = "searchParam">
       <Grid
-        ref="gridRef"
-        :collapsed="collapsed"
-        :gap="[20, 0]"
-        :cols="searchCol"
+          ref = "gridRef"
+          :collapsed = "collapsed"
+          :cols = "searchCol"
+          :gap = "[20, 0]"
       >
         <GridItem
-          v-for="(item, index) in columns"
-          :key="item.prop"
-          v-bind="getResponsive(item)"
-          :index="index"
+            v-for = "(item, index) in columns"
+            :key = "item.prop"
+            :index = "index"
+            v-bind = "getResponsive(item)"
         >
-          <el-form-item :label="`${item.label} :`">
-            <SearchFormItem :column="item" :searchParam="searchParam" />
+          <el-form-item :label = "`${item.label} :`">
+            <SearchFormItem :column = "item" :searchParam = "searchParam"/>
           </el-form-item>
         </GridItem>
         <GridItem suffix>
-          <div class="operation">
-            <el-button type="primary" :icon="Search" @click="search">
+          <div class = "operation">
+            <el-button :icon = "Search" type = "primary" @click = "search">
               搜索
             </el-button>
-            <el-button :icon="Delete" @click="reset">重置</el-button>
+            <el-button :icon = "Delete" @click = "reset">重置</el-button>
             <el-button
-              v-if="showCollapse"
-              type="primary"
-              link
-              class="search-isOpen"
-              @click="collapsed = !collapsed"
+                v-if = "showCollapse"
+                class = "search-isOpen"
+                link
+                type = "primary"
+                @click = "collapsed = !collapsed"
             >
               {{ collapsed ? '展开' : '合并' }}
-              <el-icon class="el-icon--right">
-                <component :is="collapsed ? ArrowDown : ArrowUp"></component>
+              <el-icon class = "el-icon--right">
+                <component :is = "collapsed ? ArrowDown : ArrowUp"></component>
               </el-icon>
             </el-button>
           </div>
@@ -42,14 +42,14 @@
   </div>
 </template>
 
-<script setup lang="ts" name="SearchForm">
-import { ref, computed } from 'vue'
-import { Delete, Search, ArrowDown, ArrowUp } from '@element-plus/icons-vue'
-import type { ColumnProps } from '@/components/ProTable/src/types'
-import type { BreakPoint } from '@/components/Grid/src/types'
+<script lang = "ts" name = "SearchForm" setup>
+import {ref, computed}                      from 'vue'
+import {Delete, Search, ArrowDown, ArrowUp} from '@element-plus/icons-vue'
+import type {ColumnProps}                   from '@/components/ProTable/src/types'
+import type {BreakPoint}                    from '@/components/Grid/src/types'
 
-import Grid from '@/components/Grid/src/Grid.vue'
-import GridItem from '@/components/Grid/src/components/GridItem.vue'
+import Grid           from '@/components/Grid/src/Grid.vue'
+import GridItem       from '@/components/Grid/src/components/GridItem.vue'
 import SearchFormItem from './components/SearchFormItem.vue'
 
 interface ProTableProps {
@@ -64,7 +64,13 @@ interface ProTableProps {
 const props = withDefaults(defineProps<ProTableProps>(), {
   columns: () => [],
   searchParam: () => ({}),
-  searchCol: () => ({ xs: 1, sm: 2, md: 2, lg: 3, xl: 4 }),
+  searchCol: () => ({
+    xs: 1,
+    sm: 2,
+    md: 2,
+    lg: 3,
+    xl: 4
+  }),
 })
 
 // 获取响应式设置
@@ -92,8 +98,8 @@ const showCollapse = computed(() => {
   let show = false
   props.columns.reduce((prev, current) => {
     prev +=
-      (current.search![breakPoint.value]?.span ?? current.search?.span ?? 1) +
-      (current.search![breakPoint.value]?.offset ?? current.search?.offset ?? 0)
+        (current.search![breakPoint.value]?.span ?? current.search?.span ?? 1) +
+        (current.search![breakPoint.value]?.offset ?? current.search?.offset ?? 0)
     if (typeof props.searchCol !== 'number') {
       if (prev >= props.searchCol[breakPoint.value]) show = true
     } else {
@@ -105,6 +111,6 @@ const showCollapse = computed(() => {
 })
 </script>
 
-<style scoped lang="scss">
-@import './style/index';
+<style lang = "scss" scoped>
+@import "./style/index";
 </style>

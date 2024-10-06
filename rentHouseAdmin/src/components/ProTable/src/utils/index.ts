@@ -7,18 +7,18 @@
  * @return string
  */
 export function filterEnum(
-  callValue: any,
-  enumData: any[] | undefined,
-  fieldNames?: { label: string; value: string },
-  type?: string,
+    callValue: any,
+    enumData: any[] | undefined,
+    fieldNames?: { label: string; value: string },
+    type?: string,
 ): string {
-  const value = fieldNames?.value ?? 'value'
-  const label = fieldNames?.label ?? 'label'
-  let filterData: { [key: string]: any } = {}
-  if (Array.isArray(enumData))
-    filterData = enumData.find((item: any) => item[value] === callValue)
-  if (type == 'tag') return filterData?.tagType ? filterData.tagType : ''
-  return filterData ? filterData[label] : '--'
+    const value = fieldNames?.value ?? 'value'
+    const label = fieldNames?.label ?? 'label'
+    let filterData: { [key: string]: any } = {}
+    if (Array.isArray(enumData))
+        filterData = enumData.find((item: any) => item[value] === callValue)
+    if (type == 'tag') return filterData?.tagType ? filterData.tagType : ''
+    return filterData ? filterData[label] : '--'
 }
 
 /**
@@ -27,10 +27,10 @@ export function filterEnum(
  * @return string
  */
 export function formatValue(callValue: any) {
-  // 如果当前值为数组,使用 / 拼接（根据需求自定义）
-  if (Array.isArray(callValue))
-    return callValue.length ? callValue.join(' / ') : '--'
-  return callValue ?? '--'
+    // 如果当前值为数组,使用 / 拼接（根据需求自定义）
+    if (Array.isArray(callValue))
+        return callValue.length ? callValue.join(' / ') : '--'
+    return callValue ?? '--'
 }
 
 /**
@@ -40,10 +40,11 @@ export function formatValue(callValue: any) {
  * @return any
  */
 export function handleRowAccordingToProp(
-  row: { [key: string]: any },
-  prop: string,
+    row: { [key: string]: any },
+    prop: string,
 ) {
-  if (!prop.includes('.')) return row[prop] ?? '--'
-  prop.split('.').forEach((item) => (row = row[item] ?? '--'))
-  return row
+    if (!prop.includes('.')) return row[prop] ?? '--'
+    prop.split('.')
+        .forEach((item) => (row = row[item] ?? '--'))
+    return row
 }

@@ -1,26 +1,23 @@
 <template>
   <el-card>
     <ProTable
-      ref="proTable"
-      :dataCallback="dataCallback"
-      :columns="columns"
-      :requestApi="getUserManagementInfoList"
-      :initParam="initParam"
-      :stripe="true"
+        ref = "proTable"
+        :columns = "columns"
+        :dataCallback = "dataCallback"
+        :initParam = "initParam"
+        :requestApi = "getUserManagementInfoList"
+        :stripe = "true"
     ></ProTable>
   </el-card>
 </template>
 
-<script setup lang="tsx">
-import { reactive, ref } from 'vue'
-import { ColumnProps } from '@/components/ProTable/src/types'
-import ProTable from '@/components/ProTable/src/ProTable.vue'
-import { UserStatus, UserStatusMap } from '@/enums/constEnums'
-import {
-  getUserManagementInfoList,
-  updateUserManagementStatus,
-} from '@/api/userManagement'
-import { UserManagementInfoInterface } from '@/api/userManagement/types'
+<script lang = "tsx" setup>
+import {reactive, ref}                                          from 'vue'
+import {ColumnProps}                                            from '@/components/ProTable/src/types'
+import ProTable                                                 from '@/components/ProTable/src/ProTable.vue'
+import {UserStatus, UserStatusMap}                              from '@/enums/constEnums'
+import {getUserManagementInfoList, updateUserManagementStatus,} from '@/api/userManagement'
+import {UserManagementInfoInterface}                            from '@/api/userManagement/types'
 
 // *获取 ProTable 元素，调用其获取刷新数据方法
 const proTable = ref<InstanceType<typeof ProTable>>()
@@ -34,20 +31,26 @@ const columns: ColumnProps[] = [
   {
     prop: 'avatarUrl',
     label: '头像',
-    render: ({ row }: { row: UserManagementInfoInterface }) => {
+    render: ({row}: { row: UserManagementInfoInterface }) => {
       return (
-        <el-image
-          style={{ width: '60px', height: '60px' }}
-          src={row.avatarUrl}
-          fit="cover"
-        ></el-image>
+          <el-image
+              style = {{
+                width: '60px',
+                height: '60px'
+              }}
+              src = {row.avatarUrl}
+              fit = "cover"
+          ></el-image>
       )
     },
   },
   {
     prop: 'phone',
     label: '手机',
-    search: { el: 'input', props: { placeholder: '请输入手机号' } },
+    search: {
+      el: 'input',
+      props: {placeholder: '请输入手机号'}
+    },
   },
   {
     prop: 'status',
@@ -55,18 +58,18 @@ const columns: ColumnProps[] = [
     enum: UserStatusMap,
     search: {
       el: 'select',
-      props: { placeholder: '请选择帐号状态' },
+      props: {placeholder: '请选择帐号状态'},
     },
-    render: ({ row }: { row: UserManagementInfoInterface }) => {
+    render: ({row}: { row: UserManagementInfoInterface }) => {
       return (
-        <el-switch
-          active-value={UserStatus.NORMAL}
-          inactive-value={UserStatus.DISABLED}
-          v-model={row.status}
-          onChange={() =>
-            updateUserManagementStatus(row.id, row.status as UserStatus)
-          }
-        ></el-switch>
+          <el-switch
+              active-value = {UserStatus.NORMAL}
+              inactive-value = {UserStatus.DISABLED}
+              v-model = {row.status}
+              onChange = {() =>
+                  updateUserManagementStatus(row.id, row.status as UserStatus)
+              }
+          ></el-switch>
       )
     },
   },

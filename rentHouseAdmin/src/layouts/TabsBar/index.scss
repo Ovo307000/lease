@@ -1,6 +1,6 @@
 .tabs-action {
-  padding-bottom: 5px;
   cursor: pointer;
+  padding-bottom: 5px;
 
   :deep(.el-icon) {
     transition: all 0.3s;
@@ -8,24 +8,24 @@
 
   :deep(.el-icon):hover {
     color: $base-color-default;
-    transition: all 0.3s;
     transform: rotate(90deg);
+    transition: all 0.3s;
   }
 }
 
 .tabs-bar-container {
-  position: relative;
-  box-sizing: border-box;
-  display: flex;
   align-content: center;
   align-items: flex-end;
-  justify-content: space-between;
-  height: $base-tabs-bar-height;
-  padding-right: $base-padding;
-  padding-left: $base-padding;
-  user-select: none;
   background: $base-color-white;
   border-top: 1px solid #f6f6f6;
+  box-sizing: border-box;
+  display: flex;
+  height: $base-tabs-bar-height;
+  justify-content: space-between;
+  padding-left: $base-padding;
+  padding-right: $base-padding;
+  position: relative;
+  user-select: none;
 
   .tabs-content {
     width: calc(100% - 0px);
@@ -41,8 +41,8 @@
     }
 
     .el-tabs__header {
-      margin: 0;
       border-bottom: 0;
+      margin: 0;
     }
 
     .el-tabs__nav {
@@ -50,16 +50,16 @@
     }
 
     .tabs-icon {
-      top: 0;
       font-size: 15px;
+      top: 0;
     }
 
     .el-tabs__item {
+      border: none;
+      border-radius: $base-border-radius;
       box-sizing: border-box;
       height: $base-tag-item-height;
       line-height: $base-tag-item-height;
-      border: none;
-      border-radius: $base-border-radius;
       transition: padding 0.3s cubic-bezier(0.645, 0.045, 0.355, 1) !important;
     }
 

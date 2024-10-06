@@ -1,34 +1,34 @@
 <template>
   <!-- 列设置 -->
-  <el-drawer title="列设置" v-model="drawerVisible" size="450px">
-    <div class="table">
+  <el-drawer v-model = "drawerVisible" size = "450px" title = "列设置">
+    <div class = "table">
       <el-table
-        :data="colSetting"
-        :border="true"
-        row-key="prop"
-        default-expand-all
-        :tree-props="{ children: '_children' }"
+          :border = "true"
+          :data = "colSetting"
+          :tree-props = "{ children: '_children' }"
+          default-expand-all
+          row-key = "prop"
       >
-        <el-table-column prop="label" align="center" label="列名" />
+        <el-table-column align = "center" label = "列名" prop = "label"/>
         <el-table-column
-          prop="isShow"
-          align="center"
-          label="显示"
-          v-slot="scope"
+            v-slot = "scope"
+            align = "center"
+            label = "显示"
+            prop = "isShow"
         >
-          <el-switch v-model="scope.row.isShow"></el-switch>
+          <el-switch v-model = "scope.row.isShow"></el-switch>
         </el-table-column>
         <el-table-column
-          prop="sortable"
-          align="center"
-          label="排序"
-          v-slot="scope"
+            v-slot = "scope"
+            align = "center"
+            label = "排序"
+            prop = "sortable"
         >
-          <el-switch v-model="scope.row.sortable"></el-switch>
+          <el-switch v-model = "scope.row.sortable"></el-switch>
         </el-table-column>
         <template #empty>
-          <div class="table-empty">
-            <img src="../assets/images/notData.png" alt="notData" />
+          <div class = "table-empty">
+            <img alt = "notData" src = "../assets/images/notData.png"/>
             <div>暂无可配置列</div>
           </div>
         </template>
@@ -37,9 +37,9 @@
   </el-drawer>
 </template>
 
-<script setup lang="ts" name="ColSetting">
-import { ref } from 'vue'
-import { ColumnProps } from '../types'
+<script lang = "ts" name = "ColSetting" setup>
+import {ref}         from 'vue'
+import {ColumnProps} from '../types'
 
 defineProps<{ colSetting: ColumnProps[] }>()
 
@@ -50,12 +50,13 @@ const openColSetting = () => {
 }
 
 defineExpose({
-  openColSetting,
-})
+               openColSetting,
+             })
 </script>
 
-<style scoped lang="scss">
-.cursor-move {
-  cursor: move;
-}
+<style lang = "scss" scoped>
+.cursor-move
+{
+  cursor : move;
+  }
 </style>

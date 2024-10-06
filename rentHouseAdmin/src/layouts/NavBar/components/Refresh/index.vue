@@ -6,38 +6,39 @@
  * @LastEditTime: 2023-03-17 11:40:25
 -->
 <template>
-  <div class="btn">
-    <el-tooltip content="刷新">
-      <el-button circle @click="onRefresh">
-        <IconifyIcon icon="ri:refresh-line" height="16" />
+  <div class = "btn">
+    <el-tooltip content = "刷新">
+      <el-button circle @click = "onRefresh">
+        <IconifyIcon height = "16" icon = "ri:refresh-line"/>
       </el-button>
     </el-tooltip>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-import { useSettingsStore } from '@/store/modules/settings'
-import { IconifyIcon } from '@/components/IconifyIcon'
+<script lang = "ts">
+import {defineComponent}  from 'vue'
+import {useSettingsStore} from '@/store/modules/settings'
+import {IconifyIcon}      from '@/components/IconifyIcon'
 
 export default defineComponent({
-  components: {
-    IconifyIcon,
-  },
-  setup() {
-    const settingsStore = useSettingsStore()
-    const onRefresh = () => {
-      settingsStore.setRefresh()
-    }
-    return { onRefresh }
-  },
-})
+                                 components: {
+                                   IconifyIcon,
+                                 },
+                                 setup() {
+                                   const settingsStore = useSettingsStore()
+                                   const onRefresh = () => {
+                                     settingsStore.setRefresh()
+                                   }
+                                   return {onRefresh}
+                                 },
+                               })
 </script>
 
-<style scoped lang="scss">
-.btn {
-  margin-right: 20px;
-  cursor: pointer;
-  transition: all 0.3s;
-}
+<style lang = "scss" scoped>
+.btn
+{
+  cursor       : pointer;
+  margin-right : 20px;
+  transition   : all 0.3s;
+  }
 </style>

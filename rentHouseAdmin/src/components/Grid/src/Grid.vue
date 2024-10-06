@@ -1,10 +1,10 @@
 <template>
-  <div :style="style">
+  <div :style = "style">
     <slot></slot>
   </div>
 </template>
 
-<script setup lang="ts" name="Grid">
+<script lang = "ts" name = "Grid" setup>
 import {
   ref,
   watch,
@@ -19,7 +19,7 @@ import {
   VNodeArrayChildren,
   VNode,
 } from 'vue'
-import type { BreakPoint } from '@/components/Grid/src/types'
+import type {BreakPoint} from '@/components/Grid/src/types'
 
 type Props = {
   cols?: number | Record<BreakPoint, number>
@@ -29,7 +29,13 @@ type Props = {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  cols: () => ({ xs: 1, sm: 2, md: 2, lg: 3, xl: 4 }),
+  cols: () => ({
+    xs: 1,
+    sm: 2,
+    md: 2,
+    lg: 3,
+    xl: 4
+  }),
   collapsed: false,
   collapsedRows: 1,
   gap: 0,
@@ -37,11 +43,11 @@ const props = withDefaults(defineProps<Props>(), {
 
 onBeforeMount(() => props.collapsed && findIndex())
 onMounted(() => {
-  resize({ target: { innerWidth: window.innerWidth } } as any)
+  resize({target: {innerWidth: window.innerWidth}} as any)
   window.addEventListener('resize', resize)
 })
 onActivated(() => {
-  resize({ target: { innerWidth: window.innerWidth } } as any)
+  resize({target: {innerWidth: window.innerWidth}} as any)
   window.addEventListener('resize', resize)
 })
 onUnmounted(() => {
@@ -100,9 +106,9 @@ const findIndex = () => {
   let suffix: any = null
   slots.forEach((slot: any) => {
     if (
-      typeof slot.type === 'object' &&
-      slot.type.name === 'GridItem' &&
-      slot.props?.suffix !== undefined
+        typeof slot.type === 'object' &&
+        slot.type.name === 'GridItem' &&
+        slot.props?.suffix !== undefined
     )
       suffix = slot
     if (typeof slot.type === 'symbol' && Array.isArray(slot.children))
@@ -113,19 +119,19 @@ const findIndex = () => {
   let suffixCols = 0
   if (suffix) {
     suffixCols =
-      (suffix.props![breakPoint.value]?.span ?? suffix.props?.span ?? 1) +
-      (suffix.props![breakPoint.value]?.offset ?? suffix.props?.offset ?? 0)
+        (suffix.props![breakPoint.value]?.span ?? suffix.props?.span ?? 1) +
+        (suffix.props![breakPoint.value]?.offset ?? suffix.props?.offset ?? 0)
   }
   try {
     let find = false
     fields.reduce((prev = 0, current, index) => {
       prev +=
-        ((current as VNode)!.props![breakPoint.value]?.span ??
-          (current as VNode)!.props?.span ??
-          1) +
-        ((current as VNode)!.props![breakPoint.value]?.offset ??
-          (current as VNode)!.props?.offset ??
-          0)
+          ((current as VNode)!.props![breakPoint.value]?.span ??
+           (current as VNode)!.props?.span ??
+           1) +
+          ((current as VNode)!.props![breakPoint.value]?.offset ??
+           (current as VNode)!.props?.offset ??
+           0)
       if ((prev as number) > props.collapsedRows * cols.value - suffixCols) {
         hiddenIndex.value = index
         find = true
@@ -141,19 +147,19 @@ const findIndex = () => {
 
 // 断点变化时 执行 findIndex
 watch(
-  () => breakPoint.value,
-  () => {
-    if (props.collapsed) findIndex()
-  },
+    () => breakPoint.value,
+    () => {
+      if (props.collapsed) findIndex()
+    },
 )
 
 // 监听 collapsed
 watch(
-  () => props.collapsed,
-  (value) => {
-    if (value) return findIndex()
-    hiddenIndex.value = -1
-  },
+    () => props.collapsed,
+    (value) => {
+      if (value) return findIndex()
+      hiddenIndex.value = -1
+    },
 )
 
 // 设置间距
@@ -172,5 +178,5 @@ const style = computed(() => {
   }
 })
 
-defineExpose({ breakPoint })
+defineExpose({breakPoint})
 </script>

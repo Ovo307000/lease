@@ -1,135 +1,136 @@
 <template>
   <SearchForm
-    v-show="isShowSearch"
-    :columns="searchColumns"
-    :searchParam="searchParam"
-    :searchCol="searchCol"
-    :search="search"
-    :reset="reset"
+      v-show = "isShowSearch"
+      :columns = "searchColumns"
+      :reset = "reset"
+      :search = "search"
+      :searchCol = "searchCol"
+      :searchParam = "searchParam"
   />
-  <div class="card table" ref="tableCard">
+  <div ref = "tableCard" class = "card table">
     <!-- 表格头部 操作按钮 -->
-    <div class="table-header">
-      <div class="header-left">
+    <div class = "table-header">
+      <div class = "header-left">
         <slot
-          name="tableHeader"
-          :selectedListIds="selectedListIds"
-          :selectedList="selectedList"
-          :isSelected="isSelected"
+            :isSelected = "isSelected"
+            :selectedList = "selectedList"
+            :selectedListIds = "selectedListIds"
+            name = "tableHeader"
         ></slot>
       </div>
-      <div class="header-right" v-if="toolButton">
-        <el-tooltip content="刷新表格">
-          <el-icon size="18" @click="getTableList">
-            <Refresh />
+      <div v-if = "toolButton" class = "header-right">
+        <el-tooltip content = "刷新表格">
+          <el-icon size = "18" @click = "getTableList">
+            <Refresh/>
           </el-icon>
         </el-tooltip>
         <el-tooltip
-          v-if="false"
-          effect="dark"
-          :content="!isFullscreen ? '全屏' : '收起'"
-          placement="bottom"
+            v-if = "false"
+            :content = "!isFullscreen ? '全屏' : '收起'"
+            effect = "dark"
+            placement = "bottom"
         >
           <SvgIcon
-            size="18"
-            name="full-screen"
-            v-if="!isFullscreen"
-            @click="toggle"
+              v-if = "!isFullscreen"
+              name = "full-screen"
+              size = "18"
+              @click = "toggle"
           />
-          <SvgIcon size="18" name="exit-full" v-else @click="toggle" />
+          <SvgIcon v-else name = "exit-full" size = "18" @click = "toggle"/>
         </el-tooltip>
-        <el-tooltip content="列设置">
-          <el-icon size="18" v-if="columns.length" @click="openColSetting">
-            <Setting />
+        <el-tooltip content = "列设置">
+          <el-icon v-if = "columns.length" size = "18" @click = "openColSetting">
+            <Setting/>
           </el-icon>
         </el-tooltip>
       </div>
     </div>
     <!-- 表格主体 -->
     <el-table
-      ref="tableRef"
-      v-bind="$attrs"
-      v-loading="loading"
-      :data="tableData"
-      :row-key="rowKey"
-      :border="border"
-      :stripe="stripe"
-      @selection-change="selectionChange"
+        ref = "tableRef"
+        v-loading = "loading"
+        :border = "border"
+        :data = "tableData"
+        :row-key = "rowKey"
+        :stripe = "stripe"
+        v-bind = "$attrs"
+        @selection-change = "selectionChange"
     >
       <!-- default slot -->
       <slot></slot>
       <!-- render columns -->
-      <template v-for="item in tableColumns" :key="item">
+      <template v-for = "item in tableColumns" :key = "item">
         <!-- selection || index -->
         <el-table-column
-          v-bind="item"
-          :align="item.align ?? 'center'"
-          :reserve-selection="item.type == 'selection'"
-          v-if="item.type == 'selection' || item.type == 'index'"
+            v-if = "item.type == 'selection' || item.type == 'index'"
+            :align = "item.align ?? 'center'"
+            :reserve-selection = "item.type == 'selection'"
+            v-bind = "item"
         ></el-table-column>
         <!-- expend -->
         <el-table-column
-          v-bind="item"
-          :align="item.align ?? 'center'"
-          v-if="item.type == 'expand'"
-          v-slot="scope"
+            v-if = "item.type == 'expand'"
+            v-slot = "scope"
+            :align = "item.align ?? 'center'"
+            v-bind = "item"
         >
           <component
-            :is="item.render"
-            :row="scope.row"
-            v-if="item.render"
+              :is = "item.render"
+              v-if = "item.render"
+              :row = "scope.row"
           ></component>
-          <slot :name="item.type" :row="scope.row" v-else></slot>
+          <slot v-else :name = "item.type" :row = "scope.row"></slot>
         </el-table-column>
         <!-- other columns -->
-        <TableColumn :column="item" v-if="!item.type && item.prop">
+        <TableColumn v-if = "!item.type && item.prop" :column = "item">
           <template
-            v-for="slot in Object.keys($slots)"
-            :key="slot"
-            #[slot]="scope"
+              v-for = "slot in Object.keys($slots)"
+              :key = "slot"
+              #[slot] = "scope"
           >
-            <slot :name="slot" :row="scope.row"></slot>
+            <slot :name = "slot" :row = "scope.row"></slot>
           </template>
         </TableColumn>
       </template>
       <!-- 插入表格最后一行之后的插槽 -->
       <template #append>
-        <slot name="append"></slot>
+        <slot name = "append"></slot>
       </template>
       <!-- noData -->
       <template #empty>
-        <div class="table-empty">
-          <slot name="empty">
-            <img src="./assets/images/notData.png" alt="noData" />
+        <div class = "table-empty">
+          <slot name = "empty">
+            <img alt = "noData" src = "./assets/images/notData.png"/>
             <div>暂无数据</div>
           </slot>
         </div>
       </template>
     </el-table>
     <!-- 分页组件 -->
-    <slot name="pagination">
+    <slot name = "pagination">
       <Pagination
-        v-if="pagination"
-        :pageable="pageable"
-        :handleSizeChange="handleSizeChange"
-        :handleCurrentChange="handleCurrentChange"
+          v-if = "pagination"
+          :handleCurrentChange = "handleCurrentChange"
+          :handleSizeChange = "handleSizeChange"
+          :pageable = "pageable"
       />
     </slot>
   </div>
-  <ColSetting v-if="toolButton" ref="colRef" v-model:colSetting="colSetting" />
+  <ColSetting v-if = "toolButton" ref = "colRef" v-model:colSetting = "colSetting"/>
 </template>
 
-<script lang="ts" setup name="ProTable">
-import { ref, provide, watch } from 'vue'
-import { useFullscreen } from '@vueuse/core'
-import { useTable } from './hooks/useTable'
-import { useSelection } from './hooks/useSelection'
-import { ElTable, TableProps } from 'element-plus'
-import type { ColumnProps, BreakPoint } from './types'
+<script lang = "ts" name = "ProTable" setup>
+import {ref, provide, watch} from 'vue'
+import {useFullscreen} from '@vueuse/core'
+import {useTable} from './hooks/useTable'
+import {useSelection} from './hooks/useSelection'
+import {ElTable, TableProps} from 'element-plus'
+import type {ColumnProps, BreakPoint} from './types'
 import SearchForm from '@/components/SearchForm'
 import TableColumn from './components/TableColumn.vue'
 import Pagination from './components/Pagination.vue'
 import ColSetting from './components/ColSetting.vue'
+
 /**
  * @description: props类型定义
  * @param columns       - 列配置项
@@ -169,7 +170,13 @@ const props = withDefaults(defineProps<ProTableProps>(), {
   stripe: false,
   toolButton: true,
   rowKey: 'id',
-  searchCol: () => ({ xs: 1, sm: 2, md: 2, lg: 3, xl: 4 }),
+  searchCol: () => ({
+    xs: 1,
+    sm: 2,
+    md: 2,
+    lg: 3,
+    xl: 4
+  }),
   resetCallback: () => ({}),
 })
 // --------------------表格-----------------------
@@ -179,59 +186,67 @@ const tableCard = ref()
 const tableRef = ref<InstanceType<typeof ElTable>>()
 
 // 表格全屏
-const { isFullscreen, toggle } = useFullscreen(tableCard)
+const {
+        isFullscreen,
+        toggle
+      } = useFullscreen(tableCard)
 
 // 接收 columns 并设置为响应式
 const tableColumns = ref<ColumnProps[]>(props.columns)
 
 // 表格操作 Hooks
 const {
-  tableData,
-  pageable,
-  searchParam,
-  loading,
-  search,
-  reset: resetTable,
-  getTableList,
-  handleSizeChange,
-  handleCurrentChange,
-} = useTable(
-  props.requestApi,
-  props.initParam,
-  props.pagination,
-  props.dataCallback,
+        tableData,
+        pageable,
+        searchParam,
+        loading,
+        search,
+        reset: resetTable,
+        getTableList,
+        handleSizeChange,
+        handleCurrentChange,
+      } = useTable(
+    props.requestApi,
+    props.initParam,
+    props.pagination,
+    props.dataCallback,
 )
 const reset = () => {
   resetTable()
   props.resetCallback()
 }
 // 监听页面 initParam 改化，重新获取表格数据
-watch(() => props.initParam, getTableList, { deep: true })
+watch(() => props.initParam, getTableList, {deep: true})
 // 监听页面 columns中的某项enum是否改变，重新设置enum数据 目前只针对select的数据
 watch(
-  () => props.columns,
-  () => {
-    props.columns.forEach((item) => {
-      if (
-        item.search &&
-        item.search.el &&
-        (item.search.el === 'select' || item.search.el === 'tree-select') &&
-        item.enum
-      ) {
-        // 重设数据
-        setEnumMap(item)
-        // 重重对应搜索数据
-        item.prop && (searchParam.value[item.prop] = '')
-      }
-    })
-  },
-  { deep: true },
+    () => props.columns,
+    () => {
+      props.columns.forEach((item) => {
+        if (
+            item.search &&
+            item.search.el &&
+            (item.search.el === 'select' || item.search.el === 'tree-select') &&
+            item.enum
+        ) {
+          // 重设数据
+          setEnumMap(item)
+          // 重重对应搜索数据
+          item.prop && (searchParam.value[item.prop] = '')
+        }
+      })
+    },
+    {deep: true},
 )
 //* --------------------表格多选-----------------------
 
 // 表格多选 Hooks
-const { selectionChange, selectedList, selectedListIds, isSelected } =
-  useSelection(props.rowKey)
+const {
+        selectionChange,
+        selectedList,
+        selectedListIds,
+        isSelected
+      } =
+          useSelection(props.rowKey)
 
 // 清空选中数据列表
 const clearSelection = () => tableRef.value!.clearSelection()
@@ -248,14 +263,14 @@ const setEnumMap = async (col: ColumnProps) => {
   if (!col.enum) return
   if (typeof col.enum !== 'function')
     return enumMap.value.set(col.prop!, (col.enum as any)?.value || col.enum)
-  const { data } = await col.enum()
+  const {data} = await col.enum()
   enumMap.value.set(col.prop!, data)
 }
 
 // 扁平化 columns
 const flatColumnsFunc = (
-  columns: ColumnProps[],
-  flatArr: ColumnProps[] = [],
+    columns: ColumnProps[],
+    flatArr: ColumnProps[] = [],
 ) => {
   columns.forEach(async (col) => {
     if (col._children?.length) flatArr.push(...flatColumnsFunc(col._children))
@@ -279,29 +294,29 @@ const searchColumns = flatColumns.value.filter((item) => item.search?.el)
 const colRef = ref()
 const colSetting = tableColumns.value!.filter((item) => {
   return (
-    item.type !== 'selection' &&
-    item.type !== 'index' &&
-    item.type !== 'expand' &&
-    item.prop !== 'operation'
+      item.type !== 'selection' &&
+      item.type !== 'index' &&
+      item.type !== 'expand' &&
+      item.prop !== 'operation'
   )
 })
 const openColSetting = () => colRef.value.openColSetting()
 
 defineExpose({
-  element: tableRef,
-  tableData,
-  searchParam,
-  pageable,
-  enumMap,
-  isSelected,
-  selectedList,
-  selectedListIds,
-  reset,
-  getTableList,
-  clearSelection,
-})
+               element: tableRef,
+               tableData,
+               searchParam,
+               pageable,
+               enumMap,
+               isSelected,
+               selectedList,
+               selectedListIds,
+               reset,
+               getTableList,
+               clearSelection,
+             })
 </script>
 
-<style lang="scss" scoped>
-@import './style/index';
+<style lang = "scss" scoped>
+@import "./style/index";
 </style>

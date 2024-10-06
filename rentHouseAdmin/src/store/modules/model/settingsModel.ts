@@ -1,11 +1,11 @@
 /* AuthState */
 export interface SettingsState {
-  collapse: boolean
-  refresh: boolean
-  themeConfig: ThemeConfigProps
+    collapse: boolean
+    refresh: boolean
+    themeConfig: ThemeConfigProps
 }
 
 export interface ThemeConfigProps {
-  primary: string
-  isDark: boolean
+    primary: string
+    isDark: boolean
 }

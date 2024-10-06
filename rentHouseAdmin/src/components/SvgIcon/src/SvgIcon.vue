@@ -1,12 +1,12 @@
 <template>
   <i :class="['el-icon', spin && 'svg-icon-spin']" :style="getStyle">
     <svg aria-hidden="true">
-      <use :xlink:href="symbolId" :fill="color" />
+      <use :fill="color" :xlink:href="symbolId" />
     </svg>
   </i>
 </template>
 
-<script setup lang="ts" name="SvgIcon">
+<script lang="ts" name="SvgIcon" setup>
 import { computed } from 'vue'
 import type { CSSProperties } from 'vue'
 const props = defineProps({
@@ -43,24 +43,24 @@ const getStyle = computed((): CSSProperties => {
 })
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .el-icon {
   --color: inherit;
 
-  position: relative;
-  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 1em;
-  height: 1em;
-  font-size: inherit;
-  line-height: 1em;
   color: var(--color);
+  display: inline-flex;
   fill: currentColor;
+  font-size: inherit;
+  height: 1em;
+  justify-content: center;
+  line-height: 1em;
+  position: relative;
+  width: 1em;
 
   svg {
-    width: 1em;
     height: 1em;
+    width: 1em;
   }
 }
 

@@ -1,11 +1,11 @@
 <template>
-  <div :style="style" v-show="isShow">
+  <div v-show = "isShow" :style = "style">
     <slot></slot>
   </div>
 </template>
-<script setup lang="ts" name="GridItem">
-import { computed, inject, Ref, ref, useAttrs, watch } from 'vue'
-import type { BreakPoint, Responsive } from '@/components/Grid/src/types'
+<script lang = "ts" name = "GridItem" setup>
+import {computed, inject, Ref, ref, useAttrs, watch} from 'vue'
+import type {BreakPoint, Responsive}                 from '@/components/Grid/src/types'
 
 type Props = {
   offset?: number
@@ -36,15 +36,15 @@ const isShow = ref(true)
 const breakPoint = inject<Ref<BreakPoint>>('breakPoint', ref('xl'))
 const shouldHiddenIndex = inject<Ref<number>>('shouldHiddenIndex', ref(-1))
 watch(
-  () => [shouldHiddenIndex.value, breakPoint.value],
-  (n) => {
-    if (attrs.index) {
-      isShow.value = !(
-        n[0] !== -1 && parseInt(attrs.index as string) >= (n[0] as number)
-      )
-    }
-  },
-  { immediate: true },
+    () => [shouldHiddenIndex.value, breakPoint.value],
+    (n) => {
+      if (attrs.index) {
+        isShow.value = !(
+            n[0] !== -1 && parseInt(attrs.index as string) >= (n[0] as number)
+        )
+      }
+    },
+    {immediate: true},
 )
 
 const gap = inject('gap', 0)
@@ -57,17 +57,17 @@ const style = computed(() => {
       gridColumnStart: cols.value - span - offset + 1,
       gridColumnEnd: `span ${span + offset}`,
       marginLeft:
-        offset !== 0
+          offset !== 0
           ? `calc(((100% + ${gap}px) / ${span + offset}) * ${offset})`
           : 'unset',
     }
   } else {
     return {
       gridColumn: `span ${
-        span + offset > cols.value ? cols.value : span + offset
+          span + offset > cols.value ? cols.value : span + offset
       }/span ${span + offset > cols.value ? cols.value : span + offset}`,
       marginLeft:
-        offset !== 0
+          offset !== 0
           ? `calc(((100% + ${gap}px) / ${span + offset}) * ${offset})`
           : 'unset',
     }

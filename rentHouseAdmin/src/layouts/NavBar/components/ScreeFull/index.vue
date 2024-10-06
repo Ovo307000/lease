@@ -6,47 +6,51 @@
  * @LastEditTime: 2023-03-17 11:41:48
 -->
 <template>
-  <div class="m-screenful">
+  <div class = "m-screenful">
     <el-tooltip
-      effect="dark"
-      :content="!isFullscreen ? '全屏' : '收起'"
-      placement="bottom"
+        :content = "!isFullscreen ? '全屏' : '收起'"
+        effect = "dark"
+        placement = "bottom"
     >
-      <el-button circle @click="toggle">
+      <el-button circle @click = "toggle">
         <IconifyIcon
-          v-if="!isFullscreen"
-          icon="fluent:full-screen-maximize-24-filled"
-          height="16"
+            v-if = "!isFullscreen"
+            height = "16"
+            icon = "fluent:full-screen-maximize-24-filled"
         />
         <IconifyIcon
-          v-else
-          icon="fluent:full-screen-minimize-24-filled"
-          height="18"
+            v-else
+            height = "18"
+            icon = "fluent:full-screen-minimize-24-filled"
         />
       </el-button>
     </el-tooltip>
   </div>
 </template>
 
-<script lang="ts">
-import { useFullscreen } from '@vueuse/core'
-import { defineComponent } from 'vue'
+<script lang = "ts">
+import {useFullscreen} from '@vueuse/core'
+import {defineComponent} from 'vue'
 
 export default defineComponent({
-  setup() {
-    const { toggle, isFullscreen } = useFullscreen()
-    return {
-      toggle,
-      isFullscreen,
-    }
-  },
-})
+                                 setup() {
+                                   const {
+                                           toggle,
+                                           isFullscreen
+                                         } = useFullscreen()
+                                   return {
+                                     toggle,
+                                     isFullscreen,
+                                   }
+                                 },
+                               })
 </script>
 
-<style lang="scss" scoped>
-.m-screenful {
-  padding-right: 20px;
-  cursor: pointer;
-  transition: all 0.3s;
-}
+<style lang = "scss" scoped>
+.m-screenful
+{
+  cursor        : pointer;
+  padding-right : 20px;
+  transition    : all 0.3s;
+  }
 </style>

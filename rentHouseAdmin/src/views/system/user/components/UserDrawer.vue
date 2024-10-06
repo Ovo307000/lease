@@ -1,98 +1,98 @@
 <template>
   <el-drawer
-    v-model="drawerVisible"
-    :destroy-on-close="true"
-    size="450px"
-    :title="`${drawerProps.title}用户`"
+      v-model = "drawerVisible"
+      :destroy-on-close = "true"
+      :title = "`${drawerProps.title}用户`"
+      size = "450px"
   >
     <el-form
-      ref="ruleFormRef"
-      label-width="120px"
-      label-suffix=" :"
-      :rules="rules"
-      :model="drawerProps.rowData"
+        ref = "ruleFormRef"
+        :model = "drawerProps.rowData"
+        :rules = "rules"
+        label-suffix = " :"
+        label-width = "120px"
     >
-      <el-form-item label="用户名" prop="username">
+      <el-form-item label = "用户名" prop = "username">
         <el-input
-          :disabled="drawerProps.title === '分配角色'"
-          v-model.trim="drawerProps.rowData!.username"
-          placeholder="请填写用户姓名"
-          clearable
+            v-model.trim = "drawerProps.rowData!.username"
+            :disabled = "drawerProps.title === '分配角色'"
+            clearable
+            placeholder = "请填写用户姓名"
         ></el-input>
       </el-form-item>
       <el-form-item
-        :label="drawerProps.title === '编辑' ? '修改用户密码' : '用户密码'"
-        prop="password"
-        v-if="drawerProps.title === '新增' || drawerProps.title === '编辑'"
+          v-if = "drawerProps.title === '新增' || drawerProps.title === '编辑'"
+          :label = "drawerProps.title === '编辑' ? '修改用户密码' : '用户密码'"
+          prop = "password"
       >
         <el-input
-          v-model.trim="drawerProps.rowData!.password"
-          placeholder="请填写用户密码"
-          clearable
+            v-model.trim = "drawerProps.rowData!.password"
+            clearable
+            placeholder = "请填写用户密码"
         ></el-input>
       </el-form-item>
       <el-form-item
-        label="确认密码"
-        prop="confirmPassword"
-        v-if="drawerProps.title === '编辑'"
+          v-if = "drawerProps.title === '编辑'"
+          label = "确认密码"
+          prop = "confirmPassword"
       >
         <el-input
-          v-model.trim="drawerProps.rowData!.confirmPassword"
-          placeholder="请再次填写用户密码"
-          clearable
+            v-model.trim = "drawerProps.rowData!.confirmPassword"
+            clearable
+            placeholder = "请再次填写用户密码"
         ></el-input>
       </el-form-item>
       <el-form-item
-        label="用户昵称"
-        prop="name"
-        v-if="drawerProps.title !== '分配角色'"
+          v-if = "drawerProps.title !== '分配角色'"
+          label = "用户昵称"
+          prop = "name"
       >
         <el-input
-          v-model.trim="drawerProps.rowData!.name"
-          placeholder="请填写用户昵称"
-          clearable
+            v-model.trim = "drawerProps.rowData!.name"
+            clearable
+            placeholder = "请填写用户昵称"
         ></el-input>
       </el-form-item>
       <el-form-item
-        label="手机"
-        prop="phone"
-        v-if="drawerProps.title !== '分配角色'"
+          v-if = "drawerProps.title !== '分配角色'"
+          label = "手机"
+          prop = "phone"
       >
         <el-input
-          v-model.trim="drawerProps.rowData!.phone"
-          placeholder="请填写用户手机"
-          clearable
+            v-model.trim = "drawerProps.rowData!.phone"
+            clearable
+            placeholder = "请填写用户手机"
         ></el-input>
       </el-form-item>
       <el-form-item
-        label="岗位"
-        prop="postId"
-        v-if="drawerProps.title !== '分配角色'"
+          v-if = "drawerProps.title !== '分配角色'"
+          label = "岗位"
+          prop = "postId"
       >
         <el-select
-          v-model="drawerProps.rowData!.postId"
-          placeholder="请选择岗位"
-          clearable
-          style="width: 95%"
+            v-model = "drawerProps.rowData!.postId"
+            clearable
+            placeholder = "请选择岗位"
+            style = "width: 95%"
         >
           <el-option
-            v-for="item in drawerProps.postList"
-            :key="item.id"
-            :label="item.name"
-            :value="item.id"
+              v-for = "item in drawerProps.postList"
+              :key = "item.id"
+              :label = "item.name"
+              :value = "item.id"
           />
         </el-select>
       </el-form-item>
       <el-form-item
-        label="用户类型"
-        prop="type"
-        v-if="drawerProps.title !== '分配角色'"
+          v-if = "drawerProps.title !== '分配角色'"
+          label = "用户类型"
+          prop = "type"
       >
-        <el-radio-group v-model="drawerProps.rowData!.type">
+        <el-radio-group v-model = "drawerProps.rowData!.type">
           <el-radio
-            :label="item.value"
-            v-for="item in SystemUserTypeMap"
-            :key="item.value"
+              v-for = "item in SystemUserTypeMap"
+              :key = "item.value"
+              :label = "item.value"
           >
             {{ item.label }}
           </el-radio>
@@ -101,25 +101,25 @@
 
       <!--      分配角色-->
       <el-form-item
-        label="角色列表"
-        prop="rolesId"
-        v-if="drawerProps.title === '分配角色'"
+          v-if = "drawerProps.title === '分配角色'"
+          label = "角色列表"
+          prop = "rolesId"
       >
         <el-checkbox
-          v-model="state.checkAll"
-          :indeterminate="state.isIndeterminate"
-          @change="handleCheckAllChange"
+            v-model = "state.checkAll"
+            :indeterminate = "state.isIndeterminate"
+            @change = "handleCheckAllChange"
         >
           全选
         </el-checkbox>
         <el-checkbox-group
-          v-model="state.assginRoleList"
-          @change="handleCheckedChange"
+            v-model = "state.assginRoleList"
+            @change = "handleCheckedChange"
         >
           <el-checkbox
-            v-for="item in state.allRolesList"
-            :key="item.id"
-            :label="item.id"
+              v-for = "item in state.allRolesList"
+              :key = "item.id"
+              :label = "item.id"
           >
             {{ item.name }}
           </el-checkbox>
@@ -127,27 +127,23 @@
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="drawerVisible = false">取消</el-button>
-      <el-button type="primary" @click="handleSubmit" :loading="loading">
+      <el-button @click = "drawerVisible = false">取消</el-button>
+      <el-button :loading = "loading" type = "primary" @click = "handleSubmit">
         确定
       </el-button>
     </template>
   </el-drawer>
 </template>
 
-<script setup lang="ts">
-import { ref, reactive, watch } from 'vue'
-import {
-  CheckboxValueType,
-  ElMessage,
-  FormInstance,
-  FormRules,
-} from 'element-plus'
-import { DeptInterfacesRes, PostInterfacesRes, Role } from '@/api/system/types'
-import { SystemUserTypeMap } from '@/enums/constEnums'
-import { checkUserNameAvailable } from '@/api/system'
+<script lang = "ts" setup>
+import {reactive, ref, watch}                                   from 'vue'
+import {CheckboxValueType, ElMessage, FormInstance, FormRules,} from 'element-plus'
+import {DeptInterfacesRes, PostInterfacesRes, Role}             from '@/api/system/types'
+import {SystemUserTypeMap}                                      from '@/enums/constEnums'
+import {checkUserNameAvailable}                                 from '@/api/system'
 // 传入进来的最初的数据
 const origiinRowData = ref<any>({})
+
 interface DrawerProps {
   title: string
   rowData?: any
@@ -168,8 +164,8 @@ interface RolesState {
 // drawer框状态
 const drawerVisible = ref(false)
 const drawerProps = ref<DrawerProps>({
-  title: '',
-})
+                                       title: '',
+                                     })
 
 const loading = ref<boolean>(false)
 const checkUserName = async (rule: any, value: any, callback: any) => {
@@ -187,7 +183,7 @@ const checkUserName = async (rule: any, value: any, callback: any) => {
     return callback()
   }
   try {
-    const { data } = await checkUserNameAvailable(value)
+    const {data} = await checkUserNameAvailable(value)
     if (!data) {
       return callback(new Error('用户名已存在'))
     }
@@ -206,55 +202,77 @@ const checkConfirmPassword = async (rule: any, value: any, callback: any) => {
   }
 }
 const rules = reactive<FormRules>({
-  username: [
-    {
-      required: true,
-      validator: checkUserName as unknown as () => void,
-      trigger: 'blur',
-    },
-  ],
-  password: [
-    {
-      required: true,
-      message: '请填写用户密码',
-      trigger: 'blur',
-    },
-    { min: 6, message: '密码不能小于6位' },
-  ],
-  confirmPassword: [
-    {
-      validator: checkConfirmPassword as unknown as () => void,
-      trigger: 'blur',
-    },
-  ],
-  name: [{ required: true, message: '请填写用户昵称', trigger: 'blur' }],
-  phone: [{ required: true, message: '请填写用户手机', trigger: 'blur' }],
-  postId: [{ required: true, message: '请选择所属岗位', trigger: 'change' }],
-  type: [{ required: true, message: '请选择用户类型', trigger: 'change' }],
-})
+                                    username: [
+                                      {
+                                        required: true,
+                                        validator: checkUserName as unknown as () => void,
+                                        trigger: 'blur',
+                                      },
+                                    ],
+                                    password: [
+                                      {
+                                        required: true,
+                                        message: '请填写用户密码',
+                                        trigger: 'blur',
+                                      },
+                                      {
+                                        min: 6,
+                                        message: '密码不能小于6位'
+                                      },
+                                    ],
+                                    confirmPassword: [
+                                      {
+                                        validator: checkConfirmPassword as unknown as () => void,
+                                        trigger: 'blur',
+                                      },
+                                    ],
+                                    name: [{
+                                      required: true,
+                                      message: '请填写用户昵称',
+                                      trigger: 'blur'
+                                    }],
+                                    phone: [{
+                                      required: true,
+                                      message: '请填写用户手机',
+                                      trigger: 'blur'
+                                    }],
+                                    postId: [{
+                                      required: true,
+                                      message: '请选择所属岗位',
+                                      trigger: 'change'
+                                    }],
+                                    type: [{
+                                      required: true,
+                                      message: '请选择用户类型',
+                                      trigger: 'change'
+                                    }],
+                                  })
 watch(
-  drawerProps,
-  (newVal) => {
-    if (newVal) {
-      ;(rules as any).password[0].required = newVal.title === '新增'
-    }
-  },
-  { immediate: true, deep: true },
+    drawerProps,
+    (newVal) => {
+      if (newVal) {
+        ;(rules as any).password[0].required = newVal.title === '新增'
+      }
+    },
+    {
+      immediate: true,
+      deep: true
+    },
 )
 
 // 角色选择状态管理
 const state: RolesState = reactive({
-  allRolesList: [],
-  assginRoleList: [],
-  checkAll: false,
-  isIndeterminate: false,
-})
+                                     allRolesList: [],
+                                     assginRoleList: [],
+                                     checkAll: false,
+                                     isIndeterminate: false,
+                                   })
 
 // 全选
 const handleCheckAllChange = (val: CheckboxValueType) => {
   state.assginRoleList = val
-    ? state.allRolesList.map((item: Role) => item.id)
-    : []
+                         ? state.allRolesList.map((item: Role) => item.id)
+                         : []
   console.log(state.assginRoleList)
 
   state.isIndeterminate = false
@@ -265,7 +283,7 @@ const handleCheckedChange = (value: CheckboxValueType[]) => {
   const checkedCount = value.length
   state.checkAll = checkedCount === state.allRolesList.length
   state.isIndeterminate =
-    checkedCount > 0 && checkedCount < state.allRolesList.length
+      checkedCount > 0 && checkedCount < state.allRolesList.length
 }
 
 // 接收父组件传过来的参数
@@ -278,11 +296,11 @@ const acceptParams = (params: DrawerProps): void => {
     params.rowData.confirmPassword = ''
   }
   if (params.title === '分配角色') {
-    const { list } = params
+    const {list} = params
     state.allRolesList = list.data
     state.assginRoleList = list?.data
-      .filter((item: Role) => item.selected)
-      .map((item: Role) => item.id)
+                               .filter((item: Role) => item.selected)
+                               .map((item: Role) => item.id)
     state.isIndeterminate = state.assginRoleList.length > 0 ? true : false
   }
   drawerProps.value = params
@@ -305,7 +323,7 @@ const handleSubmit = () => {
       } else {
         await drawerProps.value.api!(drawerProps.value.rowData)
       }
-      ElMessage.success({ message: `${drawerProps.value.title}用户成功！` })
+      ElMessage.success({message: `${drawerProps.value.title}用户成功！`})
       drawerProps.value.getTableList!()
       drawerVisible.value = false
       loading.value = false
@@ -318,7 +336,7 @@ const handleSubmit = () => {
 }
 
 defineExpose({
-  acceptParams,
-})
+               acceptParams,
+             })
 </script>
-<style lang="scss" scoped></style>
+<style lang = "scss" scoped></style>

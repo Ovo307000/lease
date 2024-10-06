@@ -1,45 +1,46 @@
 <template>
   <el-dialog
-    v-model="dialogFormVisible"
-    :destroy-on-close="true"
-    :title="title"
-    style="max-width: 700px"
+      v-model = "dialogFormVisible"
+      :destroy-on-close = "true"
+      :title = "title"
+      style = "max-width: 700px"
   >
-    <el-form ref="formRef" :model="formData" :rules="rules" label-width="120px">
-      <el-form-item label="租期名称" prop="monthCount">
+    <el-form ref = "formRef" :model = "formData" :rules = "rules" label-width = "120px">
+      <el-form-item label = "租期名称" prop = "monthCount">
         <el-input
-          v-model.trim="formData.monthCount"
-          autocomplete="off"
-          placeholder="请输入"
+            v-model.trim = "formData.monthCount"
+            autocomplete = "off"
+            placeholder = "请输入"
         />
       </el-form-item>
-      <el-form-item label="租期单位" prop="unit">
+      <el-form-item label = "租期单位" prop = "unit">
         <el-input
-          v-model.trim="formData.unit"
-          autocomplete="off"
-          placeholder="请输入，例：月"
+            v-model.trim = "formData.unit"
+            autocomplete = "off"
+            placeholder = "请输入，例：月"
         />
       </el-form-item>
     </el-form>
     <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="close">取消</el-button>
-        <el-button type="primary" @click="submitHandle">确定</el-button>
+      <span class = "dialog-footer">
+        <el-button @click = "close">取消</el-button>
+        <el-button type = "primary" @click = "submitHandle">确定</el-button>
       </span>
     </template>
   </el-dialog>
 </template>
-<script setup lang="ts">
-import { computed, ref } from 'vue'
-import { TermInfoInterface } from '@/api/apartmentManagement/types'
-import { ElMessage, FormInstance, FormRules } from 'element-plus'
-import { saveOrUpdateTerm } from '@/api/apartmentManagement'
+<script lang = "ts" setup>
+import {computed, ref}                      from 'vue'
+import {TermInfoInterface}                  from '@/api/apartmentManagement/types'
+import {ElMessage, FormInstance, FormRules} from 'element-plus'
+import {saveOrUpdateTerm}                   from '@/api/apartmentManagement'
+
 const props = defineProps({
-  updateTerm: {
-    type: Function,
-    default: () => ({}),
-  },
-})
+                            updateTerm: {
+                              type: Function,
+                              default: () => ({}),
+                            },
+                          })
 const defaultFormData = {
   id: '',
   unit: '',
@@ -48,15 +49,23 @@ const defaultFormData = {
 const formRef = ref<FormInstance>()
 const dialogFormVisible = ref(false)
 const formData = ref<TermInfoInterface>({
-  ...defaultFormData,
-})
+                                          ...defaultFormData,
+                                        })
 // 表单验证规则
 const rules = ref<FormRules>({
-  unit: [{ required: true, message: '请输入租期名称', trigger: 'blur' }],
-  monthCount: [
-    { required: true, message: '请输入租期单位值', trigger: 'blur' },
-  ],
-})
+                               unit: [{
+                                 required: true,
+                                 message: '请输入租期名称',
+                                 trigger: 'blur'
+                               }],
+                               monthCount: [
+                                 {
+                                   required: true,
+                                   message: '请输入租期单位值',
+                                   trigger: 'blur'
+                                 },
+                               ],
+                             })
 const title = computed(() => {
   return (formData.value.id ? '修改' : '新增') + '租期'
 })
@@ -87,14 +96,15 @@ const submitHandle = () => {
 }
 // 对外暴露
 defineExpose({
-  show,
-  close,
-})
+               show,
+               close,
+             })
 </script>
 
-<style scoped lang="scss">
-.icon-option {
-  display: flex;
-  align-items: center;
-}
+<style lang = "scss" scoped>
+.icon-option
+{
+  align-items : center;
+  display     : flex;
+  }
 </style>

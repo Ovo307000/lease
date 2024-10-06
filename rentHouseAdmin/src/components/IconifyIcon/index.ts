@@ -1,2 +1,3 @@
 import IconifyIcon from './src/IconifyIcon'
-export { IconifyIcon }
+
+export {IconifyIcon}

@@ -1,24 +1,24 @@
 <template>
   <el-card>
     <ProTable
-      ref="proTable"
-      :dataCallback="dataCallback"
-      :columns="columns"
-      :requestApi="getAppointmentInfoList"
-      :initParam="initParam"
-      :stripe="true"
+        ref = "proTable"
+        :columns = "columns"
+        :dataCallback = "dataCallback"
+        :initParam = "initParam"
+        :requestApi = "getAppointmentInfoList"
+        :stripe = "true"
     >
       <!-- 表格操作 -->
-      <template #operation="scope">
+      <template #operation = "scope">
         <el-button
-          :type="
+            :disabled = "scope.row.appointmentStatus !== AppointmentStatus.WAITING"
+            :type = "
             scope.row.appointmentStatus === AppointmentStatus.WAITING
               ? 'primary'
               : 'info'
           "
-          icon="View"
-          :disabled="scope.row.appointmentStatus !== AppointmentStatus.WAITING"
-          @click="takeLookHandle(scope.row)"
+            icon = "View"
+            @click = "takeLookHandle(scope.row)"
         >
           带看
         </el-button>
@@ -27,86 +27,86 @@
   </el-card>
 </template>
 
-<script setup lang="tsx">
-import { onMounted, reactive, ref } from 'vue'
-import { ColumnProps } from '@/components/ProTable/src/types'
-import ProTable from '@/components/ProTable/src/ProTable.vue'
+<script lang = "tsx" setup>
+import {onMounted, reactive, ref}                                                     from 'vue'
 import {
-  getApartmentListByDistrictId,
-  getCityList,
-  getDistrictList,
-  getProvinceList,
-} from '@/api/apartmentManagement'
+  ColumnProps
+}                                                                                     from '@/components/ProTable/src/types'
+import ProTable
+                                                                                      from '@/components/ProTable/src/ProTable.vue'
+import {getApartmentListByDistrictId, getCityList, getDistrictList, getProvinceList,} from '@/api/apartmentManagement'
 import {
   ApartmentInterface,
   RegionInterface,
-} from '@/api/apartmentManagement/types'
-import {
-  AppointmentStatus,
-  getLabelByValue,
-  AppointmentStatusMap,
-} from '@/enums/constEnums'
-import { AppointmentInfoInterface } from '@/api/rentManagement/types'
-import {
-  getAppointmentInfoList,
-  updateAppointmentStatusById,
-} from '@/api/rentManagement'
-import { ElMessage } from 'element-plus'
+}                                                                                     from '@/api/apartmentManagement/types'
+import {AppointmentStatus, AppointmentStatusMap, getLabelByValue,}                    from '@/enums/constEnums'
+import {AppointmentInfoInterface}                                                     from '@/api/rentManagement/types'
+import {getAppointmentInfoList, updateAppointmentStatusById,}                         from '@/api/rentManagement'
+import {ElMessage}                                                                    from 'element-plus'
 
 // *获取 ProTable 元素，调用其获取刷新数据方法
 const proTable = ref<InstanceType<typeof ProTable>>()
 // 地区数据
 const areaInfo = reactive({
-  // 省份数据
-  provinceList: [] as RegionInterface[],
-  provinceId: '',
-  // 市区数据
-  cityList: [] as RegionInterface[],
-  cityId: '',
-  // 区县数据
-  districtList: [] as RegionInterface[],
-  districtId: '',
-  // 公寓数据
-  apartmentList: [] as ApartmentInterface[],
-  apartmentId: '',
-})
+                            // 省份数据
+                            provinceList: [] as RegionInterface[],
+                            provinceId: '',
+                            // 市区数据
+                            cityList: [] as RegionInterface[],
+                            cityId: '',
+                            // 区县数据
+                            districtList: [] as RegionInterface[],
+                            districtId: '',
+                            // 公寓数据
+                            apartmentList: [] as ApartmentInterface[],
+                            apartmentId: '',
+                          })
 // *表格配置项
 const columns: ColumnProps[] = [
   {
     prop: 'name',
     label: '姓名',
-    search: { el: 'input', props: { placeholder: '请输入姓名' } },
+    search: {
+      el: 'input',
+      props: {placeholder: '请输入姓名'}
+    },
   },
   {
     prop: 'phone',
     label: '手机',
-    search: { el: 'input', props: { placeholder: '请输入手机号' } },
+    search: {
+      el: 'input',
+      props: {placeholder: '请输入手机号'}
+    },
   },
   {
     prop: 'provinceId',
     label: '省份',
     isShow: false,
-    fieldNames: { label: 'name', value: 'id' },
+    fieldNames: {
+      label: 'name',
+      value: 'id'
+    },
     search: {
       el: 'select',
       render: () => {
         return (
-          <el-select
-            v-model={areaInfo.provinceId}
-            placeholder="请选择省份"
-            clearable
-            key="provinceId"
-            onChange={provinceChangeCallback}
-            onClear={provinceClearCallback}
-          >
-            {areaInfo.provinceList.map((item) => (
-              <el-option
-                key={item.id}
-                label={item.name}
-                value={item.id}
-              ></el-option>
-            ))}
-          </el-select>
+            <el-select
+                v-model = {areaInfo.provinceId}
+                placeholder = "请选择省份"
+                clearable
+                key = "provinceId"
+                onChange = {provinceChangeCallback}
+                onClear = {provinceClearCallback}
+            >
+              {areaInfo.provinceList.map((item) => (
+                  <el-option
+                      key = {item.id}
+                      label = {item.name}
+                      value = {item.id}
+                  ></el-option>
+              ))}
+            </el-select>
         )
       },
     },
@@ -115,28 +115,31 @@ const columns: ColumnProps[] = [
     prop: 'cityId',
     label: '城市',
     isShow: false,
-    fieldNames: { label: 'name', value: 'id' },
+    fieldNames: {
+      label: 'name',
+      value: 'id'
+    },
     search: {
       el: 'select',
       key: 'cityId',
       render: () => {
         return (
-          <el-select
-            v-model={areaInfo.cityId}
-            placeholder="请选择城市"
-            clearable
-            key="cityId"
-            onChange={cityChangeCallback}
-            onClear={cityClearCallback}
-          >
-            {areaInfo.cityList.map((item) => (
-              <el-option
-                key={item.id}
-                label={item.name}
-                value={item.id}
-              ></el-option>
-            ))}
-          </el-select>
+            <el-select
+                v-model = {areaInfo.cityId}
+                placeholder = "请选择城市"
+                clearable
+                key = "cityId"
+                onChange = {cityChangeCallback}
+                onClear = {cityClearCallback}
+            >
+              {areaInfo.cityList.map((item) => (
+                  <el-option
+                      key = {item.id}
+                      label = {item.name}
+                      value = {item.id}
+                  ></el-option>
+              ))}
+            </el-select>
         )
       },
     },
@@ -145,27 +148,30 @@ const columns: ColumnProps[] = [
     prop: 'districtId',
     label: '区域',
     isShow: false,
-    fieldNames: { label: 'name', value: 'id' },
+    fieldNames: {
+      label: 'name',
+      value: 'id'
+    },
     search: {
       el: 'select',
       key: 'districtId',
       render: () => {
         return (
-          <el-select
-            v-model={areaInfo.districtId}
-            placeholder="请选择区域"
-            clearable
-            onChange={districtChangeCallback}
-            onClear={districtClearCallback}
-          >
-            {areaInfo.districtList.map((item) => (
-              <el-option
-                key={item.id}
-                label={item.name}
-                value={item.id}
-              ></el-option>
-            ))}
-          </el-select>
+            <el-select
+                v-model = {areaInfo.districtId}
+                placeholder = "请选择区域"
+                clearable
+                onChange = {districtChangeCallback}
+                onClear = {districtClearCallback}
+            >
+              {areaInfo.districtList.map((item) => (
+                  <el-option
+                      key = {item.id}
+                      label = {item.name}
+                      value = {item.id}
+                  ></el-option>
+              ))}
+            </el-select>
         )
       },
     },
@@ -174,77 +180,103 @@ const columns: ColumnProps[] = [
     prop: 'apartmentId',
     label: '公寓',
     isShow: false,
-    fieldNames: { label: 'name', value: 'id' },
+    fieldNames: {
+      label: 'name',
+      value: 'id'
+    },
     search: {
       el: 'select',
       key: 'apartmentId',
       render: () => {
         return (
-          <el-select
-            v-model={areaInfo.apartmentId}
-            placeholder="请选择公寓"
-            clearable
-            onChange={apartmentChangeCallback}
-            onClear={apartmentClearCallback}
-          >
-            {areaInfo.apartmentList.map((item) => (
-              <el-option
-                key={item.id}
-                label={item.name}
-                value={item.id}
-              ></el-option>
-            ))}
-          </el-select>
+            <el-select
+                v-model = {areaInfo.apartmentId}
+                placeholder = "请选择公寓"
+                clearable
+                onChange = {apartmentChangeCallback}
+                onClear = {apartmentClearCallback}
+            >
+              {areaInfo.apartmentList.map((item) => (
+                  <el-option
+                      key = {item.id}
+                      label = {item.name}
+                      value = {item.id}
+                  ></el-option>
+              ))}
+            </el-select>
         )
       },
     },
   },
-  { prop: 'apartmentInfo.provinceName', label: '所处省份' },
-  { prop: 'apartmentInfo.cityName', label: '所处城市' },
-  { prop: 'apartmentInfo.districtName', label: '所处区域' },
-  { prop: 'apartmentInfo.name', label: '所处公寓' },
-  { prop: 'appointmentTime', label: '预约时间' },
-  { prop: 'additionalInfo', label: '备注信息' },
+  {
+    prop: 'apartmentInfo.provinceName',
+    label: '所处省份'
+  },
+  {
+    prop: 'apartmentInfo.cityName',
+    label: '所处城市'
+  },
+  {
+    prop: 'apartmentInfo.districtName',
+    label: '所处区域'
+  },
+  {
+    prop: 'apartmentInfo.name',
+    label: '所处公寓'
+  },
+  {
+    prop: 'appointmentTime',
+    label: '预约时间'
+  },
+  {
+    prop: 'additionalInfo',
+    label: '备注信息'
+  },
   {
     prop: 'appointmentStatus',
     label: '预约状态',
-    render: ({ row }: { row: AppointmentInfoInterface }) => {
+    render: ({row}: { row: AppointmentInfoInterface }) => {
       switch (row.appointmentStatus) {
         case AppointmentStatus.WAITING:
           return (
-            <el-tag type="success">
-              {getLabelByValue(AppointmentStatusMap, row.appointmentStatus)}
-            </el-tag>
+              <el-tag type = "success">
+                {getLabelByValue(AppointmentStatusMap, row.appointmentStatus)}
+              </el-tag>
           )
         case AppointmentStatus.CANCELLED:
           return (
-            <el-tag type="warning">
-              {getLabelByValue(AppointmentStatusMap, row.appointmentStatus)}
-            </el-tag>
+              <el-tag type = "warning">
+                {getLabelByValue(AppointmentStatusMap, row.appointmentStatus)}
+              </el-tag>
           )
         case AppointmentStatus.VIEWED:
           return (
-            <el-tag type="info">
-              {getLabelByValue(AppointmentStatusMap, row.appointmentStatus)}
-            </el-tag>
+              <el-tag type = "info">
+                {getLabelByValue(AppointmentStatusMap, row.appointmentStatus)}
+              </el-tag>
           )
         case AppointmentStatus.EXPIRED:
           return (
-            <el-tag type="danger">
-              {getLabelByValue(AppointmentStatusMap, row.appointmentStatus)}
-            </el-tag>
+              <el-tag type = "danger">
+                {getLabelByValue(AppointmentStatusMap, row.appointmentStatus)}
+              </el-tag>
           )
         default:
           return (
-            <el-tag type="info">
-              {getLabelByValue(AppointmentStatusMap, row.appointmentStatus) ||
-                '—'}
-            </el-tag>
+              <el-tag type = "info">
+                {getLabelByValue(AppointmentStatusMap, row.appointmentStatus) ||
+                 '—'}
+              </el-tag>
           )
       }
     },
   },
-  { prop: 'operation', label: '操作', fixed: 'right', width: 150 },
+  {
+    prop: 'operation',
+    label: '操作',
+    fixed: 'right',
+    width: 150
+  },
 ]
 
 // *查询参数
@@ -254,43 +286,47 @@ const initParam = reactive({})
 // 获取省份
 async function getProvinceListHandle() {
   try {
-    const { data } = await getProvinceList()
+    const {data} = await getProvinceList()
     areaInfo.provinceList = data
     proTable.value?.enumMap.set('provinceId', areaInfo.provinceList)
   } catch (error) {
     console.log(error)
   }
 }
+
 // 获取城市
 async function getCityListHandle(provinceId: number) {
   try {
-    const { data } = await getCityList(provinceId)
+    const {data} = await getCityList(provinceId)
     areaInfo.cityList = data
     proTable.value?.enumMap.set('cityId', areaInfo.cityList)
   } catch (error) {
     console.log(error)
   }
 }
+
 // 获取区域
 async function getDistrictListHandle(cityId: number) {
   try {
-    const { data } = await getDistrictList(cityId)
+    const {data} = await getDistrictList(cityId)
     areaInfo.districtList = data
     proTable.value?.enumMap.set('districtId', areaInfo.districtList)
   } catch (error) {
     console.log(error)
   }
 }
+
 // 获取公寓
 async function getApartmentListHandle(districtId: number) {
   try {
-    const { data } = await getApartmentListByDistrictId(districtId)
+    const {data} = await getApartmentListByDistrictId(districtId)
     areaInfo.apartmentList = data
     proTable.value?.enumMap.set('apartmentId', areaInfo.apartmentList)
   } catch (error) {
     console.log(error)
   }
 }
+
 // 重置市数据
 function resetCity() {
   areaInfo.cityId = ''
@@ -298,6 +334,7 @@ function resetCity() {
   proTable.value?.enumMap.set('cityId', [])
   proTable.value!.searchParam.cityId = ''
 }
+
 // 重置区数据
 function resetDistrict() {
   areaInfo.districtId = ''
@@ -305,6 +342,7 @@ function resetDistrict() {
   proTable.value?.enumMap.set('districtId', [])
   proTable.value!.searchParam.districtId = ''
 }
+
 // 重置公寓数据
 function resetApartment() {
   areaInfo.apartmentId = ''
@@ -312,6 +350,7 @@ function resetApartment() {
   proTable.value?.enumMap.set('apartmentId', [])
   proTable.value!.searchParam.apartmentId = ''
 }
+
 // 省份改变回调
 const provinceChangeCallback = async () => {
   let provinceId = proTable.value!.searchParam.provinceId

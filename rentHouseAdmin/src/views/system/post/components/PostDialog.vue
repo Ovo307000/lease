@@ -1,53 +1,53 @@
 <template>
   <el-dialog
-    v-model="dialogVisible"
-    :title="title"
-    :destroy-on-close="true"
-    width="500px"
+      v-model = "dialogVisible"
+      :destroy-on-close = "true"
+      :title = "title"
+      width = "500px"
   >
     <el-form
-      ref="ruleFormRef"
-      label-width="100px"
-      label-suffix=" :"
-      :rules="rules"
-      :model="postData"
+        ref = "ruleFormRef"
+        :model = "postData"
+        :rules = "rules"
+        label-suffix = " :"
+        label-width = "100px"
     >
-      <el-form-item label="岗位名称" prop="name">
+      <el-form-item label = "岗位名称" prop = "name">
         <el-input
-          v-model.trim="postData.name"
-          placeholder="请填写岗位名称"
-          clearable
+            v-model.trim = "postData.name"
+            clearable
+            placeholder = "请填写岗位名称"
         ></el-input>
       </el-form-item>
-      <el-form-item label="岗位编码" prop="postCode">
+      <el-form-item label = "岗位编码" prop = "postCode">
         <el-input
-          v-model.trim="postData.postCode"
-          placeholder="请填写岗位编码"
-          clearable
+            v-model.trim = "postData.postCode"
+            clearable
+            placeholder = "请填写岗位编码"
         ></el-input>
       </el-form-item>
-      <el-form-item label="岗位描述" prop="description">
+      <el-form-item label = "岗位描述" prop = "description">
         <el-input
-          v-model.trim="postData.description"
-          placeholder="请填写岗位描述"
-          clearable
-          type="textarea"
+            v-model.trim = "postData.description"
+            clearable
+            placeholder = "请填写岗位描述"
+            type = "textarea"
         ></el-input>
       </el-form-item>
 
-      <el-form-item label="状态" prop="status">
-        <el-radio-group v-model="postData.status">
-          <el-radio :label="1">正常</el-radio>
-          <el-radio :label="0">停用</el-radio>
+      <el-form-item label = "状态" prop = "status">
+        <el-radio-group v-model = "postData.status">
+          <el-radio :label = "1">正常</el-radio>
+          <el-radio :label = "0">停用</el-radio>
         </el-radio-group>
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="dialogVisible = false">取消</el-button>
+      <el-button @click = "dialogVisible = false">取消</el-button>
       <el-button
-        type="primary"
-        @click="handleSubmit(ruleFormRef)"
-        :loading="loading"
+          :loading = "loading"
+          type = "primary"
+          @click = "handleSubmit(ruleFormRef)"
       >
         确定
       </el-button>
@@ -55,10 +55,11 @@
   </el-dialog>
 </template>
 
-<script setup lang="ts">
-import { reactive, ref } from 'vue'
-import { ElMessage, FormInstance } from 'element-plus'
-import { PostInterfacesRes } from '@/api/system/types'
+<script lang = "ts" setup>
+import {reactive, ref}           from 'vue'
+import {ElMessage, FormInstance} from 'element-plus'
+import {PostInterfacesRes}       from '@/api/system/types'
+
 interface DialogProps {
   rowData?: PostInterfacesRes
   api?: (params: any) => Promise<any>
@@ -67,10 +68,19 @@ interface DialogProps {
 
 let postData = ref<PostInterfacesRes>({} as PostInterfacesRes)
 const rules = reactive({
-  name: [{ required: true, message: '请填写岗位名称' }],
-  postCode: [{ required: true, message: '请填写岗位编码' }],
-  description: [{ required: true, message: '请填写岗位描述' }],
-})
+                         name: [{
+                           required: true,
+                           message: '请填写岗位名称'
+                         }],
+                         postCode: [{
+                           required: true,
+                           message: '请填写岗位编码'
+                         }],
+                         description: [{
+                           required: true,
+                           message: '请填写岗位描述'
+                         }],
+                       })
 
 const dialogVisible = ref(false)
 // dialog标题
@@ -100,7 +110,7 @@ const handleSubmit = (formEl: FormInstance | undefined) => {
     try {
       loading.value = true
       await dialogProps.value?.api!(postData.value)
-      ElMessage.success({ message: `${title.value}成功！` })
+      ElMessage.success({message: `${title.value}成功！`})
       dialogProps.value?.getTableList!()
       dialogVisible.value = false
       loading.value = false
@@ -119,8 +129,8 @@ const resetForm = (formEl: FormInstance | undefined) => {
 }
 // 暴露给父组件的方法
 defineExpose({
-  acceptParams,
-})
+               acceptParams,
+             })
 </script>
 
-<style lang="scss" scoped></style>
+<style lang = "scss" scoped></style>

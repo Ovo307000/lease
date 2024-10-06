@@ -9,12 +9,13 @@ declare type Nullable<T> = T | null
 declare type NonNullable<T> = T extends null | undefined ? never : T
 declare type Recordable<T = any> = Record<string, T>
 declare module 'path-browserify'
+
 // * Vite
 declare interface ViteEnv {
-  NODE_ENV: string
-  VITE_APP_PORT: number
-  VITE_APP_TITLE: string
-  VITE_APP_BASE_API: string
+    NODE_ENV: string
+    VITE_APP_PORT: number
+    VITE_APP_TITLE: string
+    VITE_APP_BASE_API: string
 }
 
 /**
@@ -37,22 +38,23 @@ declare interface ViteEnv {
 
 // * Menu
 declare namespace Menu {
-  interface MenuOptions {
-    path: string
-    name: string
-    component?: string | (() => Promise<any>)
-    redirect?: string
-    meta: MetaProps
-    children?: MenuOptions[]
-  }
-  interface MetaProps {
-    icon?: string
-    name?: string
-    activeMenu?: string
-    isLink?: string
-    isHide?: boolean
-    isFull?: boolean
-    isAffix?: boolean
-    isKeepAlive?: boolean
-  }
+    interface MenuOptions {
+        path: string
+        name: string
+        component?: string | (() => Promise<any>)
+        redirect?: string
+        meta: MetaProps
+        children?: MenuOptions[]
+    }
+
+    interface MetaProps {
+        icon?: string
+        name?: string
+        activeMenu?: string
+        isLink?: string
+        isHide?: boolean
+        isFull?: boolean
+        isAffix?: boolean
+        isKeepAlive?: boolean
+    }
 }

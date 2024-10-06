@@ -12,12 +12,12 @@
  * @return string
  */
 export function localGet(key: string) {
-  const value = window.localStorage.getItem(key)
-  try {
-    return JSON.parse(window.localStorage.getItem(key) as string)
-  } catch (error) {
-    return value
-  }
+    const value = window.localStorage.getItem(key)
+    try {
+        return JSON.parse(window.localStorage.getItem(key) as string)
+    } catch (error) {
+        return value
+    }
 }
 
 /**
@@ -27,7 +27,7 @@ export function localGet(key: string) {
  * @return void
  */
 export function localSet(key: string, value: any) {
-  window.localStorage.setItem(key, JSON.stringify(value))
+    window.localStorage.setItem(key, JSON.stringify(value))
 }
 
 /**
@@ -36,7 +36,7 @@ export function localSet(key: string, value: any) {
  * @return void
  */
 export function localRemove(key: string) {
-  window.localStorage.removeItem(key)
+    window.localStorage.removeItem(key)
 }
 
 /**
@@ -44,5 +44,5 @@ export function localRemove(key: string) {
  * @return void
  */
 export function localClear() {
-  window.localStorage.clear()
+    window.localStorage.clear()
 }
