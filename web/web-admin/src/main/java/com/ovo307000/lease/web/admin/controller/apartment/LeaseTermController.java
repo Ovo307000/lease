@@ -1,6 +1,5 @@
 package com.ovo307000.lease.web.admin.controller.apartment;
 
-
 import com.ovo307000.lease.common.result.Result;
 import com.ovo307000.lease.common.result.ResultCodeEnum;
 import com.ovo307000.lease.module.entity.LeaseTerm;
@@ -14,6 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 租期管理控制器
+ */
 @Slf4j
 @RestController
 @Tag(name = "租期管理")
@@ -23,6 +25,11 @@ public class LeaseTermController
 {
     private final LeaseTermServiceImpl leaseTermServiceImpl;
 
+    /**
+     * 查询全部租期列表
+     *
+     * @return 全部未逻辑删除的租期列表
+     */
     @GetMapping("list")
     @Operation(summary = "查询全部租期列表")
     public Result<List<LeaseTerm>> listLeaseTerm()
@@ -34,6 +41,12 @@ public class LeaseTermController
         return list.isEmpty() ? Result.fail(ResultCodeEnum.NO_FOUND) : Result.ok(list);
     }
 
+    /**
+     * 保存或更新租期信息
+     *
+     * @param leaseTerm 租期实体
+     * @return 保存或更新结果
+     */
     @PostMapping("saveOrUpdate")
     @Operation(summary = "保存或更新租期信息")
     public Result<Void> saveOrUpdate(@RequestBody final LeaseTerm leaseTerm)
@@ -55,6 +68,12 @@ public class LeaseTermController
         return saveOrUpdate ? Result.ok() : Result.fail(ResultCodeEnum.NO_FOUND);
     }
 
+    /**
+     * 根据ID删除租期
+     *
+     * @param id 租期ID
+     * @return 删除结果
+     */
     @DeleteMapping("deleteById")
     @Operation(summary = "根据ID删除租期")
     public Result<Void> deleteLeaseTermById(@RequestParam final Long id)
