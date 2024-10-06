@@ -2,6 +2,7 @@ package com.ovo307000.lease.web.admin.controller.apartment;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.ovo307000.lease.common.result.Result;
+import com.ovo307000.lease.common.result.ResultCodeEnum;
 import com.ovo307000.lease.module.entity.LabelInfo;
 import com.ovo307000.lease.module.enums.ItemType;
 import com.ovo307000.lease.web.admin.service.impl.LabelInfoServiceImpl;
@@ -68,8 +69,11 @@ public class LabelController
     @PostMapping("saveOrUpdate")
     public Result<Void> saveOrUpdateLabel(@RequestBody final LabelInfo labelInfo)
     {
+        log.info("新增或修改标签信息: {}", labelInfo);
 
-        return Result.ok();
+        final boolean saved = this.labelInfoServiceImpl.saveOrUpdate(labelInfo);
+
+        return saved ? Result.ok() : Result.fail(ResultCodeEnum.NO_FOUND);
     }
 
     /**
@@ -85,6 +89,10 @@ public class LabelController
     @DeleteMapping("deleteById")
     public Result<Void> deleteLabelById(@RequestParam final Long id)
     {
-        return Result.ok();
+        log.info("根据ID删除标签信息: {}", id);
+
+        final boolean removed = this.labelInfoServiceImpl.removeById(id);
+
+        return removed ? Result.ok() : Result.fail(ResultCodeEnum.NO_FOUND);
     }
 }
