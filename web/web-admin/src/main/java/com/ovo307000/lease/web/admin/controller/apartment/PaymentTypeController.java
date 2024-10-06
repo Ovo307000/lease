@@ -1,6 +1,5 @@
 package com.ovo307000.lease.web.admin.controller.apartment;
 
-
 import com.ovo307000.lease.common.result.Result;
 import com.ovo307000.lease.common.result.ResultCodeEnum;
 import com.ovo307000.lease.module.entity.PaymentType;
@@ -14,6 +13,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 支付方式控制器
+ * 负责处理与支付方式相关的HTTP请求
+ */
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -21,8 +24,16 @@ import java.util.List;
 @RequestMapping("/admin/payment")
 public class PaymentTypeController
 {
+    /**
+     * 注入的支付方式服务实现类
+     */
     private final PaymentTypeServiceImpl paymentTypeServiceImpl;
 
+    /**
+     * 查询全部支付方式列表
+     *
+     * @return 全部未逻辑删除的支付方式列表
+     */
     @Operation(summary = "查询全部支付方式列表")
     @GetMapping("list")
     public Result<List<PaymentType>> listPaymentType()
@@ -34,6 +45,12 @@ public class PaymentTypeController
         return paymentTypes.isEmpty() ? Result.fail(ResultCodeEnum.NO_FOUND) : Result.ok(paymentTypes);
     }
 
+    /**
+     * 保存或更新支付方式
+     *
+     * @param paymentType 支付方式实体
+     * @return 保存或更新结果
+     */
     @Operation(summary = "保存或更新支付方式")
     @PostMapping("saveOrUpdate")
     public Result<Void> saveOrUpdatePaymentType(@RequestBody final PaymentType paymentType)
@@ -51,9 +68,17 @@ public class PaymentTypeController
             paymentType.setUpdateTime(new Date());
         }
 
-        return this.paymentTypeServiceImpl.saveOrUpdate(paymentType) ? Result.ok() : Result.fail(ResultCodeEnum.NO_FOUND);
+        return this.paymentTypeServiceImpl.saveOrUpdate(paymentType) ?
+               Result.ok() :
+               Result.fail(ResultCodeEnum.NO_FOUND);
     }
 
+    /**
+     * 根据ID删除支付方式
+     *
+     * @param id 支付方式ID
+     * @return 删除结果
+     */
     @Operation(summary = "根据ID删除支付方式")
     @DeleteMapping("deleteById")
     public Result<Void> deletePaymentById(@RequestParam final Long id)
