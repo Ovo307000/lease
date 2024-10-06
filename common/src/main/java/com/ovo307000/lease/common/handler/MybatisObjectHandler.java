@@ -2,6 +2,7 @@ package com.ovo307000.lease.common.handler;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import org.apache.ibatis.reflection.MetaObject;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
@@ -9,6 +10,7 @@ import java.util.Date;
  * 自定义MybatisPlus元对象处理器
  * 用于自动填充实体类中的字段，例如创建时间和更新时间
  */
+@Component
 public class MybatisObjectHandler implements MetaObjectHandler
 {
 

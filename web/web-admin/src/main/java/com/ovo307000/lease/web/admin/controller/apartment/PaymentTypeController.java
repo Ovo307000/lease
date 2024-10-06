@@ -23,7 +23,6 @@ import java.util.List;
 @RequestMapping("/admin/payment")
 public class PaymentTypeController
 {
-    private static final byte                   NOT_DELETED = 0;
     private final        PaymentTypeServiceImpl paymentTypeServiceImpl;
 
     @Operation(summary = "查询全部支付方式列表")
