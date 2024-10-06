@@ -10,12 +10,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @RequiredArgsConstructor
 public class WebMvcConfiguration implements WebMvcConfigurer
 {
-
     private final StringToBaseEnumConverterFactory stringToBaseEnumConverterFactory;
 
     @Override
     public void addFormatters(final FormatterRegistry registry)
     {
-        registry.addConverter(this.stringToBaseEnumConverterFactory);
+        registry.addConverterFactory(this.stringToBaseEnumConverterFactory);
     }
 }
