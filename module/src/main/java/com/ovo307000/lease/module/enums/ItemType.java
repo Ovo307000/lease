@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum ItemType
+public enum ItemType implements BaseEnum
 {
 
     APARTMENT(1, "公寓"),

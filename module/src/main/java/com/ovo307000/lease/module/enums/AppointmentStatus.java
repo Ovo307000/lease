@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum AppointmentStatus
+public enum AppointmentStatus implements BaseEnum
 {
     WAITING(1, "待看房"),
 

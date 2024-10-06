@@ -8,7 +8,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum LeaseStatus
+public enum LeaseStatus implements BaseEnum
 {
 
     SIGNING(1, "签约待确认"),

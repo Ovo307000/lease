@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum ReleaseStatus
+public enum ReleaseStatus implements BaseEnum
 {
     RELEASED(1, "已发布"),
     NOT_RELEASED(0, "未发布");

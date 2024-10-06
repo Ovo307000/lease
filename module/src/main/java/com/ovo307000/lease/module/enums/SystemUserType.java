@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum SystemUserType
+public enum SystemUserType implements BaseEnum
 {
     ADMIN(0, "管理员"),
     COMMON(1, "普通用户");

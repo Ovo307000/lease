@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum BaseStatus
+public enum BaseStatus implements BaseEnum
 {
     ENABLE(1, "正常"),
 

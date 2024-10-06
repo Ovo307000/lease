@@ -8,7 +8,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum LeaseSourceType
+public enum LeaseSourceType implements BaseEnum
 {
 
     NEW(1, "新签"),
