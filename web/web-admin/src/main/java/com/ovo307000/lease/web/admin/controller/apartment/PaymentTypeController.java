@@ -43,15 +43,6 @@ public class PaymentTypeController
     {
         log.info("保存或更新支付方式: {}", paymentType);
 
-        final Date now = Timestamp.valueOf(LocalDateTime.now(ZoneId.systemDefault()));
-
-        paymentType.setUpdateTime(now);
-
-        if (paymentType.getId() == null)
-        {
-            paymentType.setCreateTime(now);
-        }
-
         return this.paymentTypeServiceImpl.saveOrUpdate(paymentType) ? Result.ok() : Result.fail();
     }
 

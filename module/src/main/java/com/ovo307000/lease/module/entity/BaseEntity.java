@@ -1,9 +1,6 @@
 package com.ovo307000.lease.module.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -20,7 +17,7 @@ public class BaseEntity implements Serializable
 
     @JsonIgnore
     @Schema(description = "创建时间")
-    @TableField(value = "create_time")
+    @TableField(value = "create_time", fill = FieldFill.INSERT)
     private Date createTime;
 
     @JsonIgnore
@@ -29,7 +26,7 @@ public class BaseEntity implements Serializable
     private Date updateTime;
 
     @TableLogic
-    @TableField("is_deleted")
     @Schema(description = "逻辑删除")
+    @TableField(value = "is_deleted", fill = FieldFill.UPDATE)
     private Byte isDeleted;
 }
