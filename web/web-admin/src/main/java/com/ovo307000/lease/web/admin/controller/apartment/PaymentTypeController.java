@@ -3,53 +3,62 @@ package com.ovo307000.lease.web.admin.controller.apartment;
 
 import com.ovo307000.lease.common.result.Result;
 import com.ovo307000.lease.module.entity.PaymentType;
+import com.ovo307000.lease.web.admin.service.impl.PaymentTypeServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
-
+@Slf4j
+@RestController
+@RequiredArgsConstructor
 @Tag(name = "支付方式管理")
 @RequestMapping("/admin/payment")
-@RestController
 public class PaymentTypeController
 {
+    private static final byte                   NOT_DELETED = 0;
+    private final        PaymentTypeServiceImpl paymentTypeServiceImpl;
 
     @Operation(summary = "查询全部支付方式列表")
     @GetMapping("list")
     public Result<List<PaymentType>> listPaymentType()
     {
-        return Result.ok();
+        log.info("查询全部未逻辑删除的支付方式列表");
+
+        final List<PaymentType> paymentTypes = this.paymentTypeServiceImpl.listNotDeleted();
+
+        return paymentTypes.isEmpty() ? Result.ok() : Result.ok(paymentTypes);
     }
 
     @Operation(summary = "保存或更新支付方式")
     @PostMapping("saveOrUpdate")
     public Result<Void> saveOrUpdatePaymentType(@RequestBody final PaymentType paymentType)
     {
-        return Result.ok();
+        log.info("保存或更新支付方式: {}", paymentType);
+
+        final Date now = Timestamp.valueOf(LocalDateTime.now(ZoneId.systemDefault()));
+
+        paymentType.setUpdateTime(now);
+
+        if (paymentType.getId() == null)
+        {
+            paymentType.setCreateTime(now);
+        }
+
+        return this.paymentTypeServiceImpl.saveOrUpdate(paymentType) ? Result.ok() : Result.fail();
     }
 
     @Operation(summary = "根据ID删除支付方式")
     @DeleteMapping("deleteById")
     public Result<Void> deletePaymentById(@RequestParam final Long id)
     {
-        return Result.ok();
+        return this.paymentTypeServiceImpl.removeById(id) ? Result.ok() : Result.fail();
     }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
