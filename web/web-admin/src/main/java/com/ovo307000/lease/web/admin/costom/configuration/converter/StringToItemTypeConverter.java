@@ -13,7 +13,7 @@ import java.util.Arrays;
  * <p>
  * 这个类实现了Spring的Converter接口，用于将字符串转换为ItemType枚举类型。
  */
-@Configuration
+@Component
 public class StringToItemTypeConverter implements Converter<String, ItemType>
 {
 
