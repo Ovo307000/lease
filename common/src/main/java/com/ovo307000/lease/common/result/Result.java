@@ -54,4 +54,9 @@ public class Result<T>
     {
         return build(null, ResultCodeEnum.FAIL);
     }
+
+    public static <T> Result<T> fail(final ResultCodeEnum resultCodeEnum)
+    {
+        return build(null, resultCodeEnum);
+    }
 }

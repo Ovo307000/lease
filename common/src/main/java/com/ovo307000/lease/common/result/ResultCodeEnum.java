@@ -19,6 +19,7 @@ public enum ResultCodeEnum
     ILLEGAL_REQUEST(205, "非法请求，请检查您的操作"),
     REPEAT_SUBMIT(206, "请勿重复提交"),
     DELETE_ERROR(207, "删除失败，请先删除相关联的数据"),
+    NO_FOUND(208, "未找到相关数据，请检查后重试"),
 
     ADMIN_ACCOUNT_EXIST_ERROR(301, "该账号已被注册，请更换账号"),
     ADMIN_CAPTCHA_CODE_ERROR(302, "验证码不正确，请重新输入"),
