@@ -2,6 +2,9 @@ package com.ovo307000.lease.web.admin.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ovo307000.lease.module.entity.AttrKey;
+import com.ovo307000.lease.web.admin.vo.attr.AttrKeyVo;
+
+import java.util.List;
 
 /**
  * @author liubo
@@ -11,7 +14,7 @@ import com.ovo307000.lease.module.entity.AttrKey;
  */
 public interface AttrKeyMapper extends BaseMapper<AttrKey>
 {
-
+    List<AttrKeyVo> listAttrInformation();
 }
 
 

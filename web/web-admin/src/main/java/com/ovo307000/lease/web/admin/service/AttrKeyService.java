@@ -2,6 +2,9 @@ package com.ovo307000.lease.web.admin.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ovo307000.lease.module.entity.AttrKey;
+import com.ovo307000.lease.web.admin.vo.attr.AttrKeyVo;
+
+import java.util.List;
 
 /**
  * @author liubo
@@ -10,5 +13,5 @@ import com.ovo307000.lease.module.entity.AttrKey;
  */
 public interface AttrKeyService extends IService<AttrKey>
 {
-
+    List<AttrKeyVo> listAttrKeyVo();
 }
