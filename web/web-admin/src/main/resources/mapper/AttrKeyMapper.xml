@@ -22,8 +22,7 @@
                attrValue.attr_key_id as attrKeyId
         from attr_key as attrKey
                  left join attr_value as attrValue
-                           on attrKey.id = attrValue.attr_key_id
+                           on attrKey.id = attrValue.attr_key_id and attrValue.is_deleted = 0
         where attrKey.is_deleted = 0
-          and attrValue.is_deleted = 0
     </select>
 </mapper>
