@@ -57,6 +57,6 @@ public class FacilityController
 
         final boolean removed = this.facilityInfoServiceImpl.removeById(id);
 
-        return removed ? Result.ok() : Result.fail(ResultCodeEnum.REMOVE_FAILED);
+        return removed ? Result.ok() : Result.fail(ResultCodeEnum.REMOVE_NOT_FOUND);
     }
 }

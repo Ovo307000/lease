@@ -22,6 +22,7 @@ public enum ResultCodeEnum
     NO_FOUND(208, "未找到相关数据，请检查后重试"),
     SAVE_FAILED(209, "保存失败，请检查后重试"),
     REMOVE_FAILED(210, "删除失败，请检查后重试"),
+    REMOVE_NOT_FOUND(211, "删除失败，未找到相关数据"),
 
     ADMIN_ACCOUNT_EXIST_ERROR(301, "该账号已被注册，请更换账号"),
     ADMIN_CAPTCHA_CODE_ERROR(302, "验证码不正确，请重新输入"),
