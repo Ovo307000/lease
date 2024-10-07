@@ -27,7 +27,9 @@ import java.util.List;
 @RequestMapping("/admin/attr")
 public class AttrController
 {
+    // 注入 AttrKeyServiceImpl，用于处理属性名称的业务逻辑
     private final AttrKeyServiceImpl   attrKeyServiceImpl;
+    // 注入 AttrValueServiceImpl，用于处理属性值的业务逻辑
     private final AttrValueServiceImpl attrValueServiceImpl;
 
     /**
@@ -42,10 +44,13 @@ public class AttrController
     @PostMapping("key/saveOrUpdate")
     public Result<Void> saveOrUpdateAttrKey(@RequestBody final AttrKey attrKey)
     {
+        // 记录新增或更新操作的日志
         log.info("新增或更新属性名称: {}", attrKey);
 
+        // 执行保存或更新操作
         final boolean saved = this.attrKeyServiceImpl.saveOrUpdate(attrKey);
 
+        // 返回操作结果
         return saved ? Result.ok() : Result.fail(ResultCodeEnum.SAVE_FAILED);
     }
 
@@ -61,10 +66,13 @@ public class AttrController
     @PostMapping("value/saveOrUpdate")
     public Result<Void> saveOrUpdateAttrValue(@RequestBody final AttrValue attrValue)
     {
+        // 记录新增或更新操作的日志
         log.info("新增或更新属性值: {}", attrValue);
 
+        // 执行保存或更新操作
         final boolean saved = this.attrValueServiceImpl.saveOrUpdate(attrValue);
 
+        // 返回操作结果
         return saved ? Result.ok() : Result.fail(ResultCodeEnum.SAVE_FAILED);
     }
 
@@ -81,10 +89,13 @@ public class AttrController
     @GetMapping("list")
     public Result<List<AttrKeyVo>> listAttrInfo()
     {
+        // 记录查询操作的日志
         log.info("查询全部属性名称和属性值列表");
 
+        // 获取所有属性名称信息
         final List<AttrKeyVo> attrKeyList = this.attrKeyServiceImpl.listAttrKeyVo();
 
+        // 返回查询结果
         return attrKeyList.isEmpty() ? Result.fail(ResultCodeEnum.NO_FOUND) : Result.ok(attrKeyList);
     }
 
@@ -100,10 +111,13 @@ public class AttrController
     @DeleteMapping("key/deleteById")
     public Result<Void> removeAttrKeyById(@RequestParam final Long attrKeyId)
     {
+        // 记录删除操作的日志
         log.info("根据id删除属性名称: {}", attrKeyId);
 
+        // 执行删除操作
         final boolean removed = this.attrKeyServiceImpl.removeById(attrKeyId);
 
+        // 返回操作结果
         return removed ? Result.ok() : Result.fail(ResultCodeEnum.REMOVE_NOT_FOUND);
     }
 
@@ -119,10 +133,13 @@ public class AttrController
     @DeleteMapping("value/deleteById")
     public Result<Void> removeAttrValueById(@RequestParam final Long id)
     {
+        // 记录删除操作的日志
         log.info("根据id删除属性值: {}", id);
 
+        // 执行删除操作
         final boolean removed = this.attrValueServiceImpl.removeById(id);
 
+        // 返回操作结果
         return removed ? Result.ok() : Result.fail(ResultCodeEnum.REMOVE_NOT_FOUND);
     }
 }

@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @Service
@@ -22,5 +23,10 @@ public class AttrKeyServiceImpl extends ServiceImpl<AttrKeyMapper, AttrKey> impl
     public List<AttrKeyVo> listAttrKeyVo()
     {
         return this.attrKeyMapper.listAttrInformation();
+    }
+
+    public CompletableFuture<Boolean> logicRemoveByIdAsync(final Long id)
+    {
+        return CompletableFuture.supplyAsync(() -> super.removeById(id));
     }
 }
