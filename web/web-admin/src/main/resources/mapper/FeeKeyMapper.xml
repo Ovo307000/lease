@@ -15,7 +15,7 @@
         </collection>
     </resultMap>
 
-    <select id="listFeeKeyVo" resultMap="com.ovo307000.lease.web.admin.mapper.AttrKeyMapper.AttrKeyVoMap">
+    <select id="listFeeKeyVo" resultMap="listFeeKeyVo">
         select fee_key.id,
                fee_key.name,
                fv.id,
