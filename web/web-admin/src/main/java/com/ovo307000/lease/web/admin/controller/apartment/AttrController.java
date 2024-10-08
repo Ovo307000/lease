@@ -115,7 +115,8 @@ public class AttrController
         log.info("根据id删除属性名称: {}", attrKeyId);
 
         // 执行删除操作
-        final boolean removed = this.attrKeyServiceImpl.removeById(attrKeyId);
+        final boolean removed = this.attrKeyServiceImpl.logicRemoveKeyAndValueAsync(attrKeyId)
+                                                       .join();
 
         // 返回操作结果
         return removed ? Result.ok() : Result.fail(ResultCodeEnum.REMOVE_NOT_FOUND);
