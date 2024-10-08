@@ -4,7 +4,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ovo307000.lease.module.entity.FeeKey;
 import com.ovo307000.lease.web.admin.mapper.FeeKeyMapper;
 import com.ovo307000.lease.web.admin.service.FeeKeyService;
+import com.ovo307000.lease.web.admin.vo.fee.FeeKeyVo;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author liubo
@@ -16,6 +19,18 @@ public class FeeKeyServiceImpl extends ServiceImpl<FeeKeyMapper, FeeKey>
         implements FeeKeyService
 {
 
+    private final FeeKeyMapper feeKeyMapper;
+
+    public FeeKeyServiceImpl(final FeeKeyMapper feeKeyMapper)
+    {
+        this.feeKeyMapper = feeKeyMapper;
+    }
+
+    @Override
+    public List<FeeKeyVo> listFeeKeyVo()
+    {
+        return this.feeKeyMapper.listFeeKeyVo();
+    }
 }
 
 

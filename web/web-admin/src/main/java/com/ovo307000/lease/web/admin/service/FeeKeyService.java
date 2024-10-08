@@ -2,6 +2,9 @@ package com.ovo307000.lease.web.admin.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ovo307000.lease.module.entity.FeeKey;
+import com.ovo307000.lease.web.admin.vo.fee.FeeKeyVo;
+
+import java.util.List;
 
 /**
  * @author liubo
@@ -10,5 +13,10 @@ import com.ovo307000.lease.module.entity.FeeKey;
  */
 public interface FeeKeyService extends IService<FeeKey>
 {
-
+    /**
+     * 查询所有杂费名称
+     *
+     * @return 杂费名称列表
+     */
+    List<FeeKeyVo> listFeeKeyVo();
 }

@@ -18,7 +18,7 @@ public enum ResultCodeEnum
     DATA_ERROR(204, "数据异常，请联系客服"),
     ILLEGAL_REQUEST(205, "非法请求，请检查您的操作"),
     REPEAT_SUBMIT(206, "请勿重复提交"),
-    DELETE_ERROR(207, "删除失败，请先删除相关联的数据"),
+    DELETE_FAILED(207, "删除失败，请检查后重试"),
     NO_FOUND(208, "未找到相关数据，请检查后重试"),
     SAVE_FAILED(209, "保存失败，请检查后重试"),
     REMOVE_FAILED(210, "删除失败，请检查后重试"),
@@ -48,5 +48,5 @@ public enum ResultCodeEnum
     ;
 
     private final Integer code;
-    private final String message;
+    private final String  message;
 }
