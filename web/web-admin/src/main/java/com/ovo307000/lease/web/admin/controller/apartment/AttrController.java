@@ -1,5 +1,6 @@
 package com.ovo307000.lease.web.admin.controller.apartment;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.ovo307000.lease.common.result.Result;
 import com.ovo307000.lease.common.result.ResultCodeEnum;
 import com.ovo307000.lease.module.entity.AttrKey;
@@ -114,12 +115,15 @@ public class AttrController
         // 记录删除操作的日志
         log.info("根据id删除属性名称: {}", attrKeyId);
 
+        final LambdaQueryWrapper<AttrValue> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(AttrValue::getAttrKeyId, attrKeyId);
+
         // 执行删除操作
-        final boolean removed = this.attrKeyServiceImpl.logicRemoveKeyAndValueAsync(attrKeyId)
-                                                       .join();
+        final boolean removed    = this.attrValueServiceImpl.remove(queryWrapper);
+        final boolean removedKey = this.attrKeyServiceImpl.removeById(attrKeyId);
 
         // 返回操作结果
-        return removed ? Result.ok() : Result.fail(ResultCodeEnum.REMOVE_NOT_FOUND);
+        return removed && removedKey ? Result.ok() : Result.fail(ResultCodeEnum.REMOVE_FAILED);
     }
 
     /**
