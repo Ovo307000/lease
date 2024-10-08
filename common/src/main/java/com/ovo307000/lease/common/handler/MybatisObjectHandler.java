@@ -7,13 +7,13 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 
 /**
+ * FIXME: 2024年10月8日 16点33分 无法工作，不会注入
  * 自定义MybatisPlus元对象处理器
  * 用于自动填充实体类中的字段，例如创建时间和更新时间
  */
 @Component
 public class MybatisObjectHandler implements MetaObjectHandler
 {
-
     /**
      * 插入前自动填充创建时间
      * 将当前时间自动设置为实体类的创建时间字段
