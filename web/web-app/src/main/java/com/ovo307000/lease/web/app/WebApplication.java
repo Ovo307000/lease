@@ -1,6 +1,6 @@
 package com.ovo307000.lease.web.app;
 
-import com.ovo307000.lease.common.utils.ApplicationLogger;
+import com.ovo307000.lease.common.utils.logger.ApplicationLogger;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
