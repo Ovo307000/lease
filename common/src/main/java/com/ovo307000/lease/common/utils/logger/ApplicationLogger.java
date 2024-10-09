@@ -1,4 +1,4 @@
-package com.ovo307000.lease.common.utils;
+package com.ovo307000.lease.common.utils.logger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
