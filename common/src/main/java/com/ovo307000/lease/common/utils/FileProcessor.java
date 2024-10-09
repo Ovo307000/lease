@@ -1,9 +1,14 @@
 package com.ovo307000.lease.common.utils;
 
+import jakarta.annotation.Nullable;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.lang.NonNull;
+import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 
+@Component
 public class FileProcessor
 {
     /**
@@ -12,7 +17,7 @@ public class FileProcessor
      * @param originalFileName 原文件名
      * @return 生成的文件名
      */
-    public String generateFileName(@NonNull final String originalFileName)
+    public String generateUUIDFileName(@NonNull final String originalFileName)
     {
         if (originalFileName.isEmpty())
         {
@@ -56,5 +61,23 @@ public class FileProcessor
         }
 
         return fileName;
+    }
+
+    /**
+     * 将 MultipartFile 转换成 byte[]，如果获取失败就抛出 IllegalArgumentException
+     *
+     * @param file MultipartFile 对象
+     * @return 文件的字节数组
+     */
+    public @Nullable byte[] getBytesFromFile(@NotNull final MultipartFile file)
+    {
+        try
+        {
+            return file.getBytes();
+        }
+        catch (final Exception e)
+        {
+            return null;
+        }
     }
 }

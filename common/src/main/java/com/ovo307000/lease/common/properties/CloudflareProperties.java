@@ -60,6 +60,11 @@ public class CloudflareProperties
     private Long readTimeout;
 
     /**
+     * 写入超时时间（毫秒）
+     */
+    private Long writeTimeout;
+
+    /**
      * 是否使用 HTTPS 连接
      */
     private Boolean useHttps;
