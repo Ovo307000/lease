@@ -1,6 +1,6 @@
 package com.ovo307000.lease.web.admin;
 
-import com.ovo307000.lease.common.utils.ApplicationUtil;
+import com.ovo307000.lease.common.utils.ApplicationLogger;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
@@ -22,6 +22,6 @@ public class WebAdminApplication
 
         final ConfigurableApplicationContext context = SpringApplication.run(WebAdminApplication.class, args);
 
-        ApplicationUtil.logApplicationStartup(context, startTime, "doc.html");
+        ApplicationLogger.logApplicationStartup(context, startTime, "doc.html");
     }
 }

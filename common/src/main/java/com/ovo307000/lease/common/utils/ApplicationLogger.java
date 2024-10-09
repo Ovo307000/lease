@@ -14,10 +14,10 @@ import java.util.TimeZone;
 /**
  * 应用程序启动相关的工具类
  */
-public class ApplicationUtil
+public class ApplicationLogger
 {
     // 日志记录器
-    private static final Logger log = LoggerFactory.getLogger(ApplicationUtil.class);
+    private static final Logger log = LoggerFactory.getLogger(ApplicationLogger.class);
 
     /**
      * 记录应用程序启动日志
