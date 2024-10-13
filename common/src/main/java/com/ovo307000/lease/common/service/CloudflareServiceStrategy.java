@@ -1,6 +1,7 @@
 package com.ovo307000.lease.common.service;
 
 import com.ovo307000.lease.common.properties.CloudflareProperties;
+import com.ovo307000.lease.common.utils.FileProcessor;
 import com.ovo307000.lease.common.utils.logger.CloudflareOperationLogger;
 import io.minio.*;
 import io.minio.http.Method;
@@ -11,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
@@ -26,6 +26,7 @@ public class CloudflareServiceStrategy implements StorageServiceStrategy
 {
     private final MinioClient          minioClient;
     private final CloudflareProperties cloudflareProperties;
+    private final FileProcessor        fileProcessor;
 
     /**
      * 异步获取文件URL
@@ -103,12 +104,7 @@ public class CloudflareServiceStrategy implements StorageServiceStrategy
         }
 
         // 生成一个随机的文件名，用于重命名上传的文件
-        final String randomName = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) +
-                                  "/" +
-                                  UUID.randomUUID() +
-                                  "/" +
-                                  objectName;
-
+        final String randomName = this.fileProcessor.generateRandomFileName(objectName);
         // 执行文件上传操作
         return this.execute(() ->
         {

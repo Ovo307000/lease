@@ -6,28 +6,13 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 @Component
 public class FileProcessor
 {
-    /**
-     * 生成一个随机的文件名，规则是：UUID + "." + 原文件的后缀
-     *
-     * @param originalFileName 原文件名
-     * @return 生成的文件名
-     */
-    public String generateUUIDFileName(@NonNull final String originalFileName)
-    {
-        if (originalFileName.isEmpty())
-        {
-            throw new IllegalArgumentException("文件名为空");
-        }
-
-        return UUID.randomUUID() + this.getFileSuffix(originalFileName);
-    }
-
     /**
      * 通过文件名获取文件的后缀
      *
@@ -80,5 +65,30 @@ public class FileProcessor
         {
             return null;
         }
-     }
+    }
+
+    /**
+     * 生成随机文件名，以避免重名和提高文件的独特性
+     * 文件名的生成规则为：当前日期时间格式化字符串/UUID-原始文件名
+     * 例如：20210908123456/123e4567-e89b-12d3-a456-426614174000-abc.jpg
+     *
+     * @param originalFileName 原始文件名，用于保留文件的原始名称信息
+     * @return 返回拼接后的随机文件名
+     * @throws IllegalArgumentException 如果原始文件名为空，则抛出此异常
+     */
+    public String generateRandomFileName(final String originalFileName)
+    {
+        // 检查原始文件名是否为空，如果为空则抛出IllegalArgumentException异常
+        if (originalFileName.isEmpty())
+        {
+            throw new IllegalArgumentException("文件名为空");
+        }
+
+        // 使用当前日期时间格式化字符串和UUID以及原始文件名拼接成一个新的文件名
+        return new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) +
+               "/" +
+               UUID.randomUUID() +
+               "-" +
+               originalFileName;
+    }
 }
