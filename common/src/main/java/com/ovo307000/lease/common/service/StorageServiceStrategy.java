@@ -4,6 +4,7 @@ import io.minio.GetObjectResponse;
 import io.minio.ObjectWriteResponse;
 import io.minio.StatObjectResponse;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -11,6 +12,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
+
+@Service
 public interface StorageServiceStrategy
 {
     /**
