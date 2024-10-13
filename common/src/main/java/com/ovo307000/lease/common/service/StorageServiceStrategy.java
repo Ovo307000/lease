@@ -82,6 +82,8 @@ public interface StorageServiceStrategy
      */
     void createBucket(@NotNull String bucketName);
 
+    void removeBucket(@NotNull String bucketName);
+
     /**
      * 获取对象
      *
