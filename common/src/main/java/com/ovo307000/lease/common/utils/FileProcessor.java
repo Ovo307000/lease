@@ -6,6 +6,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.*;
 import java.util.UUID;
 
 @Component
@@ -79,5 +80,5 @@ public class FileProcessor
         {
             return null;
         }
-    }
+     }
 }

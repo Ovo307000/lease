@@ -2,9 +2,8 @@ package com.ovo307000.lease.common.service;
 
 import com.ovo307000.lease.common.utils.FileProcessor;
 import com.ovo307000.lease.common.utils.logger.CloudflareOperationLogger;
-import io.minio.MinioClient;
-import io.minio.ObjectWriteResponse;
-import io.minio.PutObjectArgs;
+import io.minio.*;
+import io.minio.http.Method;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,9 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 @Slf4j
@@ -25,10 +22,10 @@ public class CloudflareService implements StorageService
     private final MinioClient   minioClient;
     private final FileProcessor fileProcessor;
 
-    @FunctionalInterface
-    private interface SupplierWithException<T>
+    @Override
+    public CompletableFuture<Optional<String>> getFileUrlAsync(final String bucketName, final String objectName)
     {
-        T get() throws Exception;
+        return CompletableFuture.supplyAsync(() -> this.getFileUrl(bucketName, objectName));
     }
 
     @Override
@@ -46,6 +43,12 @@ public class CloudflareService implements StorageService
                 CloudflareOperationLogger.Operation.PUT,
                 objectName,
                 bucketName);
+    }
+
+    @Override
+    public ObjectWriteResponse putObject(final String bucketName, final String objectName, final MultipartFile file)
+    {
+        return this.putObject(bucketName, objectName, this.fileProcessor.getBytesFromFile(file));
     }
 
     @Override
@@ -79,6 +82,165 @@ public class CloudflareService implements StorageService
         return result;
     }
 
+    @Override
+    public void removeFile(final String bucketName, final String objectName)
+    {
+        RemoveObjectArgs.builder()
+                        .bucket(bucketName)
+                        .object(objectName)
+                        .build();
+
+        this.execute(() ->
+        {
+            this.minioClient.removeObject(RemoveObjectArgs.builder()
+                                                          .bucket(bucketName)
+                                                          .object(objectName)
+                                                          .build());
+            return null;
+        }, CloudflareOperationLogger.Operation.DELETE, objectName, bucketName);
+    }
+
+    @Override
+    public void removeFileAsync(final String bucketName, final String objectName)
+    {
+        CompletableFuture.runAsync(() -> this.removeFile(bucketName, objectName));
+    }
+
+    @Override
+    public void removeFileListAsync(final String bucketName, final List<String> objectNames)
+    {
+        objectNames.forEach(objectName -> this.removeFileAsync(bucketName, objectName));
+    }
+
+    @Override
+    public boolean isFileExist(final String bucketName, final String objectName)
+    {
+        if (this.getObjectInfo(bucketName, objectName) == null)
+        {
+            log.warn("文件 `{}` 不存在于存储桶 `{}` 中", objectName, bucketName);
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public StatObjectResponse getObjectInfo(final String bucketName, final String objectName)
+    {
+        final StatObjectArgs statObjectArgs = StatObjectArgs.builder()
+                                                            .bucket(bucketName)
+                                                            .object(objectName)
+                                                            .build();
+
+        return this.execute(() -> this.minioClient.statObject(statObjectArgs),
+                CloudflareOperationLogger.Operation.GET,
+                objectName,
+                bucketName);
+    }
+
+    /**
+     * Gets the URL of a file in Cloudflare R2.
+     * <p>
+     * This method returns an {@link Optional} containing the URL of the file, or an empty {@link Optional} if the file
+     * does not exist.
+     *
+     * @param bucketName the name of the bucket that the file is located in
+     * @param objectName the name of the file
+     * @return an {@link Optional} containing the URL of the file, or an empty {@link Optional} if the file does not exist
+     */
+    @Override
+    public Optional<String> getFileUrl(final String bucketName, final String objectName)
+    {
+        return this.execute(() ->
+        {
+            final GetPresignedObjectUrlArgs getPresignedObjectUrlArgs = GetPresignedObjectUrlArgs.builder()
+                                                                                                 .method(Method.GET)
+                                                                                                 .bucket(bucketName)
+                                                                                                 .object(objectName)
+                                                                                                 .build();
+
+            return Optional.of(this.minioClient.getPresignedObjectUrl(getPresignedObjectUrlArgs));
+        }, CloudflareOperationLogger.Operation.GET, objectName, bucketName);
+    }
+
+    @Override
+    public void createBucket(final String bucketName)
+    {
+        final MakeBucketArgs makeBucketArgs = MakeBucketArgs.builder()
+                                                            .bucket(bucketName)
+                                                            .build();
+
+        this.execute(() ->
+        {
+            this.minioClient.makeBucket(makeBucketArgs);
+            return null;
+        }, CloudflareOperationLogger.Operation.CREATE, "", bucketName);
+    }
+
+    @Override
+    public GetObjectResponse getObject(final String bucketName, final String objectName)
+    {
+        final GetObjectArgs getObjectArgs = GetObjectArgs.builder()
+                                                         .bucket(bucketName)
+                                                         .object(objectName)
+                                                         .build();
+
+        return this.execute(() -> this.minioClient.getObject(getObjectArgs),
+                CloudflareOperationLogger.Operation.GET,
+                objectName,
+                bucketName);
+    }
+
+    @Override
+    public CompletableFuture<GetObjectResponse> getObjectAsync(final String bucketName, final String objectName)
+    {
+        return CompletableFuture.supplyAsync(() -> this.getObject(bucketName, objectName));
+    }
+
+    @Override
+    public List<CompletableFuture<GetObjectResponse>> getObjectListAsync(final String bucketName,
+                                                                         final List<String> objectNames)
+    {
+        final List<CompletableFuture<GetObjectResponse>> result = new ArrayList<>();
+
+        for (final String objectName : objectNames)
+        {
+            result.add(this.getObjectAsync(bucketName, objectName));
+        }
+
+        return result;
+    }
+
+    @Override
+    public void removeObject(final String bucketName, final String objectName)
+    {
+        RemoveObjectArgs.builder()
+                        .bucket(bucketName)
+                        .object(objectName)
+                        .build();
+
+        this.execute(() ->
+        {
+            this.minioClient.removeObject(RemoveObjectArgs.builder()
+                                                          .bucket(bucketName)
+                                                          .object(objectName)
+                                                          .build());
+            return null;
+        }, CloudflareOperationLogger.Operation.DELETE, objectName, bucketName);
+    }
+
+    @Override
+    public void removeObjectAsync(final String bucketName, final String objectName)
+    {
+        CompletableFuture.runAsync(() -> this.removeObject(bucketName, objectName));
+    }
+
+    @Override
+    public void removeObjectListAsync(final String bucketName, final List<String> objectNames)
+    {
+        objectNames.forEach(objectName -> this.removeObjectAsync(bucketName, objectName));
+    }
+
     /**
      * 执行一个供应商函数，并针对操作结果进行日志记录
      * 该方法泛型化，可以处理任何类型的返回值，但务必小心泛型类型的擦除
@@ -93,10 +255,10 @@ public class CloudflareService implements StorageService
      * @param operation  云操作日志记录的操作类型
      * @param objectName 操作对象的名称
      * @param bucketName 桶的名称，可能与操作对象相关
-     * @param <T>        供应商函数的返回类型
+     * @param <R>        供应商函数的返回类型
      * @return 返回供应商函数的结果，如果发生异常则返回null
      */
-    private <T> T execute(@NotNull final SupplierWithException<T> supplier,
+    private <R> R execute(@NotNull final SupplierWithException<R> supplier,
                           @NotNull final CloudflareOperationLogger.Operation operation,
                           @NotNull final String objectName,
                           @NotNull final String bucketName)
@@ -107,7 +269,7 @@ public class CloudflareService implements StorageService
             CloudflareOperationLogger.logOperationAttempt(operation, objectName, bucketName);
 
             // 执行供应商函数并获取结果
-            final T result = supplier.get();
+            final R result = supplier.get();
 
             // 记录操作成功日志
             CloudflareOperationLogger.logOperationSuccess(operation, objectName, bucketName);
@@ -123,5 +285,11 @@ public class CloudflareService implements StorageService
             // 返回null
             return null;
         }
+    }
+
+    @FunctionalInterface
+    private interface SupplierWithException<R>
+    {
+        R get() throws Exception;
     }
 }

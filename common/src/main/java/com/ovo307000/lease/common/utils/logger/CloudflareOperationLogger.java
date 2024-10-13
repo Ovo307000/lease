@@ -19,6 +19,7 @@ public class CloudflareOperationLogger
             case DOWNLOAD -> "下载";
             case DELETE -> "删除";
             case LIST -> "列出";
+            case GET -> "获取";
             case CREATE_BUCKET -> "创建存储桶";
             case DELETE_BUCKET -> "删除存储桶";
         };
@@ -49,6 +50,8 @@ public class CloudflareOperationLogger
         DELETE,
         LIST,
         CREATE_BUCKET,
+        GET,
+        CREATE,
         DELETE_BUCKET
     }
 }
