@@ -48,7 +48,7 @@ public class FileUploadController
         // 获取文件原始名称
         final String              objectName = file.getOriginalFilename();
         // 通过存储服务策略接口上传文件到指定存储桶
-        final ObjectWriteResponse response   = this.cloudflareServiceStrategy.putObject(bucketName, objectName, file);
+        final ObjectWriteResponse response   = this.cloudflareServiceStrategy.uploadFile(bucketName, objectName, file.getContentType(), file);
 
         // 根据上传结果返回成功或失败的信息
         return response != null ? Result.ok(response.object()) : Result.fail(ResultCodeEnum.FILE_UPLOAD_FAILED);

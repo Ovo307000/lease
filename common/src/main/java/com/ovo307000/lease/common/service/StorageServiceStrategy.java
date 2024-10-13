@@ -5,6 +5,7 @@ import io.minio.ObjectWriteResponse;
 import io.minio.StatObjectResponse;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -24,11 +25,14 @@ public interface StorageServiceStrategy
      */
     CompletableFuture<Optional<String>> getFileUrlAsync(@NotNull String bucketName, @NotNull String objectName);
 
-    ObjectWriteResponse uploadFile(String bucketName, String objectName, String contentType, byte[] data);
+    ObjectWriteResponse uploadFile(String bucketName, String objectName, MultipartFile file);
 
-    CompletableFuture<ObjectWriteResponse> uploadFileAsync(String bucketName, String objectName, String contentType, byte[] data);
+    CompletableFuture<ObjectWriteResponse> uploadFileAsync(String bucketName,
+                                                           String objectName,
+                                                           String contentType,
+                                                           MultipartFile file);
 
-    Map<String, ObjectWriteResponse> uploadFileList(String bucketName, List<String> objectNames, List<byte[]> dataList);
+    Map<String, ObjectWriteResponse> uploadFileList(String bucketName, List<String> objectNames, List<MultipartFile> files);
 
     void removeFile(String bucketName, String objectName);
 

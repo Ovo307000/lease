@@ -10,8 +10,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayInputStream;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
@@ -85,20 +85,16 @@ public class CloudflareServiceStrategy implements StorageServiceStrategy
     /**
      * 上传文件到云存储
      *
-     * @param bucketName  存储桶名称
-     * @param objectName  对象名称
-     * @param contentType 内容类型
-     * @param data        文件数据
+     * @param bucketName 存储桶名称
+     * @param objectName 对象名称
+     * @param file       文件
      * @return 返回文件上传响应，如果上传失败则返回null
      */
     @Override
-    public ObjectWriteResponse uploadFile(final String bucketName,
-                                          final String objectName,
-                                          final String contentType,
-                                          final byte[] data)
+    public ObjectWriteResponse uploadFile(final String bucketName, final String objectName, final MultipartFile file)
     {
         // 检查文件上传前的合法性
-        if (!this.fileCheck(bucketName, objectName, data))
+        if (!this.isFileReadyToUpload(bucketName, objectName, file))
         {
             return null;
         }
@@ -112,8 +108,8 @@ public class CloudflareServiceStrategy implements StorageServiceStrategy
             final PutObjectArgs putObjectArgs = PutObjectArgs.builder()
                                                              .bucket(bucketName)
                                                              .object(randomName)
-                                                             .contentType(contentType)
-                                                             .stream(new ByteArrayInputStream(data), data.length, -1)
+                                                             .contentType(file.getContentType())
+                                                             .stream(file.getInputStream(), file.getSize(), -1)
                                                              .build();
 
             // 使用MinIO客户端进行文件上传
@@ -127,17 +123,95 @@ public class CloudflareServiceStrategy implements StorageServiceStrategy
      * @param bucketName  存储桶名称，用于标识存储文件的位置
      * @param objectName  文件对象名称，即文件在存储桶中的唯一标识
      * @param contentType 文件的MIME类型，用于描述文件的格式和编码
-     * @param data        要上传的文件内容，以字节数组形式表示
+     * @param file        待上传的文件，由前端请求传递
      * @return 返回一个CompletableFuture对象，它将异步处理结果，包括文件上传响应
      */
     @Override
     public CompletableFuture<ObjectWriteResponse> uploadFileAsync(final String bucketName,
                                                                   final String objectName,
                                                                   final String contentType,
-                                                                  final byte[] data)
+                                                                  final MultipartFile file)
     {
         // 使用CompletableFuture进行异步处理，调用同步上传文件方法并返回结果
-        return CompletableFuture.supplyAsync(() -> this.uploadFile(bucketName, objectName, contentType, data));
+        return CompletableFuture.supplyAsync(() -> this.uploadFile(bucketName, objectName, file));
+    }
+
+    /**
+     * 检查文件是否可以上传
+     * <p>
+     * 此方法用于在上传文件之前执行一系列检查，以确保文件不会覆盖现有文件，
+     * 存储桶存在，文件内容不为空，且文件大小未超过允许的限制
+     *
+     * @param bucketName 存储桶名称，用于标识存储位置
+     * @param objectName 对象（文件）名称，用于唯一标识文件
+     * @param file       待上传的文件
+     * @return 如果所有检查都通过，则返回true；否则返回false，并记录相应的警告信息
+     */
+    private boolean isFileReadyToUpload(final String bucketName, final String objectName, final MultipartFile file)
+    {
+        // 检查文件是否已存在，避免覆盖
+        if (this.isFileExist(bucketName, objectName))
+        {
+            log.warn("文件 `{}` 已存在", objectName);
+            return false;
+        }
+
+        // 检查存储桶是否存在，确保有有效的存储位置
+        if (this.isBucketExist(bucketName))
+        {
+            log.warn("存储桶 `{}` 不存在", bucketName);
+            return false;
+        }
+
+        // 检查文件内容是否为空，避免上传空文件
+        try
+        {
+            final byte[] fileBytes = file.getBytes();
+
+            // 检查文件内容是否为空
+            if (file.getBytes().length == 0)
+            {
+                log.warn("文件 `{}` 为空", objectName);
+                return false;
+            }
+
+            // 检查文件大小是否超过允许的最大值，维护文件上传的尺寸限制
+            if (fileBytes.length > this.cloudflareProperties.getMaxFileSizeofBytes())
+            {
+                log.warn("文件 `{}` 大小超过限制", objectName);
+                return false;
+            }
+        }
+        catch (final Exception e)
+        {
+            log.error("获取文件内容失败: {}", e.getMessage());
+            return false;
+        }
+
+        // 所有检查都通过，可以进行文件上传
+        return true;
+    }
+
+    /**
+     * 检查指定的存储桶是否存在于MinIO服务器上
+     *
+     * @param bucketName 存储桶的名称
+     * @return 如果存储桶存在，则返回true；否则返回false
+     */
+    private boolean isBucketExist(final String bucketName)
+    {
+        // 使用execute方法执行一个检查存储桶是否存在的操作
+        // 如果操作成功且返回值为Boolean.TRUE，则证明存储桶存在
+        return Boolean.TRUE.equals(this.execute(() ->
+        {
+            // 创建一个请求参数对象，指定要检查的存储桶名称
+            final BucketExistsArgs bucketExistsArgs = BucketExistsArgs.builder()
+                                                                      .bucket(bucketName)
+                                                                      .build();
+
+            // 调用MinIO客户端的方法，检查存储桶是否存在
+            return this.minioClient.bucketExists(bucketExistsArgs);
+        }, CloudflareOperationLogger.Operation.FOUNT_BUCKET, "", bucketName));
     }
 
     /**
@@ -145,16 +219,16 @@ public class CloudflareServiceStrategy implements StorageServiceStrategy
      *
      * @param bucketName  存储桶名称
      * @param objectNames 文件名列表
-     * @param dataList    文件数据列表，与文件名列表对应
+     * @param fileList    文件数据列表，与文件名列表对应
      * @return 包含每个文件的上传响应的Map如果文件名列表和数据列表长度不一致，则返回null
      */
     @Override
     public @Nullable Map<String, ObjectWriteResponse> uploadFileList(final String bucketName,
                                                                      final List<String> objectNames,
-                                                                     final List<byte[]> dataList)
+                                                                     final List<MultipartFile> fileList)
     {
         // 检查文件名列表和数据列表是否具有相同的长度，如果不一致则返回null
-        if (objectNames.size() != dataList.size())
+        if (objectNames.size() != fileList.size())
         {
             log.error("文件名列表和数据列表长度不一致");
             return null;
@@ -164,24 +238,24 @@ public class CloudflareServiceStrategy implements StorageServiceStrategy
         final Map<String, ObjectWriteResponse> result = new HashMap<>();
 
         // 遍历文件名列表，准备上传每个文件
-        for (final String objectName : objectNames)
+        for (int i = 0; i < objectNames.size(); i++)
         {
-            // 获取当前文件名在列表中的索引，以确定对应的数据
-            final int index = objectNames.indexOf(objectName);
-            // 从数据列表中获取与当前文件名对应的文件数据
-            final byte[] data = dataList.get(index);
+            // 获取文件名和文件数据
+            final String        objectName = objectNames.get(i);
+            final MultipartFile file       = fileList.get(i);
 
-            // 如果文件检查通过，则上传文件
-            if (this.fileCheck(bucketName, objectName, data))
+            // 检查文件是否可以上传
+            if (!this.isFileReadyToUpload(bucketName, objectName, file))
             {
-                // 上传文件并获取响应
-                final ObjectWriteResponse response = this.uploadFile(bucketName,
-                        objectName,
-                        "application/octet-stream",
-                        data);
-                // 将文件名和对应的上传响应存入结果Map
-                result.put(objectName, response);
+                // 如果文件检查失败，则跳过当前文件，继续上传下一个文件
+                continue;
             }
+
+            // 上传文件到存储桶中
+            final ObjectWriteResponse response = this.uploadFile(bucketName, objectName, file);
+
+            // 将上传响应添加到结果Map中
+            result.put(objectName, response);
         }
 
         // 返回包含所有上传响应的结果Map
@@ -237,7 +311,6 @@ public class CloudflareServiceStrategy implements StorageServiceStrategy
         // 遍历文件名称列表，对每个文件名称调用异步删除方法
         objectNames.forEach(objectName -> this.removeFileAsync(bucketName, objectName));
     }
-
 
     /**
      * 检查指定的文件是否存在于指定的存储桶中
@@ -440,73 +513,6 @@ public class CloudflareServiceStrategy implements StorageServiceStrategy
     public void removeObjectListAsync(final String bucketName, final List<String> objectNames)
     {
         objectNames.forEach(objectName -> this.removeObjectAsync(bucketName, objectName));
-    }
-
-    /**
-     * 检查文件是否可以上传
-     * <p>
-     * 此方法用于在上传文件之前执行一系列检查，以确保文件不会覆盖现有文件，
-     * 存储桶存在，文件内容不为空，且文件大小未超过允许的限制
-     *
-     * @param bucketName 存储桶名称，用于标识存储位置
-     * @param objectName 对象（文件）名称，用于唯一标识文件
-     * @param bytes      文件内容，以字节数组形式表示
-     * @return 如果所有检查都通过，则返回true；否则返回false，并记录相应的警告信息
-     */
-    private boolean fileCheck(final String bucketName, final String objectName, final byte[] bytes)
-    {
-        // 检查文件是否已存在，避免覆盖
-        if (this.isFileExist(bucketName, objectName))
-        {
-            log.warn("文件 `{}` 已存在", objectName);
-            return false;
-        }
-
-        // 检查存储桶是否存在，确保有有效的存储位置
-        if (this.isBucketExist(bucketName))
-        {
-            log.warn("存储桶 `{}` 不存在", bucketName);
-            return false;
-        }
-
-        // 检查文件内容是否为空，避免上传空文件
-        if (bytes == null || bytes.length == 0)
-        {
-            log.warn("文件 `{}` 为空", objectName);
-            return false;
-        }
-
-        // 检查文件大小是否超过允许的最大值，维护文件上传的尺寸限制
-        if (bytes.length > this.cloudflareProperties.getMaxFileSizeofBytes())
-        {
-            log.warn("文件 `{}` 大小超过限制", objectName);
-            return false;
-        }
-
-        // 所有检查都通过，可以进行文件上传
-        return true;
-    }
-
-    /**
-     * 检查指定的存储桶是否存在于MinIO服务器上
-     *
-     * @param bucketName 存储桶的名称
-     * @return 如果存储桶存在，则返回true；否则返回false
-     */
-    private boolean isBucketExist(final String bucketName)
-    {
-        // 使用execute方法执行一个检查存储桶是否存在的操作
-        // 如果操作成功且返回值为Boolean.TRUE，则证明存储桶存在
-        return Boolean.TRUE.equals(this.execute(() ->
-        {
-            // 创建一个请求参数对象，指定要检查的存储桶名称
-            final BucketExistsArgs bucketExistsArgs = BucketExistsArgs.builder()
-                                                                      .bucket(bucketName)
-                                                                      .build();
-
-            // 调用MinIO客户端的方法，检查存储桶是否存在
-            return this.minioClient.bucketExists(bucketExistsArgs);
-        }, CloudflareOperationLogger.Operation.FOUNT_BUCKET, "", bucketName));
     }
 
     /**
