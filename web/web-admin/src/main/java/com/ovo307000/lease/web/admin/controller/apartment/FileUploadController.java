@@ -3,7 +3,7 @@ package com.ovo307000.lease.web.admin.controller.apartment;
 import com.ovo307000.lease.common.properties.CloudflareProperties;
 import com.ovo307000.lease.common.result.Result;
 import com.ovo307000.lease.common.result.ResultCodeEnum;
-import com.ovo307000.lease.common.service.StorageServiceStrategy;
+import com.ovo307000.lease.common.service.CloudflareServiceStrategy;
 import io.minio.ObjectWriteResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -26,7 +26,7 @@ public class FileUploadController
     /**
      * 存储服务策略接口，用于执行文件存储操作
      */
-    private final StorageServiceStrategy storageServiceStrategy;
+    private final CloudflareServiceStrategy cloudflareServiceStrategy;
 
     /**
      * Cloudflare配置属性，包含Cloudflare相关的信息和配置
@@ -48,7 +48,7 @@ public class FileUploadController
         // 获取文件原始名称
         final String              objectName = file.getOriginalFilename();
         // 通过存储服务策略接口上传文件到指定存储桶
-        final ObjectWriteResponse response   = this.storageServiceStrategy.putObject(bucketName, objectName, file);
+        final ObjectWriteResponse response   = this.cloudflareServiceStrategy.putObject(bucketName, objectName, file);
 
         // 根据上传结果返回成功或失败的信息
         return response != null ? Result.ok(response.object()) : Result.fail(ResultCodeEnum.FILE_UPLOAD_FAILED);
