@@ -73,4 +73,12 @@ public class CloudflareProperties
      * 自定义域名
      */
     private String customDomain;
+
+    /**
+     * 大文件大小（字节）
+     */
+    private Long bigFileSizeofBytes;
+
+
+    private Long maxFileSizeofBytes;
 }

@@ -1,5 +1,6 @@
 package com.ovo307000.lease.common.service;
 
+import com.ovo307000.lease.common.properties.CloudflareProperties;
 import com.ovo307000.lease.common.utils.FileProcessor;
 import com.ovo307000.lease.common.utils.logger.CloudflareOperationLogger;
 import io.minio.*;
@@ -19,8 +20,9 @@ import java.util.concurrent.CompletableFuture;
 @RequiredArgsConstructor
 public class CloudflareServiceStrategy implements StorageServiceStrategy
 {
-    private final MinioClient   minioClient;
-    private final FileProcessor fileProcessor;
+    private final MinioClient          minioClient;
+    private final FileProcessor        fileProcessor;
+    private final CloudflareProperties cloudflareProperties;
 
     @Override
     public CompletableFuture<Optional<String>> getFileUrlAsync(final String bucketName, final String objectName)
@@ -48,6 +50,32 @@ public class CloudflareServiceStrategy implements StorageServiceStrategy
     @Override
     public ObjectWriteResponse putObject(final String bucketName, final String objectName, final MultipartFile file)
     {
+        if (file.isEmpty())
+        {
+            log.warn("文件 `{}` 为空，无法上传", objectName);
+            throw new IllegalArgumentException("文件为空");
+        }
+
+        if (file.getSize() > this.cloudflareProperties.getMaxFileSizeofBytes())
+        {
+            log.warn("文件 `{}` 大小超过 {} 字节，无法上传", objectName, this.cloudflareProperties.getMaxFileSizeofBytes());
+            throw new IllegalArgumentException("文件大小超过限制");
+        }
+
+        if (file.getSize() >= this.cloudflareProperties.getBigFileSizeofBytes())
+        {
+            return this.execute(() -> this.minioClient.putObject(PutObjectArgs.builder()
+                                                                              .bucket(bucketName)
+                                                                              .object(objectName)
+                                                                              .stream(file.getInputStream(),
+                                                                                      file.getSize(),
+                                                                                      -1)
+                                                                              .build()),
+                    CloudflareOperationLogger.Operation.PUT,
+                    objectName,
+                    bucketName);
+        }
+
         return this.putObject(bucketName, objectName, this.fileProcessor.getBytesFromFile(file));
     }
 
