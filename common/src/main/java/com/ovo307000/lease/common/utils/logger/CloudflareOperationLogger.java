@@ -23,6 +23,7 @@ public class CloudflareOperationLogger
             case CREATE_BUCKET -> "创建存储桶";
             case DELETE_BUCKET -> "删除存储桶";
             case CREATE -> "创建";
+            case FOUNT_BUCKET -> "寻找存储桶";
         };
     }
 
