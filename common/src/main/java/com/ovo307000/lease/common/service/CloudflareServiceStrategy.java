@@ -1,7 +1,6 @@
 package com.ovo307000.lease.common.service;
 
 import com.ovo307000.lease.common.properties.CloudflareProperties;
-import com.ovo307000.lease.common.utils.FileProcessor;
 import com.ovo307000.lease.common.utils.logger.CloudflareOperationLogger;
 import io.minio.*;
 import io.minio.http.Method;
@@ -12,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
@@ -25,7 +25,6 @@ import java.util.concurrent.CompletableFuture;
 public class CloudflareServiceStrategy implements StorageServiceStrategy
 {
     private final MinioClient          minioClient;
-    private final FileProcessor        fileProcessor;
     private final CloudflareProperties cloudflareProperties;
 
     /**
@@ -48,11 +47,11 @@ public class CloudflareServiceStrategy implements StorageServiceStrategy
      * 此方法用于在一个统一的异常处理和日志记录策略下执行某种操作
      * 它接收一个供应商函数，该函数可能抛出异常，并通过三个参数提供操作上下文信息
      *
-     * @param supplier 一个可能抛出异常的供应商函数，用于执行具体操作
-     * @param operation 操作类型，用于日志记录中标识操作种类
+     * @param supplier   一个可能抛出异常的供应商函数，用于执行具体操作
+     * @param operation  操作类型，用于日志记录中标识操作种类
      * @param objectName 操作对象名称，用于日志记录中标识操作目标
      * @param bucketName 桶名称，用于日志记录中进一步描述操作环境
-     * @param <R> 返回值类型
+     * @param <R>        返回值类型
      * @return 返回操作结果，如果操作失败则返回null
      */
     private <R> R execute(@NotNull final SupplierWithException<R> supplier,
@@ -85,10 +84,10 @@ public class CloudflareServiceStrategy implements StorageServiceStrategy
     /**
      * 上传文件到云存储
      *
-     * @param bucketName 存储桶名称
-     * @param objectName 对象名称
+     * @param bucketName  存储桶名称
+     * @param objectName  对象名称
      * @param contentType 内容类型
-     * @param data 文件数据
+     * @param data        文件数据
      * @return 返回文件上传响应，如果上传失败则返回null
      */
     @Override
@@ -104,7 +103,11 @@ public class CloudflareServiceStrategy implements StorageServiceStrategy
         }
 
         // 生成一个随机的文件名，用于重命名上传的文件
-        final String randomName = this.fileProcessor.generateUUIDFileName(objectName);
+        final String randomName = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) +
+                                  "/" +
+                                  UUID.randomUUID() +
+                                  "/" +
+                                  objectName;
 
         // 执行文件上传操作
         return this.execute(() ->
@@ -125,10 +128,10 @@ public class CloudflareServiceStrategy implements StorageServiceStrategy
     /**
      * 异步上传文件到指定的存储桶中
      *
-     * @param bucketName 存储桶名称，用于标识存储文件的位置
-     * @param objectName 文件对象名称，即文件在存储桶中的唯一标识
+     * @param bucketName  存储桶名称，用于标识存储文件的位置
+     * @param objectName  文件对象名称，即文件在存储桶中的唯一标识
      * @param contentType 文件的MIME类型，用于描述文件的格式和编码
-     * @param data 要上传的文件内容，以字节数组形式表示
+     * @param data        要上传的文件内容，以字节数组形式表示
      * @return 返回一个CompletableFuture对象，它将异步处理结果，包括文件上传响应
      */
     @Override
@@ -144,15 +147,15 @@ public class CloudflareServiceStrategy implements StorageServiceStrategy
     /**
      * 批量上传文件到指定的存储桶
      *
-     * @param bucketName 存储桶名称
+     * @param bucketName  存储桶名称
      * @param objectNames 文件名列表
-     * @param dataList 文件数据列表，与文件名列表对应
+     * @param dataList    文件数据列表，与文件名列表对应
      * @return 包含每个文件的上传响应的Map如果文件名列表和数据列表长度不一致，则返回null
      */
     @Override
     public @Nullable Map<String, ObjectWriteResponse> uploadFileList(final String bucketName,
-                                                                         final List<String> objectNames,
-                                                                         final List<byte[]> dataList)
+                                                                     final List<String> objectNames,
+                                                                     final List<byte[]> dataList)
     {
         // 检查文件名列表和数据列表是否具有相同的长度，如果不一致则返回null
         if (objectNames.size() != dataList.size())
@@ -168,9 +171,9 @@ public class CloudflareServiceStrategy implements StorageServiceStrategy
         for (final String objectName : objectNames)
         {
             // 获取当前文件名在列表中的索引，以确定对应的数据
-            final int    index = objectNames.indexOf(objectName);
+            final int index = objectNames.indexOf(objectName);
             // 从数据列表中获取与当前文件名对应的文件数据
-            final byte[] data  = dataList.get(index);
+            final byte[] data = dataList.get(index);
 
             // 如果文件检查通过，则上传文件
             if (this.fileCheck(bucketName, objectName, data))
@@ -203,9 +206,9 @@ public class CloudflareServiceStrategy implements StorageServiceStrategy
         {
             // 使用MinIO客户端删除存储桶中的文件
             this.minioClient.removeObject(RemoveObjectArgs.builder()
-                                                              .bucket(bucketName)
-                                                              .object(objectName)
-                                                              .build());
+                                                          .bucket(bucketName)
+                                                          .object(objectName)
+                                                          .build());
 
             // 返回null表示操作成功
             return null;
@@ -229,7 +232,7 @@ public class CloudflareServiceStrategy implements StorageServiceStrategy
     /**
      * 异步删除指定桶中的多个文件
      *
-     * @param bucketName 存储桶名称
+     * @param bucketName  存储桶名称
      * @param objectNames 文件名称列表，这些文件将从存储桶中删除
      */
     @Override
@@ -258,7 +261,7 @@ public class CloudflareServiceStrategy implements StorageServiceStrategy
      * 获取对象信息
      *
      * @param bucketName 存储桶名称
-     * @param objectName  对象名称
+     * @param objectName 对象名称
      * @return 对象信息
      */
     @Override
@@ -279,7 +282,7 @@ public class CloudflareServiceStrategy implements StorageServiceStrategy
      * 获取文件URL
      *
      * @param bucketName 存储桶名称
-     * @param objectName  对象名称
+     * @param objectName 对象名称
      * @return 文件URL的Optional包装
      */
     @Override
@@ -318,6 +321,7 @@ public class CloudflareServiceStrategy implements StorageServiceStrategy
             return null;
         }, CloudflareOperationLogger.Operation.CREATE, "", bucketName);
     }
+
     /**
      * 删除指定的存储桶
      *
@@ -331,8 +335,8 @@ public class CloudflareServiceStrategy implements StorageServiceStrategy
         {
             // 使用MinIO客户端删除存储桶
             this.minioClient.removeBucket(RemoveBucketArgs.builder()
-                                                              .bucket(bucketName)
-                                                              .build());
+                                                          .bucket(bucketName)
+                                                          .build());
             return null;
         }, CloudflareOperationLogger.Operation.DELETE_BUCKET, "", bucketName);
     }
@@ -342,16 +346,16 @@ public class CloudflareServiceStrategy implements StorageServiceStrategy
      *
      * @param bucketName 存储桶名称
      * @param objectName 对象名称
-     * @return 返回对象信息的GetObjec响应
+     * @return 返回对象信息的GetObject响应
      */
     @Override
     public GetObjectResponse getObject(final String bucketName, final String objectName)
     {
         // 构建获取对象的参数
         final GetObjectArgs getObjectArgs = GetObjectArgs.builder()
-                                                             .bucket(bucketName)
-                                                             .object(objectName)
-                                                             .build();
+                                                         .bucket(bucketName)
+                                                         .object(objectName)
+                                                         .build();
 
         // 执行获取对象的操作，记录获取操作日志
         return this.execute(() -> this.minioClient.getObject(getObjectArgs),
@@ -378,13 +382,13 @@ public class CloudflareServiceStrategy implements StorageServiceStrategy
      * 异步获取多个对象列表
      * 该方法使用CompletableFuture异步获取指定存储桶中的多个对象，并返回一个包含所有获取结果的列表
      *
-     * @param bucketName 存储桶名称
+     * @param bucketName  存储桶名称
      * @param objectNames 对象名称列表
      * @return 返回一个包含CompletableFuture<GetObjectResponse>的列表，每个CompletableFuture对应一个获取对象的任务
      */
     @Override
     public List<CompletableFuture<GetObjectResponse>> getObjectListAsync(final String bucketName,
-                                                                             final List<String> objectNames)
+                                                                         final List<String> objectNames)
     {
         final List<CompletableFuture<GetObjectResponse>> result = new ArrayList<>();
 
@@ -433,7 +437,7 @@ public class CloudflareServiceStrategy implements StorageServiceStrategy
      * 异步删除对象列表
      * 该方法异步删除指定存储桶中的多个对象
      *
-     * @param bucketName 存储桶名称
+     * @param bucketName  存储桶名称
      * @param objectNames 对象名称列表
      */
     @Override
@@ -444,13 +448,13 @@ public class CloudflareServiceStrategy implements StorageServiceStrategy
 
     /**
      * 检查文件是否可以上传
-     *
+     * <p>
      * 此方法用于在上传文件之前执行一系列检查，以确保文件不会覆盖现有文件，
      * 存储桶存在，文件内容不为空，且文件大小未超过允许的限制
      *
      * @param bucketName 存储桶名称，用于标识存储位置
      * @param objectName 对象（文件）名称，用于唯一标识文件
-     * @param bytes 文件内容，以字节数组形式表示
+     * @param bytes      文件内容，以字节数组形式表示
      * @return 如果所有检查都通过，则返回true；否则返回false，并记录相应的警告信息
      */
     private boolean fileCheck(final String bucketName, final String objectName, final byte[] bytes)
@@ -501,8 +505,8 @@ public class CloudflareServiceStrategy implements StorageServiceStrategy
         {
             // 创建一个请求参数对象，指定要检查的存储桶名称
             final BucketExistsArgs bucketExistsArgs = BucketExistsArgs.builder()
-                                                                          .bucket(bucketName)
-                                                                          .build();
+                                                                      .bucket(bucketName)
+                                                                      .build();
 
             // 调用MinIO客户端的方法，检查存储桶是否存在
             return this.minioClient.bucketExists(bucketExistsArgs);
