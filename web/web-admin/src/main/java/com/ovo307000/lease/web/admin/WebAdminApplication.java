@@ -12,6 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
 @Slf4j
 @SpringBootApplication
 @ComponentScan("com.ovo307000.lease.common")
+@ComponentScan("com.ovo307000.lease.web.admin")
 @MapperScan("com.ovo307000.lease.web.admin.mapper")
 @ConfigurationPropertiesScan("com.ovo307000.lease.common.properties")
 public class WebAdminApplication
