@@ -17,7 +17,7 @@ import java.util.concurrent.CompletableFuture;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class CloudflareService implements StorageService
+public class CloudflareServiceStrategy implements StorageServiceStrategy
 {
     private final MinioClient   minioClient;
     private final FileProcessor fileProcessor;

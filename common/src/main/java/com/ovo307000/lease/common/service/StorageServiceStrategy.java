@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
-public interface StorageService
+public interface StorageServiceStrategy
 {
     /**
      * 异步获取文件URL
