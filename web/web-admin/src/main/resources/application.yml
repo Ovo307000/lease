@@ -13,6 +13,8 @@ spring:
       minimum-idle: 10                                          # 最小空闲连接: 连接池中至少保持 10 个空闲连接
       pool-name: SPHHikariPool                                  # 连接池名称: 用于日志和监控，方便识别不同的连接池
     driver-class-name: com.mysql.cj.jdbc.Driver                 # MySQL 驱动类名: 用于连接 MySQL 数据库的 JDBC 驱动
+  application:
+    name: web-admin                                             # 应用名称: Web 管理端，用于 Loggers 日志记录
 
 mybatis-plus:
   configuration:
@@ -25,6 +27,7 @@ mybatis-plus:
 
 server:
   port: 8861                                                    # 应用服务端口: Web 应用监听的 HTTP 端口号，默认是 8080
+
 cloudflare:
   r2:
     access-key-id: dbd8ba9c43297141aff8ab3a8770ab2c72e10        # Cloudflare R2 Access Key ID: 用于访问 Cloudflare R2 API 的 Access Key ID
