@@ -5,11 +5,11 @@ import com.ovo307000.lease.common.utils.FileProcessor;
 import com.ovo307000.lease.common.utils.logger.CloudflareOperationLogger;
 import io.minio.*;
 import io.minio.http.Method;
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.util.*;
@@ -28,210 +28,129 @@ public class CloudflareServiceStrategy implements StorageServiceStrategy
     private final FileProcessor        fileProcessor;
     private final CloudflareProperties cloudflareProperties;
 
-    /**
-     * 异步获取文件 URL。
-     *
-     * @param bucketName 存储桶名称
-     * @param objectName 文件名称
-     * @return 包含文件 URL 的 CompletableFuture 对象
-     */
     @Override
     public CompletableFuture<Optional<String>> getFileUrlAsync(final String bucketName, final String objectName)
     {
         return CompletableFuture.supplyAsync(() -> this.getFileUrl(bucketName, objectName));
     }
 
-    /**
-     * 上传字节数组形式的文件。
-     *
-     * @param bucketName 存储桶名称
-     * @param objectName 文件名称
-     * @param bytes      文件字节数组
-     * @return 上传结果的 ObjectWriteResponse 对象
-     */
-    @Override
-    public ObjectWriteResponse putObject(final String bucketName, final String objectName, @NotNull final byte[] bytes)
+    private <R> R execute(@NotNull final SupplierWithException<R> supplier,
+                          @NotNull final CloudflareOperationLogger.Operation operation,
+                          @NotNull final String objectName,
+                          @NotNull final String bucketName)
     {
-        // 生成带有 UUID 的文件名
-        final String uuidObjectName = this.fileProcessor.generateUUIDFileName(objectName);
-
-        // 执行上传操作
-        return this.execute(() -> this.minioClient.putObject(PutObjectArgs.builder()
-                                                                          .bucket(bucketName)
-                                                                          .object(uuidObjectName)
-                                                                          .stream(new ByteArrayInputStream(bytes),
-                                                                                  bytes.length,
-                                                                                  -1)
-                                                                          .build()),
-                CloudflareOperationLogger.Operation.PUT,
-                objectName,
-                bucketName);
+        try
+        {
+            CloudflareOperationLogger.logOperationAttempt(operation, objectName, bucketName);
+            final R result = supplier.get();
+            CloudflareOperationLogger.logOperationSuccess(operation, objectName, bucketName);
+            return result;
+        }
+        catch (final Exception e)
+        {
+            CloudflareOperationLogger.logOperationFailure(operation, objectName, bucketName, e);
+            return null;
+        }
     }
 
-    /**
-     * 上传 MultipartFile 文件。
-     *
-     * @param bucketName 存储桶名称
-     * @param objectName 文件名称
-     * @param file       MultipartFile 文件
-     * @return 上传结果的 ObjectWriteResponse 对象
-     */
     @Override
-    public ObjectWriteResponse putObject(final String bucketName, final String objectName, final MultipartFile file)
+    public ObjectWriteResponse uploadFile(final String bucketName,
+                                          final String objectName,
+                                          final String contentType,
+                                          final byte[] data)
     {
-        // 检查文件是否为空
-        if (file.isEmpty())
+        if (!this.fileCheck(bucketName, objectName, data))
         {
-            log.warn("文件 `{}` 为空，无法上传", objectName);
-            throw new IllegalArgumentException("文件为空");
+            return null;
         }
 
-        // 检查文件大小是否超过最大限制
-        if (file.getSize() > this.cloudflareProperties.getMaxFileSizeofBytes())
+        final String randomName = this.fileProcessor.generateUUIDFileName(objectName);
+        return this.execute(() ->
         {
-            log.warn("文件 `{}` 大小超过 {} 字节，无法上传", objectName, this.cloudflareProperties.getMaxFileSizeofBytes());
-            throw new IllegalArgumentException("文件大小超过限制");
-        }
+            final PutObjectArgs putObjectArgs = PutObjectArgs.builder()
+                                                             .bucket(bucketName)
+                                                             .object(randomName)
+                                                             .contentType(contentType)
+                                                             .stream(new ByteArrayInputStream(data), data.length, -1)
 
-        // 如果文件大小超过大文件阈值，使用分片上传
-        if (file.getSize() >= this.cloudflareProperties.getBigFileSizeofBytes())
-        {
-            return this.execute(() -> this.minioClient.putObject(PutObjectArgs.builder()
-                                                                              .bucket(bucketName)
-                                                                              .object(objectName)
-                                                                              .stream(file.getInputStream(),
-                                                                                      file.getSize(),
-                                                                                      -1)
-                                                                              .build()),
-                    CloudflareOperationLogger.Operation.PUT,
-                    objectName,
-                    bucketName);
-        }
+                                                             .build();
 
-        // 否则，直接上传文件字节数组
-        return this.putObject(bucketName, objectName, this.fileProcessor.getBytesFromFile(file));
+            return this.minioClient.putObject(putObjectArgs);
+        }, CloudflareOperationLogger.Operation.UPLOAD, objectName, bucketName);
     }
 
-    /**
-     * 异步上传字节数组形式的文件。
-     *
-     * @param bucketName 存储桶名称
-     * @param objectName 文件名称
-     * @param bytes      文件字节数组
-     * @return 包含上传结果的 CompletableFuture 对象
-     */
     @Override
-    public CompletableFuture<ObjectWriteResponse> putObjectAsync(final String bucketName,
-                                                                 final String objectName,
-                                                                 @NotNull final byte[] bytes)
+    public CompletableFuture<ObjectWriteResponse> uploadFileAsync(final String bucketName,
+                                                                  final String objectName,
+                                                                  final String contentType,
+                                                                  final byte[] data)
     {
-        return CompletableFuture.supplyAsync(() -> this.putObject(bucketName, objectName, bytes));
+        return CompletableFuture.supplyAsync(() -> this.uploadFile(bucketName, objectName, contentType, data));
     }
 
-    /**
-     * 异步上传文件列表。
-     *
-     * @param bucketName 存储桶名称
-     * @param files      文件列表
-     * @return 包含上传结果的 Map 对象
-     */
     @Override
-    public Map<String, CompletableFuture<ObjectWriteResponse>> putObjectListAsync(final String bucketName,
-                                                                                  final List<MultipartFile> files)
+    public @Nullable Map<String, ObjectWriteResponse> uploadFileList(final String bucketName,
+                                                                     final List<String> objectNames,
+                                                                     final List<byte[]> dataList)
     {
-        final Map<String, CompletableFuture<ObjectWriteResponse>> result = new HashMap<>();
-
-        for (final MultipartFile file : files)
+        if (objectNames.size() != dataList.size())
         {
-            final String objectName = file.getOriginalFilename();
-            final byte[] bytes      = this.fileProcessor.getBytesFromFile(file);
+            log.error("文件名列表和数据列表长度不一致");
+            return null;
+        }
 
-            if (bytes == null)
+        final Map<String, ObjectWriteResponse> result = new HashMap<>();
+
+        for (final String objectName : objectNames)
+        {
+            final int    index = objectNames.indexOf(objectName);
+            final byte[] data  = dataList.get(index);
+
+            if (this.fileCheck(bucketName, objectName, data))
             {
-                log.warn("无法从文件 `{}` 中读取字节数组", objectName);
-                continue;
+                final ObjectWriteResponse response = this.uploadFile(bucketName,
+                        objectName,
+                        "application/octet-stream",
+                        data);
+                result.put(objectName, response);
             }
-
-            result.put(objectName, this.putObjectAsync(bucketName, objectName, bytes));
         }
 
         return result;
     }
 
-    /**
-     * 删除文件。
-     *
-     * @param bucketName 存储桶名称
-     * @param objectName 文件名称
-     */
     @Override
     public void removeFile(final String bucketName, final String objectName)
     {
-        RemoveObjectArgs.builder()
-                        .bucket(bucketName)
-                        .object(objectName)
-                        .build();
-
         this.execute(() ->
         {
             this.minioClient.removeObject(RemoveObjectArgs.builder()
                                                           .bucket(bucketName)
                                                           .object(objectName)
                                                           .build());
+
             return null;
         }, CloudflareOperationLogger.Operation.DELETE, objectName, bucketName);
     }
 
-    /**
-     * 异步删除文件。
-     *
-     * @param bucketName 存储桶名称
-     * @param objectName 文件名称
-     */
     @Override
     public void removeFileAsync(final String bucketName, final String objectName)
     {
         CompletableFuture.runAsync(() -> this.removeFile(bucketName, objectName));
     }
 
-    /**
-     * 异步删除文件列表。
-     *
-     * @param bucketName 存储桶名称
-     * @param objectNames 文件名称列表
-     */
     @Override
     public void removeFileListAsync(final String bucketName, final List<String> objectNames)
     {
         objectNames.forEach(objectName -> this.removeFileAsync(bucketName, objectName));
     }
 
-    /**
-     * 检查文件是否存在。
-     *
-     * @param bucketName 存储桶名称
-     * @param objectName 文件名称
-     * @return 如果文件存在则返回 true，否则返回 false
-     */
     @Override
     public boolean isFileExist(final String bucketName, final String objectName)
     {
-        if (this.getObjectInfo(bucketName, objectName) == null)
-        {
-            log.warn("文件 `{}` 不存在于存储桶 `{}` 中", objectName, bucketName);
-            return false;
-        }
-
-        return true;
+        return this.getObjectInfo(bucketName, objectName) != null;
     }
 
-    /**
-     * 获取文件信息。
-     *
-     * @param bucketName 存储桶名称
-     * @param objectName 文件名称
-     * @return 文件信息的 StatObjectResponse 对象
-     */
     @Override
     public StatObjectResponse getObjectInfo(final String bucketName, final String objectName)
     {
@@ -246,13 +165,6 @@ public class CloudflareServiceStrategy implements StorageServiceStrategy
                 bucketName);
     }
 
-    /**
-     * 获取文件 URL。
-     *
-     * @param bucketName 存储桶名称
-     * @param objectName 文件名称
-     * @return 包含文件 URL 的 Optional 对象
-     */
     @Override
     public Optional<String> getFileUrl(final String bucketName, final String objectName)
     {
@@ -268,11 +180,6 @@ public class CloudflareServiceStrategy implements StorageServiceStrategy
         }, CloudflareOperationLogger.Operation.GET, objectName, bucketName);
     }
 
-    /**
-     * 创建存储桶。
-     *
-     * @param bucketName 存储桶名称
-     */
     @Override
     public void createBucket(final String bucketName)
     {
@@ -287,13 +194,6 @@ public class CloudflareServiceStrategy implements StorageServiceStrategy
         }, CloudflareOperationLogger.Operation.CREATE, "", bucketName);
     }
 
-    /**
-     * 获取文件。
-     *
-     * @param bucketName 存储桶名称
-     * @param objectName 文件名称
-     * @return 文件的 GetObjectResponse 对象
-     */
     @Override
     public GetObjectResponse getObject(final String bucketName, final String objectName)
     {
@@ -308,26 +208,12 @@ public class CloudflareServiceStrategy implements StorageServiceStrategy
                 bucketName);
     }
 
-    /**
-     * 异步获取文件。
-     *
-     * @param bucketName 存储桶名称
-     * @param objectName 文件名称
-     * @return 包含文件的 CompletableFuture 对象
-     */
     @Override
     public CompletableFuture<GetObjectResponse> getObjectAsync(final String bucketName, final String objectName)
     {
         return CompletableFuture.supplyAsync(() -> this.getObject(bucketName, objectName));
     }
 
-    /**
-     * 异步获取文件列表。
-     *
-     * @param bucketName 存储桶名称
-     * @param objectNames 文件名称列表
-     * @return 包含文件的 CompletableFuture 对象列表
-     */
     @Override
     public List<CompletableFuture<GetObjectResponse>> getObjectListAsync(final String bucketName,
                                                                          final List<String> objectNames)
@@ -342,20 +228,9 @@ public class CloudflareServiceStrategy implements StorageServiceStrategy
         return result;
     }
 
-    /**
-     * 删除对象。
-     *
-     * @param bucketName 存储桶名称
-     * @param objectName 对象名称
-     */
     @Override
     public void removeObject(final String bucketName, final String objectName)
     {
-        RemoveObjectArgs.builder()
-                        .bucket(bucketName)
-                        .object(objectName)
-                        .build();
-
         this.execute(() ->
         {
             this.minioClient.removeObject(RemoveObjectArgs.builder()
@@ -366,81 +241,59 @@ public class CloudflareServiceStrategy implements StorageServiceStrategy
         }, CloudflareOperationLogger.Operation.DELETE, objectName, bucketName);
     }
 
-    /**
-     * 异步删除对象。
-     *
-     * @param bucketName 存储桶名称
-     * @param objectName 对象名称
-     */
     @Override
     public void removeObjectAsync(final String bucketName, final String objectName)
     {
         CompletableFuture.runAsync(() -> this.removeObject(bucketName, objectName));
     }
 
-    /**
-     * 异步删除对象列表。
-     *
-     * @param bucketName 存储桶名称
-     * @param objectNames 对象名称列表
-     */
     @Override
     public void removeObjectListAsync(final String bucketName, final List<String> objectNames)
     {
         objectNames.forEach(objectName -> this.removeObjectAsync(bucketName, objectName));
     }
 
-    /**
-     * 执行一个供应商函数，并针对操作结果进行日志记录。
-     * 该方法泛型化，可以处理任何类型的返回值，但务必小心泛型类型的擦除。
-     * <p>
-     * 此方法首先记录操作的尝试，然后尝试执行供应商函数。
-     * 如果执行成功，它记录操作成功日志并返回结果。
-     * 如果执行过程中发生异常，它记录操作失败日志并返回 null。
-     * 采用 {@link SupplierWithException} 函数式接口，以便供应商函数可以抛出异常。
-     * 日志记录使用 {@link CloudflareOperationLogger} 类。
-     *
-     * @param supplier   执行的供应商函数，可能抛出异常
-     * @param operation  云操作日志记录的操作类型
-     * @param objectName 操作对象的名称
-     * @param bucketName 桶的名称，可能与操作对象相关
-     * @param <R>        供应商函数的返回类型
-     * @return 返回供应商函数的结果，如果发生异常则返回 null
-     */
-    private <R> R execute(@NotNull final SupplierWithException<R> supplier,
-                          @NotNull final CloudflareOperationLogger.Operation operation,
-                          @NotNull final String objectName,
-                          @NotNull final String bucketName)
+    private boolean fileCheck(final String bucketName, final String objectName, final byte[] bytes)
     {
-        try
+        if (this.isFileExist(bucketName, objectName))
         {
-            // 记录操作尝试日志
-            CloudflareOperationLogger.logOperationAttempt(operation, objectName, bucketName);
-
-            // 执行供应商函数并获取结果
-            final R result = supplier.get();
-
-            // 记录操作成功日志
-            CloudflareOperationLogger.logOperationSuccess(operation, objectName, bucketName);
-
-            // 返回结果
-            return result;
+            log.warn("文件 `{}` 已存在", objectName);
+            return false;
         }
-        catch (final Exception e)
+
+        if (this.isBucketExist(bucketName))
         {
-            // 记录操作失败日志
-            CloudflareOperationLogger.logOperationFailure(operation, objectName, bucketName, e);
-
-            // 返回 null
-            return null;
+            log.warn("存储桶 `{}` 不存在", bucketName);
+            return false;
         }
+
+        if (bytes == null || bytes.length == 0)
+        {
+            log.warn("文件 `{}` 为空", objectName);
+            return false;
+        }
+
+        if (bytes.length > this.cloudflareProperties.getMaxFileSizeofBytes())
+        {
+            log.warn("文件 `{}` 大小超过限制", objectName);
+            return false;
+        }
+
+        return true;
     }
 
-    /**
-     * SupplierWithException 是一个函数式接口，允许供应商函数抛出异常。
-     *
-     * @param <R> 供应商函数的返回类型
-     */
+    private boolean isBucketExist(final String bucketName)
+    {
+        return Boolean.TRUE.equals(this.execute(() ->
+        {
+            final BucketExistsArgs bucketExistsArgs = BucketExistsArgs.builder()
+                                                                      .bucket(bucketName)
+                                                                      .build();
+
+            return this.minioClient.bucketExists(bucketExistsArgs);
+        }, CloudflareOperationLogger.Operation.FOUNT_BUCKET, "", bucketName));
+    }
+
     @FunctionalInterface
     private interface SupplierWithException<R>
     {

@@ -53,6 +53,7 @@ public class CloudflareOperationLogger
         CREATE_BUCKET,
         GET,
         CREATE,
+        FOUNT_BUCKET,
         DELETE_BUCKET
     }
 }
