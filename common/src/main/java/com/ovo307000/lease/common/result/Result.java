@@ -22,12 +22,12 @@ public class Result<T>
     {
     }
 
-    public static <T> Result<T> ok()
+    public static <T> Result<T> success()
     {
-        return Result.ok(null);
+        return Result.success(null);
     }
 
-    public static <T> Result<T> ok(final T data)
+    public static <T> Result<T> success(final T data)
     {
         return build(data, ResultCodeEnum.SUCCESS);
     }
@@ -50,12 +50,12 @@ public class Result<T>
         return result;
     }
 
-    public static <T> Result<T> fail()
+    public static <T> Result<T> failure()
     {
         return build(null, ResultCodeEnum.FAIL);
     }
 
-    public static <T> Result<T> fail(final ResultCodeEnum resultCodeEnum)
+    public static <T> Result<T> failure(final ResultCodeEnum resultCodeEnum)
     {
         return build(null, resultCodeEnum);
     }
