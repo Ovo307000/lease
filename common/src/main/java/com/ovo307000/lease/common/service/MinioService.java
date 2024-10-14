@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -29,11 +30,27 @@ public class MinioService implements StorageService
     private final FileProcessor fileProcessor;
 
     @Override
-    public ObjectWriteResponse uploadObject(final String bucketName,
-                                            final MultipartFile file,
+    public boolean isBucketExists(final MinioClient client, final StorageProperties properties)
+    {
+        final String bucketName = getBucketNameFromProperties(properties);
+
+        final BucketExistsArgs existsArgs = BucketExistsArgs.builder()
+                                                            .bucket(bucketName)
+                                                            .build();
+
+        return Boolean.TRUE.equals(CloudflareOperationLogger.execute(() -> client.bucketExists(existsArgs),
+                OperationType.CHECK_BUCKET_EXISTENCE,
+                bucketName,
+                bucketName));
+    }
+
+    @Override
+    public ObjectWriteResponse uploadObject(final MultipartFile file,
                                             final MinioClient client,
                                             final StorageProperties properties)
     {
+        final String bucketName = getBucketNameFromProperties(properties);
+
         // 检查文件是否准备就绪以进行上传
         if (!CloudStorageUtils.isFileReadyToUpload(bucketName, file, client, properties))
         {
@@ -59,31 +76,19 @@ public class MinioService implements StorageService
     }
 
     @Override
-    public List<ObjectWriteResponse> uploadObjectList(final String bucketName,
-                                                      final List<MultipartFile> fileList,
+    public List<ObjectWriteResponse> uploadObjectList(final List<MultipartFile> fileList,
                                                       final MinioClient client,
                                                       final StorageProperties properties)
     {
         return fileList.stream()
-                       .map(file -> CompletableFuture.supplyAsync(() -> this.uploadObject(bucketName,
-                               file,
-                               client,
-                               properties)))
+                       .map(file -> CompletableFuture.supplyAsync(() -> this.uploadObject(file, client, properties)))
                        .map(CompletableFuture::join)
                        .toList();
-
     }
 
-    @Override
-    public boolean isBucketExists(final String bucketName, final MinioClient client, final StorageProperties properties)
+    private static String getBucketNameFromProperties(final StorageProperties properties)
     {
-        final BucketExistsArgs existsArgs = BucketExistsArgs.builder()
-                                                            .bucket(bucketName)
-                                                            .build();
-
-        return Boolean.TRUE.equals(CloudflareOperationLogger.execute(() -> client.bucketExists(existsArgs),
-                OperationType.CHECK_BUCKET_EXISTENCE,
-                bucketName,
-                bucketName));
+        return Optional.ofNullable(properties.getBucketName())
+                       .orElseThrow(() -> new IllegalArgumentException("存储桶名称为空"));
     }
 }
