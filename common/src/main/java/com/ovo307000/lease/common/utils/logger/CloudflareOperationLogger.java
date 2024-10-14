@@ -87,6 +87,7 @@ public class CloudflareOperationLogger
             case LIST_BUCKETS -> OperationType.LIST_BUCKETS.getDescription();
             case CHECK_BUCKET_EXISTENCE -> OperationType.CHECK_BUCKET_EXISTENCE.getDescription();
             case UPLOAD_OBJECT -> OperationType.UPLOAD_OBJECT.getDescription();
+            case GET_OBJECT_URL -> OperationType.GET_OBJECT_URL.getDescription();
         };
     }
 
