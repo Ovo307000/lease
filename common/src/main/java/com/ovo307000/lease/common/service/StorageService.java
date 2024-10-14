@@ -9,10 +9,12 @@ import java.util.List;
 
 public interface StorageService extends Service
 {
-    ObjectWriteResponse uploadObject(String bucketName, MultipartFile file, MinioClient client, StorageProperties properties);
+    ObjectWriteResponse uploadObject(MultipartFile file, MinioClient client, StorageProperties properties);
 
-    List<ObjectWriteResponse> uploadObjectList(String bucketName, List<MultipartFile> fileList, MinioClient client, StorageProperties properties);
+    List<ObjectWriteResponse> uploadObjectList(List<MultipartFile> fileList,
+                                               MinioClient client,
+                                               StorageProperties properties);
 
 
-    boolean isBucketExists(String bucketName, MinioClient client, StorageProperties properties);
+    boolean isBucketExists(MinioClient client, StorageProperties properties);
 }
