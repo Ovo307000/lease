@@ -21,21 +21,21 @@ public class ViewAppointmentController
     @PostMapping("/saveOrUpdate")
     public Result<Void> saveOrUpdate(@RequestBody final ViewAppointment viewAppointment)
     {
-        return Result.ok();
+        return Result.success();
     }
 
     @Operation(summary = "查询个人预约看房列表")
     @GetMapping("listItem")
     public Result<List<AppointmentItemVo>> listItem()
     {
-        return Result.ok();
+        return Result.success();
     }
 
     @GetMapping("getDetailById")
     @Operation(summary = "根据ID查询预约详情信息")
     public Result<AppointmentDetailVo> getDetailById(final Long id)
     {
-        return Result.ok();
+        return Result.success();
     }
 
 }

@@ -24,41 +24,41 @@ public class SystemUserController
                                                 @RequestParam final long size,
                                                 final SystemUserQueryVo queryVo)
     {
-        return Result.ok();
+        return Result.success();
     }
 
     @Operation(summary = "根据ID查询后台用户信息")
     @GetMapping("getById")
     public Result<SystemUserItemVo> getById(@RequestParam final Long id)
     {
-        return Result.ok();
+        return Result.success();
     }
 
     @Operation(summary = "保存或更新后台用户信息")
     @PostMapping("saveOrUpdate")
     public Result<Void> saveOrUpdate(@RequestBody final SystemUser systemUser)
     {
-        return Result.ok();
+        return Result.success();
     }
 
     @Operation(summary = "判断后台用户名是否可用")
     @GetMapping("isUserNameAvailable")
     public Result<Boolean> isUsernameExists(@RequestParam final String username)
     {
-        return Result.ok();
+        return Result.success();
     }
 
     @DeleteMapping("deleteById")
     @Operation(summary = "根据ID删除后台用户信息")
     public Result<Void> removeById(@RequestParam final Long id)
     {
-        return Result.ok();
+        return Result.success();
     }
 
     @Operation(summary = "根据ID修改后台用户状态")
     @PostMapping("updateStatusByUserId")
     public Result<Void> updateStatusByUserId(@RequestParam final Long id, @RequestParam final BaseStatus status)
     {
-        return Result.ok();
+        return Result.success();
     }
 }

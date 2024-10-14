@@ -38,7 +38,7 @@ public class LeaseTermController
 
         final List<LeaseTerm> list = this.leaseTermServiceImpl.list();
 
-        return list.isEmpty() ? Result.fail(ResultCodeEnum.NO_FOUND) : Result.ok(list);
+        return list.isEmpty() ? Result.failure(ResultCodeEnum.NO_FOUND) : Result.success(list);
     }
 
     /**
@@ -66,7 +66,7 @@ public class LeaseTermController
 
         final boolean saveOrUpdate = this.leaseTermServiceImpl.saveOrUpdate(leaseTerm);
 
-        return saveOrUpdate ? Result.ok() : Result.fail(ResultCodeEnum.NO_FOUND);
+        return saveOrUpdate ? Result.success() : Result.failure(ResultCodeEnum.NO_FOUND);
     }
 
     /**
@@ -83,6 +83,6 @@ public class LeaseTermController
 
         final boolean remove = this.leaseTermServiceImpl.removeById(id);
 
-        return remove ? Result.ok() : Result.fail(ResultCodeEnum.NO_FOUND);
+        return remove ? Result.success() : Result.failure(ResultCodeEnum.NO_FOUND);
     }
 }

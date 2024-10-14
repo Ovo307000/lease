@@ -19,20 +19,20 @@ public class LoginController
     @GetMapping("login/captcha")
     public Result<CaptchaVo> getCaptcha()
     {
-        return Result.ok();
+        return Result.success();
     }
 
     @Operation(summary = "登录")
     @PostMapping("login")
     public Result<String> login(@RequestBody final LoginVo loginVo)
     {
-        return Result.ok();
+        return Result.success();
     }
 
     @Operation(summary = "获取登陆用户个人信息")
     @GetMapping("info")
     public Result<SystemUserInfoVo> info()
     {
-        return Result.ok();
+        return Result.success();
     }
 }

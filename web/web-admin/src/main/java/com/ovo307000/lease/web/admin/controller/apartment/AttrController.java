@@ -52,7 +52,7 @@ public class AttrController
         final boolean saved = this.attrKeyServiceImpl.saveOrUpdate(attrKey);
 
         // 返回操作结果
-        return saved ? Result.ok() : Result.fail(ResultCodeEnum.SAVE_FAILED);
+        return saved ? Result.success() : Result.failure(ResultCodeEnum.SAVE_FAILED);
     }
 
     /**
@@ -74,7 +74,7 @@ public class AttrController
         final boolean saved = this.attrValueServiceImpl.saveOrUpdate(attrValue);
 
         // 返回操作结果
-        return saved ? Result.ok() : Result.fail(ResultCodeEnum.SAVE_FAILED);
+        return saved ? Result.success() : Result.failure(ResultCodeEnum.SAVE_FAILED);
     }
 
     /**
@@ -97,7 +97,7 @@ public class AttrController
         final List<AttrKeyVo> attrKeyList = this.attrKeyServiceImpl.listAttrKeyVo();
 
         // 返回查询结果
-        return attrKeyList.isEmpty() ? Result.fail(ResultCodeEnum.NO_FOUND) : Result.ok(attrKeyList);
+        return attrKeyList.isEmpty() ? Result.failure(ResultCodeEnum.NO_FOUND) : Result.success(attrKeyList);
     }
 
     /**
@@ -123,7 +123,7 @@ public class AttrController
         final boolean removedKey = this.attrKeyServiceImpl.removeById(attrKeyId);
 
         // 返回操作结果
-        return removed && removedKey ? Result.ok() : Result.fail(ResultCodeEnum.REMOVE_FAILED);
+        return removed && removedKey ? Result.success() : Result.failure(ResultCodeEnum.REMOVE_FAILED);
     }
 
     /**
@@ -145,6 +145,6 @@ public class AttrController
         final boolean removed = this.attrValueServiceImpl.removeById(id);
 
         // 返回操作结果
-        return removed ? Result.ok() : Result.fail(ResultCodeEnum.REMOVE_NOT_FOUND);
+        return removed ? Result.success() : Result.failure(ResultCodeEnum.REMOVE_NOT_FOUND);
     }
 }

@@ -23,14 +23,14 @@ public class ViewAppointmentController
                                              @RequestParam final long size,
                                              final AppointmentQueryVo queryVo)
     {
-        return Result.ok();
+        return Result.success();
     }
 
     @Operation(summary = "根据id更新预约状态")
     @PostMapping("updateStatusById")
     public Result<Void> updateStatusById(@RequestParam final Long id, @RequestParam final AppointmentStatus status)
     {
-        return Result.ok();
+        return Result.success();
     }
 
 }

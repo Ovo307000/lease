@@ -40,7 +40,7 @@ public class ApartmentController
     @PostMapping("saveOrUpdate")
     public Result<Void> saveOrUpdate(@RequestBody final ApartmentSubmitVo apartmentSubmitVo)
     {
-        return Result.ok();
+        return Result.success();
     }
 
     /**
@@ -57,7 +57,7 @@ public class ApartmentController
                                                    @RequestParam final long size,
                                                    final ApartmentQueryVo queryVo)
     {
-        return Result.ok();
+        return Result.success();
     }
 
     /**
@@ -70,7 +70,7 @@ public class ApartmentController
     @GetMapping("getDetailById")
     public Result<ApartmentDetailVo> getDetailById(@RequestParam final Long id)
     {
-        return Result.ok();
+        return Result.success();
     }
 
     /**
@@ -83,7 +83,7 @@ public class ApartmentController
     @DeleteMapping("removeById")
     public Result<Void> removeById(@RequestParam final Long id)
     {
-        return Result.ok();
+        return Result.success();
     }
 
     /**
@@ -97,7 +97,7 @@ public class ApartmentController
     @PostMapping("updateReleaseStatusById")
     public Result<Void> updateReleaseStatusById(@RequestParam final Long id, @RequestParam final ReleaseStatus status)
     {
-        return Result.ok();
+        return Result.success();
     }
 
     /**
@@ -110,6 +110,6 @@ public class ApartmentController
     @GetMapping("listInfoByDistrictId")
     public Result<List<ApartmentInfo>> listInfoByDistrictId(@RequestParam final Long id)
     {
-        return Result.ok();
+        return Result.success();
     }
 }

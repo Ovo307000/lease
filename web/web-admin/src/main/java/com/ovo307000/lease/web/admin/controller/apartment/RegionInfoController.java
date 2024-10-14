@@ -48,7 +48,7 @@ public class RegionInfoController
 
         final List<ProvinceInfo> provinceInfoList = this.provinceInfoServiceImpl.list();
 
-        return provinceInfoList.isEmpty() ? Result.fail(ResultCodeEnum.NO_FOUND) : Result.ok(provinceInfoList);
+        return provinceInfoList.isEmpty() ? Result.failure(ResultCodeEnum.NO_FOUND) : Result.success(provinceInfoList);
     }
 
     /**
@@ -68,7 +68,7 @@ public class RegionInfoController
 
         final List<CityInfo> cityInfoList = this.cityInfoServiceImpl.list(queryWrapper);
 
-        return cityInfoList.isEmpty() ? Result.fail(ResultCodeEnum.NO_FOUND) : Result.ok(cityInfoList);
+        return cityInfoList.isEmpty() ? Result.failure(ResultCodeEnum.NO_FOUND) : Result.success(cityInfoList);
     }
 
     /**
@@ -88,6 +88,6 @@ public class RegionInfoController
 
         final List<DistrictInfo> districtInfoList = this.districtInfoServiceImpl.list(queryWrapper);
 
-        return districtInfoList.isEmpty() ? Result.fail(ResultCodeEnum.NO_FOUND) : Result.ok(districtInfoList);
+        return districtInfoList.isEmpty() ? Result.failure(ResultCodeEnum.NO_FOUND) : Result.success(districtInfoList);
     }
 }

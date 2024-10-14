@@ -31,7 +31,10 @@ public class CloudStorageUtils
      * @param <P> 属性配置类型
      * @return 如果文件准备就绪则返回true，否则返回false
      */
-    public <T, P extends StorageProperties> boolean isFileReadyToUpload(final String bucketName, final MultipartFile file, final T client, final P properties)
+    public static <T, P extends StorageProperties> boolean isFileReadyToUpload(final String bucketName,
+                                                                               final MultipartFile file,
+                                                                               final T client,
+                                                                               final P properties)
     {
         // 当客户端为MinioClient类型时，执行特定的检查逻辑
         if (client instanceof final MinioClient minioClient)

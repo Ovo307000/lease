@@ -42,7 +42,7 @@ public class PaymentTypeController
 
         final List<PaymentType> paymentTypes = this.paymentTypeServiceImpl.listNotDeleted();
 
-        return paymentTypes.isEmpty() ? Result.fail(ResultCodeEnum.NO_FOUND) : Result.ok(paymentTypes);
+        return paymentTypes.isEmpty() ? Result.failure(ResultCodeEnum.NO_FOUND) : Result.success(paymentTypes);
     }
 
     /**
@@ -69,8 +69,8 @@ public class PaymentTypeController
         }
 
         return this.paymentTypeServiceImpl.saveOrUpdate(paymentType) ?
-               Result.ok() :
-               Result.fail(ResultCodeEnum.NO_FOUND);
+               Result.success() :
+               Result.failure(ResultCodeEnum.NO_FOUND);
     }
 
     /**
@@ -85,6 +85,6 @@ public class PaymentTypeController
     {
         log.info("正在删除支付方式: {}", id);
 
-        return this.paymentTypeServiceImpl.removeById(id) ? Result.ok() : Result.fail(ResultCodeEnum.NO_FOUND);
+        return this.paymentTypeServiceImpl.removeById(id) ? Result.success() : Result.failure(ResultCodeEnum.NO_FOUND);
     }
 }

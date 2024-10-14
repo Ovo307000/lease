@@ -18,21 +18,21 @@ public class LoginController
     @Operation(summary = "获取短信验证码")
     public Result<Void> getCode(@RequestParam final String phone)
     {
-        return Result.ok();
+        return Result.success();
     }
 
     @PostMapping("login")
     @Operation(summary = "登录")
     public Result<String> login(@RequestBody final LoginVo loginVo)
     {
-        return Result.ok();
+        return Result.success();
     }
 
     @GetMapping("info")
     @Operation(summary = "获取登录用户信息")
     public Result<UserInfoVo> info()
     {
-        return Result.ok();
+        return Result.success();
     }
 }
 

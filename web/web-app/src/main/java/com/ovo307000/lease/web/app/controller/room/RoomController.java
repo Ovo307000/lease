@@ -23,14 +23,14 @@ public class RoomController
     @GetMapping("pageItem")
     public Result<IPage<RoomItemVo>> pageItem(@RequestParam final long current, @RequestParam final long size, final RoomQueryVo queryVo)
     {
-        return Result.ok();
+        return Result.success();
     }
 
     @Operation(summary = "根据id获取房间的详细信息")
     @GetMapping("getDetailById")
     public Result<RoomDetailVo> getDetailById(@RequestParam final Long id)
     {
-        return Result.ok();
+        return Result.success();
     }
 
     @Operation(summary = "根据公寓id分页查询房间列表")
@@ -39,6 +39,6 @@ public class RoomController
                                                            @RequestParam final long size,
                                                            @RequestParam final Long id)
     {
-        return Result.ok();
+        return Result.success();
     }
 }

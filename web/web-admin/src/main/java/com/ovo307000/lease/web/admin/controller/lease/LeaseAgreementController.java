@@ -22,7 +22,7 @@ public class LeaseAgreementController
     @PostMapping("saveOrUpdate")
     public Result<Void> saveOrUpdate(@RequestBody final LeaseAgreement leaseAgreement)
     {
-        return Result.ok();
+        return Result.success();
     }
 
     @Operation(summary = "根据条件分页查询租约列表")
@@ -31,28 +31,28 @@ public class LeaseAgreementController
                                            @RequestParam final long size,
                                            final AgreementQueryVo queryVo)
     {
-        return Result.ok();
+        return Result.success();
     }
 
     @Operation(summary = "根据id查询租约信息")
     @GetMapping(name = "getById")
     public Result<AgreementVo> getById(@RequestParam final Long id)
     {
-        return Result.ok();
+        return Result.success();
     }
 
     @Operation(summary = "根据id删除租约信息")
     @DeleteMapping("removeById")
     public Result<Void> removeById(@RequestParam final Long id)
     {
-        return Result.ok();
+        return Result.success();
     }
 
     @Operation(summary = "根据id更新租约状态")
     @PostMapping("updateStatusById")
     public Result<Void> updateStatusById(@RequestParam final Long id, @RequestParam final LeaseStatus status)
     {
-        return Result.ok();
+        return Result.success();
     }
 
 }

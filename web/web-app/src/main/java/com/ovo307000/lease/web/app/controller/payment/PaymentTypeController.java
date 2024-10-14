@@ -22,13 +22,13 @@ public class PaymentTypeController
     @GetMapping("listByRoomId")
     public Result<List<PaymentType>> list(@RequestParam final Long id)
     {
-        return Result.ok();
+        return Result.success();
     }
 
     @Operation(summary = "获取全部支付方式列表")
     @GetMapping("list")
     public Result<List<PaymentType>> list()
     {
-        return Result.ok();
+        return Result.success();
     }
 }

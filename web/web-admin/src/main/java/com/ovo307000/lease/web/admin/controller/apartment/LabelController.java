@@ -54,7 +54,7 @@ public class LabelController
         queryWrapper.eq(type != null, LabelInfo::getType, type);
         final List<LabelInfo> labelInfoList = this.labelInfoServiceImpl.list(queryWrapper);
 
-        return labelInfoList.isEmpty() ? Result.fail() : Result.ok(labelInfoList);
+        return labelInfoList.isEmpty() ? Result.failure() : Result.success(labelInfoList);
     }
 
     /**
@@ -85,7 +85,7 @@ public class LabelController
 
         final boolean saved = this.labelInfoServiceImpl.saveOrUpdate(labelInfo);
 
-        return saved ? Result.ok() : Result.fail(ResultCodeEnum.NO_FOUND);
+        return saved ? Result.success() : Result.failure(ResultCodeEnum.NO_FOUND);
     }
 
     /**
@@ -105,6 +105,6 @@ public class LabelController
 
         final boolean removed = this.labelInfoServiceImpl.removeById(id);
 
-        return removed ? Result.ok() : Result.fail(ResultCodeEnum.NO_FOUND);
+        return removed ? Result.success() : Result.failure(ResultCodeEnum.NO_FOUND);
     }
 }

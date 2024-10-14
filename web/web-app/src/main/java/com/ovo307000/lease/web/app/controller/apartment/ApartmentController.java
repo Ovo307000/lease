@@ -19,6 +19,6 @@ public class ApartmentController
     @GetMapping("getDetailById")
     public Result<ApartmentDetailVo> getDetailById(@RequestParam final Long id)
     {
-        return Result.ok();
+        return Result.success();
     }
 }

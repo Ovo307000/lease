@@ -50,7 +50,7 @@ public class FacilityController
         final List<FacilityInfo> facilityInfoList = this.facilityInfoServiceImpl.list(queryWrapper);
 
         // 返回查询结果
-        return facilityInfoList.isEmpty() ? Result.fail(ResultCodeEnum.NO_FOUND) : Result.ok(facilityInfoList);
+        return facilityInfoList.isEmpty() ? Result.failure(ResultCodeEnum.NO_FOUND) : Result.success(facilityInfoList);
     }
 
     /**
@@ -70,7 +70,7 @@ public class FacilityController
         final boolean saved = this.facilityInfoServiceImpl.saveOrUpdate(facilityInfo);
 
         // 返回操作结果
-        return saved ? Result.ok() : Result.fail(ResultCodeEnum.SAVE_FAILED);
+        return saved ? Result.success() : Result.failure(ResultCodeEnum.SAVE_FAILED);
     }
 
     /**
@@ -90,6 +90,6 @@ public class FacilityController
         final boolean removed = this.facilityInfoServiceImpl.removeById(id);
 
         // 返回操作结果
-        return removed ? Result.ok() : Result.fail(ResultCodeEnum.REMOVE_NOT_FOUND);
+        return removed ? Result.success() : Result.failure(ResultCodeEnum.REMOVE_NOT_FOUND);
     }
 }

@@ -44,7 +44,7 @@ public class FeeController {
 
         final boolean saved = this.feeKeyServiceImpl.saveOrUpdate(feeKey);
 
-        return saved ? Result.ok() : Result.fail(ResultCodeEnum.SAVE_FAILED);
+        return saved ? Result.success() : Result.failure(ResultCodeEnum.SAVE_FAILED);
     }
 
     /**
@@ -60,7 +60,7 @@ public class FeeController {
 
         final boolean saved = this.feeValueServiceImpl.saveOrUpdate(feeValue);
 
-        return saved ? Result.ok() : Result.fail(ResultCodeEnum.SAVE_FAILED);
+        return saved ? Result.success() : Result.failure(ResultCodeEnum.SAVE_FAILED);
     }
 
     /**
@@ -75,7 +75,7 @@ public class FeeController {
 
         final List<FeeKeyVo> feeKeyVos = this.feeKeyServiceImpl.listFeeKeyVo();
 
-        return feeKeyVos.isEmpty() ? Result.fail(ResultCodeEnum.NO_FOUND) : Result.ok(feeKeyVos);
+        return feeKeyVos.isEmpty() ? Result.failure(ResultCodeEnum.NO_FOUND) : Result.success(feeKeyVos);
     }
 
     /**
@@ -96,7 +96,7 @@ public class FeeController {
 
         final boolean valueRemoved = this.feeValueServiceImpl.remove(queryWrapper);
 
-        return keyRemoved && valueRemoved ? Result.ok() : Result.fail(ResultCodeEnum.DELETE_FAILED);
+        return keyRemoved && valueRemoved ? Result.success() : Result.failure(ResultCodeEnum.DELETE_FAILED);
     }
 
     /**
@@ -112,6 +112,6 @@ public class FeeController {
 
         final boolean removed = this.feeValueMapper.deleteById(id) > 0;
 
-        return removed ? Result.ok() : Result.fail(ResultCodeEnum.DELETE_FAILED);
+        return removed ? Result.success() : Result.failure(ResultCodeEnum.DELETE_FAILED);
     }
 }

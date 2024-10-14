@@ -21,6 +21,6 @@ public class LeaseTermController
     @Operation(summary = "根据房间id获取可选获取租期列表")
     public Result<List<LeaseTerm>> list(@RequestParam final Long id)
     {
-        return Result.ok();
+        return Result.success();
     }
 }

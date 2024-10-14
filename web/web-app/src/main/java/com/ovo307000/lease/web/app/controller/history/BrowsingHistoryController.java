@@ -21,6 +21,6 @@ public class BrowsingHistoryController
     @GetMapping("pageItem")
     private Result<IPage<HistoryItemVo>> page(@RequestParam final long current, @RequestParam final long size)
     {
-        return Result.ok();
+        return Result.success();
     }
 }

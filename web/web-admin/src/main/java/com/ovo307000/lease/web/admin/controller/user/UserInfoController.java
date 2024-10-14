@@ -22,13 +22,13 @@ public class UserInfoController
                                                 @RequestParam final long size,
                                                 final UserInfoQueryVo queryVo)
     {
-        return Result.ok();
+        return Result.success();
     }
 
     @Operation(summary = "根据用户id更新账号状态")
     @PostMapping("updateStatusById")
     public Result<Void> updateStatusById(@RequestParam final Long id, @RequestParam final BaseStatus status)
     {
-        return Result.ok();
+        return Result.success();
     }
 }
