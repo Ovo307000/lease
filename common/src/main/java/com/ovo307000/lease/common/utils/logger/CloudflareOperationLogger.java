@@ -1,6 +1,7 @@
 package com.ovo307000.lease.common.utils.logger;
 
 import com.ovo307000.lease.common.enumeration.OperationType;
+import com.ovo307000.lease.common.enumeration.StockpileType;
 import com.ovo307000.lease.common.functional.RunnableWithException;
 import com.ovo307000.lease.common.functional.SupplierWithException;
 import jakarta.validation.constraints.NotNull;
@@ -85,6 +86,7 @@ public class CloudflareOperationLogger
             case CREATE_BUCKET -> OperationType.CREATE_BUCKET.getDescription();
             case DELETE_BUCKET -> OperationType.DELETE_BUCKET.getDescription();
             case LIST_BUCKETS -> OperationType.LIST_BUCKETS.getDescription();
+            case CHECK_BUCKET_EXISTENCE -> OperationType.CHECK_BUCKET_EXISTENCE.getDescription();
         };
     }
 
