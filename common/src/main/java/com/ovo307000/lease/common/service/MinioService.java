@@ -7,6 +7,7 @@ import com.ovo307000.lease.common.utils.FileProcessor;
 import com.ovo307000.lease.common.utils.logger.CloudflareOperationLogger;
 import io.minio.BucketExistsArgs;
 import io.minio.MinioClient;
+import io.minio.ObjectWriteResponse;
 import io.minio.PutObjectArgs;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * CloudflareServiceStrategy 是一个实现了 StorageServiceStrategy 接口的服务类，
@@ -27,15 +29,15 @@ public class MinioService implements StorageService
     private final FileProcessor fileProcessor;
 
     @Override
-    public void uploadObject(final String bucketName,
-                             final MultipartFile file,
-                             final MinioClient client,
-                             final StorageProperties properties)
+    public ObjectWriteResponse uploadObject(final String bucketName,
+                                            final MultipartFile file,
+                                            final MinioClient client,
+                                            final StorageProperties properties)
     {
         // 检查文件是否准备就绪以进行上传
         if (!CloudStorageUtils.isFileReadyToUpload(bucketName, file, client, properties))
         {
-            return;
+            throw new IllegalArgumentException("文件未准备就绪");
         }
 
         // 生成文件名
@@ -43,26 +45,33 @@ public class MinioService implements StorageService
         log.info("文件名: {} => {}", file.getOriginalFilename(), fileName);
 
         // 上传文件
-        CloudflareOperationLogger.execute(() ->
-        {
-            client.putObject(PutObjectArgs.builder()
-                                          .bucket(bucketName)
-                                          .object(fileName)
-                                          .stream(file.getInputStream(), file.getSize(), -1)
-                                          .contentType(file.getContentType())
-                                          .build());
-        }, OperationType.UPLOAD_OBJECT, fileName, bucketName);
+        return CloudflareOperationLogger.execute(() -> client.putObject(PutObjectArgs.builder()
+                                                                                     .bucket(bucketName)
+                                                                                     .object(fileName)
+                                                                                     .stream(file.getInputStream(),
+                                                                                             file.getSize(),
+                                                                                             -1)
+                                                                                     .contentType(file.getContentType())
+                                                                                     .build()),
+                OperationType.UPLOAD_OBJECT,
+                fileName,
+                bucketName);
     }
 
     @Override
-    public void uploadObjectList(final String bucketName,
-                                 final List<MultipartFile> fileList,
-                                 final MinioClient client,
-                                 final StorageProperties properties)
+    public List<ObjectWriteResponse> uploadObjectList(final String bucketName,
+                                                      final List<MultipartFile> fileList,
+                                                      final MinioClient client,
+                                                      final StorageProperties properties)
     {
-        fileList.stream()
-                .filter(file -> CloudStorageUtils.isFileReadyToUpload(bucketName, file, client, properties))
-                .forEach(file -> this.uploadObject(bucketName, file, client, properties));
+        return fileList.stream()
+                       .map(file -> CompletableFuture.supplyAsync(() -> this.uploadObject(bucketName,
+                               file,
+                               client,
+                               properties)))
+                       .map(CompletableFuture::join)
+                       .toList();
+
     }
 
     @Override
