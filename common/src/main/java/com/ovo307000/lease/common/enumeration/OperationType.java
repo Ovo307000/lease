@@ -16,7 +16,8 @@ public enum OperationType
     DELETE_BUCKET("删除存储桶"),
     LIST_BUCKETS("列出存储桶"),
     CHECK_BUCKET_EXISTENCE("检查存储桶是否存在"),
-    UPLOAD_OBJECT("上传对象");
+    UPLOAD_OBJECT("上传对象"),
+    GET_OBJECT_URL("获取对象URL");
 
     private final String description;
 }
