@@ -19,8 +19,7 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * CloudflareServiceStrategy 是一个实现了 StorageServiceStrategy 接口的服务类，
- * 负责与 Cloudflare R2 存储服务进行交互。
+ * Minio服务实现类，用于处理与Minio存储相关的操作.
  */
 @Slf4j
 @Service
@@ -29,6 +28,13 @@ public class MinioService implements StorageService
 {
     private final FileProcessor fileProcessor;
 
+    /**
+     * 检查指定的存储桶是否存在于Minio服务器.
+     *
+     * @param client     Minio客户端
+     * @param properties 存储属性配置
+     * @return 如果存储桶存在返回true，否则返回false
+     */
     @Override
     public boolean isBucketExists(final MinioClient client, final StorageProperties properties)
     {
@@ -44,6 +50,15 @@ public class MinioService implements StorageService
                 bucketName));
     }
 
+    /**
+     * 上传单个对象（文件）到Minio存储桶.
+     *
+     * @param file       要上传的文件
+     * @param client     Minio客户端
+     * @param properties 存储属性配置
+     * @return 返回上传对象的响应信息
+     * @throws IllegalArgumentException 如果文件未准备就绪或存储桶名称为空
+     */
     @Override
     public ObjectWriteResponse uploadObject(final MultipartFile file,
                                             final MinioClient client,
@@ -75,6 +90,14 @@ public class MinioService implements StorageService
                 bucketName);
     }
 
+    /**
+     * 批量上传对象（文件）到Minio存储桶.
+     *
+     * @param fileList   要上传的文件列表
+     * @param client     Minio客户端
+     * @param properties 存储属性配置
+     * @return 返回上传对象的响应信息列表
+     */
     @Override
     public List<ObjectWriteResponse> uploadObjectList(final List<MultipartFile> fileList,
                                                       final MinioClient client,
@@ -86,6 +109,13 @@ public class MinioService implements StorageService
                        .toList();
     }
 
+    /**
+     * 从存储属性配置中获取存储桶名称.
+     *
+     * @param properties 存储属性配置
+     * @return 返回存储桶名称
+     * @throws IllegalArgumentException 如果存储桶名称为空
+     */
     private static String getBucketNameFromProperties(final StorageProperties properties)
     {
         return Optional.ofNullable(properties.getBucketName())
