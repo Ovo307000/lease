@@ -37,3 +37,8 @@ cloudflare:
     endpoint: https://6f2186c3068ec2904175ebeec00ae9d0.r2.cloudflarestorage.com # Cloudflare R2 存储桶地址: 用于访问 Cloudflare R2 存储桶的地址
     big-file-sizeof-bytes: 104857600                            # 大文件大小: 100 MB，即大于 100 MB 的文件将使用分片上传
     max-file-sizeof-bytes: 10485760000                          # 最大文件大小: 10 GB，即最大支持上传 10 GB 的文件
+minio:
+  secret-key: minioadmin                                        # MinIO Secret Key: MinIO root 用户密码
+  access-key: minioadmin                                        # MinIO Access Key: MinIO root 用户名
+  bucket-name: lease                                            # MinIO 存储桶名称: 用于存储文件的存储桶名称
+  endpoint: http://localhost:9000                               # MinIO 服务地址: 本地 MinIO 服务地址
