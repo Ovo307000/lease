@@ -2,8 +2,8 @@ package com.ovo307000.lease.web.admin.controller.apartment;
 
 import com.ovo307000.lease.common.properties.MinioProperties;
 import com.ovo307000.lease.common.result.Result;
-import com.ovo307000.lease.common.result.ResultCodeEnum;
 import com.ovo307000.lease.common.service.MinioService;
+import com.ovo307000.lease.common.utils.CloudStorageUtils;
 import io.minio.MinioClient;
 import io.minio.ObjectWriteResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,12 +34,6 @@ public class FileUploadController
     // 注入Minio配置属性
     private final MinioProperties minioProperties;
 
-    /**
-     * 上传文件接口
-     *
-     * @param file 待上传的文件
-     * @return 返回上传结果或上传失败时的错误信息
-     */
     @Operation(summary = "上传文件")
     @PostMapping("upload")
     public Result<String> upload(@RequestParam final MultipartFile file)
@@ -52,11 +46,11 @@ public class FileUploadController
                 this.minioClient,
                 this.minioProperties);
 
-        // 根据上传响应结果判断文件是否成功上传
-        return objectWriteResponse.object()
-                                  .isEmpty() ?
-               Result.failure(ResultCodeEnum.FILE_UPLOAD_FAILED) :
-               Result.success(objectWriteResponse.object());
+        final String objectUrl = CloudStorageUtils.getObjectUrl(this.minioClient, objectWriteResponse);
+
+        log.info("文件上传成功，URL：{}", objectUrl);
+
+        return Result.success(objectUrl);
     }
 }
 
