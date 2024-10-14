@@ -16,6 +16,11 @@ spring:
   application:
     name: web-admin                                             # 应用名称: Web 管理端，用于 Loggers 日志记录
 
+  servlet:
+    multipart:
+      max-file-size: ${storage.cloudflare.r2.max-file-sizeof-bytes}  # 最大文件大小: 10 GB，即最大支持上传 10 GB 的文件
+      max-request-size: ${storage.cloudflare.r2.max-file-sizeof-bytes} # 最大请求大小: 10 GB，即最大支持上传 10 GB 的文件
+
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl       # SQL 日志实现: 将 MyBatis 生成的 SQL 语句打印到控制台，便于调试
