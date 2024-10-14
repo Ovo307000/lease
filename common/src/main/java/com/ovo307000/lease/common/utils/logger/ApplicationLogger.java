@@ -149,7 +149,7 @@ public class ApplicationLogger
                                  ==========================================================
                                  
                                  
-                                    %s
+                                 %s
                                  """,
                     this.applicationName,
                     this.applicationVersion,
