@@ -15,10 +15,9 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver                 # MySQL 驱动类名: 用于连接 MySQL 数据库的 JDBC 驱动
   application:
     name: web-admin                                             # 应用名称: Web 管理端，用于 Loggers 日志记录
-
   servlet:
     multipart:
-      max-file-size: ${storage.cloudflare.r2.max-file-sizeof-bytes}  # 最大文件大小: 10 GB，即最大支持上传 10 GB 的文件
+      max-file-size: ${storage.cloudflare.r2.max-file-sizeof-bytes}    # 最大文件大小: 10 GB，即最大支持上传 10 GB 的文件
       max-request-size: ${storage.cloudflare.r2.max-file-sizeof-bytes} # 最大请求大小: 10 GB，即最大支持上传 10 GB 的文件
 
 mybatis-plus:
