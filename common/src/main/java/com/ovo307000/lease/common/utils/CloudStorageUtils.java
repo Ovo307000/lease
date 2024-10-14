@@ -1,8 +1,6 @@
 package com.ovo307000.lease.common.utils;
 
 import com.ovo307000.lease.common.enumeration.OperationType;
-import com.ovo307000.lease.common.properties.CloudflareProperties;
-import com.ovo307000.lease.common.properties.MinioProperties;
 import com.ovo307000.lease.common.properties.StorageProperties;
 import com.ovo307000.lease.common.utils.logger.CloudflareOperationLogger;
 import io.minio.BucketExistsArgs;
@@ -24,11 +22,11 @@ public class CloudStorageUtils
      * 检查文件是否准备就绪以进行上传
      *
      * @param bucketName 存储桶名称
-     * @param file 待上传的文件
-     * @param client 存储客户端
+     * @param file       待上传的文件
+     * @param client     存储客户端
      * @param properties 存储属性配置
-     * @param <T> 客户端类型
-     * @param <P> 属性配置类型
+     * @param <T>        客户端类型
+     * @param <P>        属性配置类型
      * @return 如果文件准备就绪则返回true，否则返回false
      */
     public static <T, P extends StorageProperties> boolean isFileReadyToUpload(final String bucketName,
@@ -64,7 +62,7 @@ public class CloudStorageUtils
     /**
      * 检查指定的存储桶是否存在
      *
-     * @param client Minio客户端
+     * @param client     Minio客户端
      * @param bucketName 存储桶名称
      * @return 如果存储桶存在则返回true，否则返回false
      */
@@ -84,9 +82,9 @@ public class CloudStorageUtils
     /**
      * 检查文件大小是否符合属性配置的要求
      *
-     * @param file 待检查的文件
+     * @param file       待检查的文件
      * @param properties 存储属性配置
-     * @param <T> 属性配置类型
+     * @param <T>        属性配置类型
      * @return 如果文件大小符合要求则返回true，否则返回false
      */
     private static <T extends StorageProperties> boolean isFileSizeValid(final MultipartFile file, final T properties)
