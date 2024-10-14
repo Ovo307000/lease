@@ -67,7 +67,7 @@ public class MinioService implements StorageService
         final String bucketName = getBucketNameFromProperties(properties);
 
         // 检查文件是否准备就绪以进行上传
-        if (!CloudStorageUtils.isFileReadyToUpload(bucketName, file, client, properties))
+        if (!CloudStorageUtils.isFileReadyToUpload(file, client, properties))
         {
             throw new IllegalArgumentException("文件未准备就绪");
         }

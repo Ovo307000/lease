@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Optional;
+
 /**
  * 云存储相关工具类
  */
@@ -28,12 +30,15 @@ public class CloudStorageUtils
      * @param <T>        客户端类型
      * @param <P>        属性配置类型
      * @return 如果文件准备就绪则返回true，否则返回false
+     * @throws IllegalArgumentException 如果存储桶名称为空
      */
-    public static <T, P extends StorageProperties> boolean isFileReadyToUpload(final String bucketName,
-                                                                               final MultipartFile file,
+    public static <T, P extends StorageProperties> boolean isFileReadyToUpload(final MultipartFile file,
                                                                                final T client,
                                                                                final P properties)
     {
+        final String bucketName = Optional.ofNullable(properties.getBucketName())
+                                          .orElseThrow(IllegalArgumentException::new);
+
         // 当客户端为MinioClient类型时，执行特定的检查逻辑
         if (client instanceof final MinioClient minioClient)
         {
