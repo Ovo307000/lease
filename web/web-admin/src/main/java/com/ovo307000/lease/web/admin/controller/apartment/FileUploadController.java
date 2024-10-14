@@ -34,6 +34,12 @@ public class FileUploadController
     // 注入Minio配置属性
     private final MinioProperties minioProperties;
 
+    /**
+     * 上传文件到Minio
+     *
+     * @param file 待上传的文件
+     * @return 上传结果，包含文件的URL
+     */
     @Operation(summary = "上传文件")
     @PostMapping("upload")
     public Result<String> upload(@RequestParam final MultipartFile file)
@@ -46,11 +52,13 @@ public class FileUploadController
                 this.minioClient,
                 this.minioProperties);
 
+        // 生成文件的访问URL
         final String objectUrl = CloudStorageUtils.getObjectUrl(this.minioClient, objectWriteResponse);
 
+        // 记录文件上传成功的日志，附带文件URL
         log.info("文件上传成功，URL：{}", objectUrl);
 
+        // 返回上传成功的结果，包含文件URL
         return Result.success(objectUrl);
     }
 }
-
