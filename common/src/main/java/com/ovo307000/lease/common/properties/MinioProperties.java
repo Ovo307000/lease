@@ -8,11 +8,7 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 @Setter
 @Configuration
-@ConfigurationProperties(prefix = "minio")
-public class MinioProperties
+@ConfigurationProperties(prefix = "storage.minio")
+public class MinioProperties extends StorageProperties
 {
-    private String endpoint;
-    private String accessKey;
-    private String secretKey;
-    private String bucketName;
 }
