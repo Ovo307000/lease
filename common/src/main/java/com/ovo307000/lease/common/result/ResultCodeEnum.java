@@ -46,8 +46,7 @@ public enum ResultCodeEnum
     TOKEN_EXPIRED(601, "登录已过期，请重新登录"),
     TOKEN_INVALID(602, "登录凭证无效，请重新登录"),
 
-    UPLOAD_FAILED(701, "上传失败，请检查后重试"),
-    ;
+    FILE_UPLOAD_FAILED(702, "文件上传失败，请检查后重试");
 
     private final Integer code;
     private final String  message;
