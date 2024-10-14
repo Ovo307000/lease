@@ -4,7 +4,10 @@ import com.ovo307000.lease.common.enumeration.OperationType;
 import com.ovo307000.lease.common.properties.StorageProperties;
 import com.ovo307000.lease.common.utils.logger.CloudflareOperationLogger;
 import io.minio.BucketExistsArgs;
+import io.minio.GetPresignedObjectUrlArgs;
 import io.minio.MinioClient;
+import io.minio.ObjectWriteResponse;
+import io.minio.http.Method;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -23,7 +26,6 @@ public class CloudStorageUtils
     /**
      * 检查文件是否准备就绪以进行上传
      *
-     * @param bucketName 存储桶名称
      * @param file       待上传的文件
      * @param client     存储客户端
      * @param properties 存储属性配置
@@ -102,5 +104,32 @@ public class CloudStorageUtils
         }
 
         return true;
+    }
+
+    /**
+     * 获取对象的URL
+     * <p>
+     * 此方法通过给定的MinioClient和ObjectWriteResponse对象来获取一个预签名的对象URL
+     * 它首先构建一个GetPresignedObjectUrlArgs对象，然后使用CloudflareOperationLogger中的方法来执行获取URL的操作
+     * 最后，将获取到的URL作为日志信息输出，并返回该URL
+     *
+     * @param client   MinioClient实例，用于与Minio服务器交互
+     * @param response ObjectWriteResponse对象，包含桶名和对象名等信息
+     * @return 返回获取到的对象URL字符串
+     */
+    public static String getObjectUrl(final MinioClient client, final ObjectWriteResponse response)
+    {
+        // 构建获取预签名对象URL的参数
+        final GetPresignedObjectUrlArgs objectUrlArgs = GetPresignedObjectUrlArgs.builder()
+                                                                                 .bucket(response.bucket())
+                                                                                 .object(response.object())
+                                                                                 .method(Method.GET)
+                                                                                 .build();
+
+        // 使用CloudflareOperationLogger记录操作日志，并执行获取对象URL的操作
+        return CloudflareOperationLogger.execute(() -> client.getPresignedObjectUrl(objectUrlArgs),
+                OperationType.GET_OBJECT_URL,
+                response.object(),
+                response.bucket());
     }
 }
