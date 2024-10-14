@@ -22,16 +22,16 @@ public class MinioConfiguration
     public MinioClient minioClient(final MinioProperties properties)
     {
         // 确保访问密钥不为空
-        Assert.notNull(properties.getAccessKey(), "Minio access key must not be null");
+        Assert.notNull(properties.getAccessKeyId(), "Minio access key must not be null");
         // 确保秘密密钥不为空
-        Assert.notNull(properties.getSecretKey(), "Minio secret key must not be null");
+        Assert.notNull(properties.getSecretAccessKey(), "Minio secret key must not be null");
         // 确保端点不为空
         Assert.notNull(properties.getEndpoint(), "Minio endpoint must not be null");
 
         // 构建并返回MinioClient实例
         return MinioClient.builder()
                           .endpoint(properties.getEndpoint())
-                          .credentials(properties.getAccessKey(), properties.getSecretKey())
+                          .credentials(properties.getAccessKeyId(), properties.getSecretAccessKey())
                           .build();
     }
 }
