@@ -86,6 +86,7 @@ public class CloudflareOperationLogger
             case DELETE_BUCKET -> OperationType.DELETE_BUCKET.getDescription();
             case LIST_BUCKETS -> OperationType.LIST_BUCKETS.getDescription();
             case CHECK_BUCKET_EXISTENCE -> OperationType.CHECK_BUCKET_EXISTENCE.getDescription();
+            case UPLOAD_OBJECT -> OperationType.UPLOAD_OBJECT.getDescription();
         };
     }
 
