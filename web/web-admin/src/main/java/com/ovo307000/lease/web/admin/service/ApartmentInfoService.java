@@ -2,6 +2,7 @@ package com.ovo307000.lease.web.admin.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ovo307000.lease.module.entity.ApartmentInfo;
+import com.ovo307000.lease.web.admin.vo.apartment.ApartmentSubmitVo;
 
 /**
  * @author liubo
@@ -11,4 +12,5 @@ import com.ovo307000.lease.module.entity.ApartmentInfo;
 public interface ApartmentInfoService extends IService<ApartmentInfo>
 {
 
+    boolean saveOrUpdateApartment(ApartmentSubmitVo apartmentSubmitVo);
 }
