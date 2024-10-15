@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Optional;
+
 /**
  * 文件上传控制器，提供文件上传的接口
  */
@@ -53,7 +55,9 @@ public class FileUploadController
                 this.minioProperties);
 
         // 生成文件的访问URL
-        final String objectUrl = CloudStorageUtils.getObjectUrl(this.minioClient, objectWriteResponse);
+        final String objectUrl = Optional.ofNullable(CloudStorageUtils.getObjectUrl(this.minioClient,
+                                                 objectWriteResponse))
+                                         .orElseThrow(() -> new RuntimeException("文件上传失败"));
 
         // 记录文件上传成功的日志，附带文件URL
         log.info("文件上传成功，URL：{}", objectUrl);
