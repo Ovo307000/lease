@@ -20,7 +20,7 @@
         ai.longitude,
         ai.phone,
         ai.is_release,
-        tc.total_room_count,
+        ifnull(tc.total_room_count, 0) as total_room_count,
         ifnull(cc.free_room_count, 0) as free_room_count
         from
         (
