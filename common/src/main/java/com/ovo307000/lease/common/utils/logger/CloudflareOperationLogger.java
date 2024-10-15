@@ -133,6 +133,9 @@ public class CloudflareOperationLogger
         {
             // 记录操作失败信息和异常详情
             CloudflareOperationLogger.logOperationFailure(operation, bucketName, e.getMessage());
+
+            // 抛出运行时异常，以便在调用方处理
+            throw new RuntimeException(e);
         }
     }
 

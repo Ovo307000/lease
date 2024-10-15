@@ -57,19 +57,8 @@ public class FileUploadController
 
         // 生成文件的访问URL
         final String objectUrl;
-        try
-        {
-            objectUrl = Optional.ofNullable(CloudStorageUtils.getObjectUrl(this.minioClient, objectWriteResponse))
-                                .orElseThrow(() -> new RuntimeException(ResultCodeEnum.FILE_UPLOAD_FAILED.getMessage()));
-        }
-        catch (final RuntimeException e)
-        {
-            // 记录文件上传失败的日志
-            log.error("文件上传失败：{}", e.getMessage());
-
-            // 返回上传失败的结果
-            return Result.failure(ResultCodeEnum.FILE_UPLOAD_FAILED);
-        }
+        objectUrl = Optional.ofNullable(CloudStorageUtils.getObjectUrl(this.minioClient, objectWriteResponse))
+                            .orElseThrow(() -> new RuntimeException(ResultCodeEnum.FILE_UPLOAD_FAILED.getMessage()));
 
         // 记录文件上传成功的日志，附带文件URL
         log.info("文件上传成功，URL：{}", objectUrl);
@@ -97,24 +86,13 @@ public class FileUploadController
 
         // 生成文件的访问URL列表
         final List<String> objectUrlList;
-        try
-        {
-            objectUrlList = objectWriteResponseList.stream()
-                                                   .map(response -> Optional.ofNullable(CloudStorageUtils.getObjectUrl(
-                                                                                    this.minioClient,
-                                                                                    response))
-                                                                            .orElseThrow(() -> new RuntimeException(
-                                                                                    ResultCodeEnum.FILE_UPLOAD_FAILED.getMessage())))
-                                                   .toList();
-        }
-        catch (final RuntimeException e)
-        {
-            // 记录文件上传失败的日志
-            log.error("文件上传失败：{}", e.getMessage());
-
-            // 返回上传失败的结果
-            return Result.failure(ResultCodeEnum.FILE_UPLOAD_FAILED);
-        }
+        objectUrlList = objectWriteResponseList.stream()
+                                               // 将响应对象转换为文件URL，如果URL为空则抛出异常
+                                               .map(response -> Optional.ofNullable(CloudStorageUtils.getObjectUrl(this.minioClient,
+                                                                                response))
+                                                                        .orElseThrow(() -> new RuntimeException(
+                                                                                ResultCodeEnum.FILE_UPLOAD_FAILED.getMessage())))
+                                               .toList();
 
         // 记录文件上传成功的日志，附带文件URL列表
         log.info("文件上传成功，URL列表：{}", objectUrlList);
