@@ -56,8 +56,19 @@ public class FileUploadController
 
         // 生成文件的访问URL
         final String objectUrl;
-        objectUrl = Optional.ofNullable(CloudStorageUtils.getObjectUrl(this.minioClient, objectWriteResponse))
-                            .orElseThrow(() -> new RuntimeException(ResultCodeEnum.FILE_UPLOAD_FAILED.getMessage()));
+        try
+        {
+            objectUrl = Optional.ofNullable(CloudStorageUtils.getObjectUrl(this.minioClient, objectWriteResponse))
+                                .orElseThrow(() -> new RuntimeException(ResultCodeEnum.FILE_UPLOAD_FAILED.getMessage()));
+        }
+        catch (final RuntimeException e)
+        {
+            // 记录文件上传失败的日志
+            log.error("文件上传失败：{}", e.getMessage());
+
+            // 返回上传失败的结果
+            return Result.failure(ResultCodeEnum.FILE_UPLOAD_FAILED);
+        }
 
         // 记录文件上传成功的日志，附带文件URL
         log.info("文件上传成功，URL：{}", objectUrl);
