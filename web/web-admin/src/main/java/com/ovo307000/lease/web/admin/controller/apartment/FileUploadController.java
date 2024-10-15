@@ -50,14 +50,13 @@ public class FileUploadController
         log.info("上传文件：{}", file.getOriginalFilename());
 
         // 调用Minio服务上传文件，并获取上传响应结果
-        final ObjectWriteResponse objectWriteResponse = this.minioService.uploadObject(file,
-                this.minioClient,
-                this.minioProperties);
+        final ObjectWriteResponse objectWriteResponse;
+        objectWriteResponse = this.minioService.uploadObject(file, this.minioClient, this.minioProperties);
 
         // 生成文件的访问URL
-        final String objectUrl = Optional.ofNullable(CloudStorageUtils.getObjectUrl(this.minioClient,
-                                                 objectWriteResponse))
-                                         .orElseThrow(() -> new RuntimeException("文件上传失败"));
+        final String objectUrl;
+        objectUrl = Optional.ofNullable(CloudStorageUtils.getObjectUrl(this.minioClient, objectWriteResponse))
+                            .orElseThrow(() -> new RuntimeException("文件上传失败"));
 
         // 记录文件上传成功的日志，附带文件URL
         log.info("文件上传成功，URL：{}", objectUrl);
