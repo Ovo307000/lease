@@ -49,6 +49,7 @@ services: # MySQL 服务配置
       MINIO_ROOT_PASSWORD: minioadmin # 设置 MinIO root 用户密码（注意：生产环境应使用更安全的密码）
     volumes:
       - minio_data:/data              # 数据持久化：将数据存储在名为 minio_data 的卷中
+    restart: always                   # 容器崩溃时自动重启
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
       interval: 30s                   # 每 30 秒检查一次
