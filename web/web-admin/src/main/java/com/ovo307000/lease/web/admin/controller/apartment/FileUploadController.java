@@ -2,6 +2,7 @@ package com.ovo307000.lease.web.admin.controller.apartment;
 
 import com.ovo307000.lease.common.properties.MinioProperties;
 import com.ovo307000.lease.common.result.Result;
+import com.ovo307000.lease.common.result.ResultCodeEnum;
 import com.ovo307000.lease.common.service.MinioService;
 import com.ovo307000.lease.common.utils.CloudStorageUtils;
 import io.minio.MinioClient;
@@ -56,7 +57,7 @@ public class FileUploadController
         // 生成文件的访问URL
         final String objectUrl;
         objectUrl = Optional.ofNullable(CloudStorageUtils.getObjectUrl(this.minioClient, objectWriteResponse))
-                            .orElseThrow(() -> new RuntimeException("文件上传失败"));
+                            .orElseThrow(() -> new RuntimeException(ResultCodeEnum.FILE_UPLOAD_FAILED.getMessage()));
 
         // 记录文件上传成功的日志，附带文件URL
         log.info("文件上传成功，URL：{}", objectUrl);
