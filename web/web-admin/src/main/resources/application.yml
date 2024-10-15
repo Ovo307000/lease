@@ -29,6 +29,7 @@ mybatis-plus:
       logic-delete-value: 1                                     # 逻辑删除值: 表示数据已被删除的标记值
       logic-not-delete-value: 0                                 # 逻辑未删除值: 表示数据未被删除的标记值
 
+
 server:
   port: 8861                                                    # 应用服务端口: Web 应用监听的 HTTP 端口号，默认是 8080
 
@@ -49,3 +50,6 @@ storage:
     secret-access-key: jOGfEf2hUYCFvCEiIyHwskET16oJf0uyfx2KamzD   # MinIO 访问密钥: 用于访问 MinIO 服务的访问密钥
     large-file-threshold-of-bytes: 104857600                      # 大文件大小: 100 MB，即大于 100 MB 的文件将使用分片上传
     max-file-sizeof-bytes: 10485760000                            # 最大文件大小: 10 GB，即最大支持上传 10 GB 的文件
+
+springdoc:
+  default-flat-param-object: true                                 # 默认扁平化参数对象: 使用扁平化参数对象，即将参数对象的属性展开到请求参数中
