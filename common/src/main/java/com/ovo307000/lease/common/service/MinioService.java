@@ -80,6 +80,7 @@ public class MinioService implements StorageService
         return CloudflareOperationLogger.execute(() -> client.putObject(PutObjectArgs.builder()
                                                                                      .bucket(bucketName)
                                                                                      .object(fileName)
+                                                                                     .contentType(file.getContentType())
                                                                                      .stream(file.getInputStream(),
                                                                                              file.getSize(),
                                                                                              -1)
