@@ -1,11 +1,15 @@
 package com.ovo307000.lease.web.admin.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ovo307000.lease.module.entity.*;
 import com.ovo307000.lease.module.enums.ItemType;
 import com.ovo307000.lease.web.admin.mapper.ApartmentInfoMapper;
 import com.ovo307000.lease.web.admin.service.ApartmentInfoService;
+import com.ovo307000.lease.web.admin.vo.apartment.ApartmentItemVo;
+import com.ovo307000.lease.web.admin.vo.apartment.ApartmentQueryVo;
 import com.ovo307000.lease.web.admin.vo.apartment.ApartmentSubmitVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,6 +31,7 @@ public class ApartmentInfoServiceImpl extends ServiceImpl<ApartmentInfoMapper, A
     private final ApartmentLabelServiceImpl    apartmentLabelServiceImpl;
     private final ApartmentFacilityServiceImpl apartmentFacilityServiceImpl;
     private final ApartmentFeeValueServiceImpl apartmentFeeValueServiceImpl;
+    private final ApartmentInfoMapper          apartmentInfoMapper;
 
     /**
      * 保存或更新公寓信息
@@ -68,6 +73,12 @@ public class ApartmentInfoServiceImpl extends ServiceImpl<ApartmentInfoMapper, A
         }
 
         return true;
+    }
+
+    @Override
+    public IPage<ApartmentItemVo> pageItem(final Page<ApartmentItemVo> page, final ApartmentQueryVo queryVo)
+    {
+        return this.apartmentInfoMapper.pageItem(page, queryVo);
     }
 
     /**

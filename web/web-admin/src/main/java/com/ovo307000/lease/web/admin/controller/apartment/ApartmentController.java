@@ -2,6 +2,7 @@ package com.ovo307000.lease.web.admin.controller.apartment;
 
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ovo307000.lease.common.result.Result;
 import com.ovo307000.lease.common.result.ResultCodeEnum;
 import com.ovo307000.lease.module.entity.ApartmentInfo;
@@ -72,7 +73,10 @@ public class ApartmentController
                                                    @RequestParam final long size,
                                                    final ApartmentQueryVo queryVo)
     {
-        return Result.success();
+        final Page<ApartmentItemVo>  page                 = new Page<>(current, size);
+        final IPage<ApartmentItemVo> apartmentItemVoIPage = this.apartmentInfoServiceImpl.pageItem(page, queryVo);
+
+        return Result.success(apartmentItemVoIPage);
     }
 
     /**
