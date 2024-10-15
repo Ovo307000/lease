@@ -45,7 +45,7 @@ storage:
   minio:
     bucket-name: lease                                            # MinIO 存储桶名称: 用于存储文件的存储桶名称
     endpoint: http://localhost:9000                               # MinIO 服务地址: 本地 MinIO 服务地址
-    access-key-id: minioadmin                                     # MinIO 访问密钥 ID: 用于访问 MinIO 服务的访问密钥 ID
-    secret-access-key: minioadmin                                 # MinIO 访问密钥: 用于访问 MinIO 服务的访问密钥
+    access-key-id: RHwAeWRZa3xd9vFTnmN3                           # MinIO 访问密钥 ID: 用于访问 MinIO 服务的访问密钥 ID
+    secret-access-key: jOGfEf2hUYCFvCEiIyHwskET16oJf0uyfx2KamzD   # MinIO 访问密钥: 用于访问 MinIO 服务的访问密钥
     large-file-threshold-of-bytes: 104857600                      # 大文件大小: 100 MB，即大于 100 MB 的文件将使用分片上传
     max-file-sizeof-bytes: 10485760000                            # 最大文件大小: 10 GB，即最大支持上传 10 GB 的文件
