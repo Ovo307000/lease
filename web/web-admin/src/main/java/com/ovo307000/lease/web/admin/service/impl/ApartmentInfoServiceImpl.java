@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ovo307000.lease.module.entity.*;
 import com.ovo307000.lease.module.enums.ItemType;
 import com.ovo307000.lease.web.admin.mapper.ApartmentInfoMapper;
+import com.ovo307000.lease.web.admin.mapper.RoomInfoMapper;
 import com.ovo307000.lease.web.admin.service.ApartmentInfoService;
 import com.ovo307000.lease.web.admin.vo.apartment.ApartmentDetailVo;
 import com.ovo307000.lease.web.admin.vo.apartment.ApartmentItemVo;
@@ -40,6 +41,7 @@ public class ApartmentInfoServiceImpl extends ServiceImpl<ApartmentInfoMapper, A
     private final LabelInfoServiceImpl         labelInfoServiceImpl;
     private final FacilityInfoServiceImpl      facilityInfoServiceImpl;
     private final FeeValueServiceImpl          feeValueServiceImpl;
+    private final RoomInfoMapper               roomInfoMapper;
 
     /**
      * 保存或更新公寓信息
@@ -82,10 +84,11 @@ public class ApartmentInfoServiceImpl extends ServiceImpl<ApartmentInfoMapper, A
 
         return true;
     }
+
     /**
      * 分页查询公寓物品信息
      *
-     * @param page 分页对象，用于接收分页查询结果
+     * @param page    分页对象，用于接收分页查询结果
      * @param queryVo 查询条件对象，用于指定查询条件
      * @return 返回分页查询结果，包含公寓物品信息
      */
@@ -105,15 +108,15 @@ public class ApartmentInfoServiceImpl extends ServiceImpl<ApartmentInfoMapper, A
     public ApartmentDetailVo getDetailById(final Long id)
     {
         // 异步获取公寓基本信息
-        final CompletableFuture<ApartmentInfo>      apartmentInfoFuture = this.getApartmentInfoAsync(id);
+        final CompletableFuture<ApartmentInfo> apartmentInfoFuture = this.getApartmentInfoAsync(id);
         // 异步获取公寓设施信息
-        final CompletableFuture<List<FacilityInfo>> facilityInfoFuture  = this.getFacilityInfoAsync(id);
+        final CompletableFuture<List<FacilityInfo>> facilityInfoFuture = this.getFacilityInfoAsync(id);
         // 异步获取公寓图表信息
-        final CompletableFuture<List<GraphVo>>      graphInfoFuture     = this.getGraphInfoAsync(id);
+        final CompletableFuture<List<GraphVo>> graphInfoFuture = this.getGraphInfoAsync(id);
         // 异步获取公寓标签信息
-        final CompletableFuture<List<LabelInfo>>    labelInfoFuture     = this.getLabelInfoAsync(id);
+        final CompletableFuture<List<LabelInfo>> labelInfoFuture = this.getLabelInfoAsync(id);
         // 异步获取公寓费用信息
-        final CompletableFuture<List<FeeValueVo>>   feeValueVoFuture    = this.getFeeValueVoAsync(id);
+        final CompletableFuture<List<FeeValueVo>> feeValueVoFuture = this.getFeeValueVoAsync(id);
 
         // 创建公寓详细信息对象
         final ApartmentDetailVo apartmentDetailVo = new ApartmentDetailVo();
@@ -133,20 +136,34 @@ public class ApartmentInfoServiceImpl extends ServiceImpl<ApartmentInfoMapper, A
     }
 
     /**
-     * 根据ID删除公寓信息
+     * 根据公寓ID删除公寓信息
+     * 在删除公寓信息之前，需要确保该公寓下没有关联的房间信息
+     * 如果公寓下存在房间，则不允许删除
+     * 否则，将异步删除与公寓相关的图表信息、设施信息、标签信息和费用信息，并最终删除公寓信息本身
      *
-     * @param id 公寓ID
-     * @return 返回删除操作是否成功
+     * @param id 公寓的唯一标识
+     * @return 如果删除成功，则返回true；否则返回false
+     * @throws RuntimeException 如果公寓下存在房间信息，则抛出异常
      */
     @Override
     public boolean removeApartmentById(final Long id)
     {
+        // 查询公寓下的房间信息数量
+        final LambdaQueryWrapper<RoomInfo> roomInfoQueryWrapper = new LambdaQueryWrapper<>();
+        roomInfoQueryWrapper.eq(RoomInfo::getApartmentId, id);
+
+        // 如果公寓下存在房间，则不允许删除
+        if (this.roomInfoMapper.selectCount(roomInfoQueryWrapper) > 0)
+        {
+            throw new RuntimeException("公寓下存在房间信息，请先删除房间信息");
+        }
+
         // 异步删除公寓相关的图表信息、设施信息、标签信息和费用信息
         CompletableFuture.allOf(this.removeGraphInfoAsync(id),
-                               this.removeApartmentFacilityAsync(id),
-                               this.removeApartmentLabelAsync(id),
-                               this.removeApartmentFeeValueAsync(id))
-                       .join();
+                                 this.removeApartmentFacilityAsync(id),
+                                 this.removeApartmentLabelAsync(id),
+                                 this.removeApartmentFeeValueAsync(id))
+                         .join();
 
         // 调用父类方法删除公寓信息
         return super.removeById(id);
@@ -162,6 +179,7 @@ public class ApartmentInfoServiceImpl extends ServiceImpl<ApartmentInfoMapper, A
     {
         return CompletableFuture.supplyAsync(() -> super.getById(id));
     }
+
     private CompletableFuture<List<FacilityInfo>> getFacilityInfoAsync(final Long id)
     {
         final LambdaQueryWrapper<ApartmentFacility> apartmentFacilityQueryWrapper = new LambdaQueryWrapper<>();
@@ -177,6 +195,7 @@ public class ApartmentInfoServiceImpl extends ServiceImpl<ApartmentInfoMapper, A
 
         return CompletableFuture.supplyAsync(() -> this.facilityInfoServiceImpl.list(facilityInfoQueryWrapper));
     }
+
     /**
      * 异步获取图表信息
      *
@@ -257,6 +276,7 @@ public class ApartmentInfoServiceImpl extends ServiceImpl<ApartmentInfoMapper, A
                                                                                                   .build())
                                                                        .toList());
     }
+
     /**
      * 判断公寓是否存在
      *
