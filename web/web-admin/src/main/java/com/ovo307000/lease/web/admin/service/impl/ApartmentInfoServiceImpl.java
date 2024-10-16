@@ -82,49 +82,86 @@ public class ApartmentInfoServiceImpl extends ServiceImpl<ApartmentInfoMapper, A
 
         return true;
     }
-
+    /**
+     * 分页查询公寓物品信息
+     *
+     * @param page 分页对象，用于接收分页查询结果
+     * @param queryVo 查询条件对象，用于指定查询条件
+     * @return 返回分页查询结果，包含公寓物品信息
+     */
     @Override
     public IPage<ApartmentItemVo> pageItem(final Page<ApartmentItemVo> page, final ApartmentQueryVo queryVo)
     {
         return this.apartmentInfoMapper.pageItem(page, queryVo);
     }
 
+    /**
+     * 根据ID获取公寓详细信息
+     *
+     * @param id 公寓ID
+     * @return 返回公寓详细信息对象
+     */
     @Override
     public ApartmentDetailVo getDetailById(final Long id)
     {
+        // 异步获取公寓基本信息
         final CompletableFuture<ApartmentInfo>      apartmentInfoFuture = this.getApartmentInfoAsync(id);
+        // 异步获取公寓设施信息
         final CompletableFuture<List<FacilityInfo>> facilityInfoFuture  = this.getFacilityInfoAsync(id);
+        // 异步获取公寓图表信息
         final CompletableFuture<List<GraphVo>>      graphInfoFuture     = this.getGraphInfoAsync(id);
+        // 异步获取公寓标签信息
         final CompletableFuture<List<LabelInfo>>    labelInfoFuture     = this.getLabelInfoAsync(id);
+        // 异步获取公寓费用信息
         final CompletableFuture<List<FeeValueVo>>   feeValueVoFuture    = this.getFeeValueVoAsync(id);
 
+        // 创建公寓详细信息对象
         final ApartmentDetailVo apartmentDetailVo = new ApartmentDetailVo();
+        // 将异步获取的公寓基本信息复制到公寓详细信息对象中
         BeanUtils.copyProperties(Objects.requireNonNull(apartmentInfoFuture.join()), apartmentDetailVo);
+        // 设置公寓设施信息
         apartmentDetailVo.setFacilityInfoList(facilityInfoFuture.join());
+        // 设置公寓图表信息
         apartmentDetailVo.setGraphVoList(graphInfoFuture.join());
+        // 设置公寓标签信息
         apartmentDetailVo.setLabelInfoList(labelInfoFuture.join());
+        // 设置公寓费用信息
         apartmentDetailVo.setFeeValueVoList(feeValueVoFuture.join());
 
+        // 返回公寓详细信息对象
         return apartmentDetailVo;
     }
 
+    /**
+     * 根据ID删除公寓信息
+     *
+     * @param id 公寓ID
+     * @return 返回删除操作是否成功
+     */
     @Override
     public boolean removeApartmentById(final Long id)
     {
+        // 异步删除公寓相关的图表信息、设施信息、标签信息和费用信息
         CompletableFuture.allOf(this.removeGraphInfoAsync(id),
                                this.removeApartmentFacilityAsync(id),
                                this.removeApartmentLabelAsync(id),
                                this.removeApartmentFeeValueAsync(id))
-                         .join();
+                       .join();
 
+        // 调用父类方法删除公寓信息
         return super.removeById(id);
     }
 
+    /**
+     * 异步获取公寓基本信息
+     *
+     * @param id 公寓ID
+     * @return 返回公寓基本信息的CompletableFuture对象
+     */
     private CompletableFuture<ApartmentInfo> getApartmentInfoAsync(final Long id)
     {
         return CompletableFuture.supplyAsync(() -> super.getById(id));
     }
-
     private CompletableFuture<List<FacilityInfo>> getFacilityInfoAsync(final Long id)
     {
         final LambdaQueryWrapper<ApartmentFacility> apartmentFacilityQueryWrapper = new LambdaQueryWrapper<>();
@@ -140,13 +177,20 @@ public class ApartmentInfoServiceImpl extends ServiceImpl<ApartmentInfoMapper, A
 
         return CompletableFuture.supplyAsync(() -> this.facilityInfoServiceImpl.list(facilityInfoQueryWrapper));
     }
-
+    /**
+     * 异步获取图表信息
+     *
+     * @param id 项目ID，用于查询对应图表信息
+     * @return 返回一个CompletableFuture，包含图表信息列表
+     */
     private CompletableFuture<List<GraphVo>> getGraphInfoAsync(final Long id)
     {
+        // 构建查询包装器，用于精确查询图表信息
         final LambdaQueryWrapper<GraphInfo> graphInfoQueryWrapper = new LambdaQueryWrapper<>();
         graphInfoQueryWrapper.eq(GraphInfo::getItemType, ItemType.APARTMENT)
                              .eq(GraphInfo::getItemId, id);
 
+        // 异步获取图表信息，并转换为GraphVo对象列表
         return CompletableFuture.supplyAsync(() -> this.graphInfoServiceImpl.list(graphInfoQueryWrapper))
                                 .thenApply(graphInfoList -> graphInfoList.stream()
                                                                          .map(graphInfo -> GraphVo.builder()
@@ -156,34 +200,56 @@ public class ApartmentInfoServiceImpl extends ServiceImpl<ApartmentInfoMapper, A
                                                                          .toList());
     }
 
+    /**
+     * 异步获取标签信息
+     *
+     * @param id 项目ID，用于查询对应的标签信息
+     * @return 返回一个CompletableFuture，包含标签信息列表
+     */
     private CompletableFuture<List<LabelInfo>> getLabelInfoAsync(final Long id)
     {
+        // 构建查询包装器，用于查询公寓标签信息
         final LambdaQueryWrapper<ApartmentLabel> apartmentLabelQueryWrapper = new LambdaQueryWrapper<>();
         apartmentLabelQueryWrapper.eq(ApartmentLabel::getApartmentId, id);
+        // 同步获取公寓标签列表
         final List<ApartmentLabel> apartmentLabelList = this.apartmentLabelServiceImpl.list(apartmentLabelQueryWrapper);
 
+        // 提取标签ID列表，用于后续查询
         final List<Long> labelIdList = apartmentLabelList.stream()
                                                          .map(ApartmentLabel::getLabelId)
                                                          .toList();
+        // 构建查询包装器，用于根据ID列表查询标签信息
         final LambdaQueryWrapper<LabelInfo> labelInfoQueryWrapper = new LambdaQueryWrapper<>();
         labelInfoQueryWrapper.in(LabelInfo::getId, labelIdList);
 
+        // 异步获取标签信息列表
         return CompletableFuture.supplyAsync(() -> this.labelInfoServiceImpl.list(labelInfoQueryWrapper));
     }
 
+    /**
+     * 异步获取费用信息
+     *
+     * @param id 项目ID，用于查询对应的费用信息
+     * @return 返回一个CompletableFuture，包含费用信息列表
+     */
     private CompletableFuture<List<FeeValueVo>> getFeeValueVoAsync(final Long id)
     {
+        // 构建查询包装器，用于查询公寓费用值信息
         final LambdaQueryWrapper<ApartmentFeeValue> apartmentFeeValueQueryWrapper = new LambdaQueryWrapper<>();
         apartmentFeeValueQueryWrapper.eq(ApartmentFeeValue::getApartmentId, id);
+        // 同步获取公寓费用值列表
         final List<ApartmentFeeValue> apartmentFeeValueList = this.apartmentFeeValueServiceImpl.list(
                 apartmentFeeValueQueryWrapper);
 
+        // 提取费用值ID列表，用于后续查询
         final List<Long> feeValueIdList = apartmentFeeValueList.stream()
                                                                .map(ApartmentFeeValue::getFeeValueId)
                                                                .toList();
+        // 构建查询包装器，用于根据ID列表查询费用信息
         final LambdaQueryWrapper<FeeValue> feeValueVoQueryWrapper = new LambdaQueryWrapper<>();
         feeValueVoQueryWrapper.in(FeeValue::getId, feeValueIdList);
 
+        // 异步获取费用信息，并转换为FeeValueVo对象列表
         return CompletableFuture.supplyAsync(() -> this.feeValueServiceImpl.list(feeValueVoQueryWrapper))
                                 .thenApply(feeValueList -> feeValueList.stream()
                                                                        .map(feeValue -> FeeValueVo.builder()
@@ -191,7 +257,6 @@ public class ApartmentInfoServiceImpl extends ServiceImpl<ApartmentInfoMapper, A
                                                                                                   .build())
                                                                        .toList());
     }
-
     /**
      * 判断公寓是否存在
      *
@@ -328,27 +393,6 @@ public class ApartmentInfoServiceImpl extends ServiceImpl<ApartmentInfoMapper, A
 
         // 异步执行保存操作，并返回保存结果的CompletableFuture
         return CompletableFuture.supplyAsync(() -> this.apartmentFeeValueServiceImpl.saveBatch(apartmentFeeValueList));
-    }
-
-    private CompletableFuture<List<Long>> getFeeValueIdListAsync(final Long id)
-    {
-        final LambdaQueryWrapper<ApartmentFeeValue> apartmentFeeValueQueryWrapper = new LambdaQueryWrapper<>();
-        apartmentFeeValueQueryWrapper.eq(ApartmentFeeValue::getApartmentId, id);
-        final List<ApartmentFeeValue> apartmentFeeValueList = this.apartmentFeeValueServiceImpl.list(
-                apartmentFeeValueQueryWrapper);
-
-        return CompletableFuture.supplyAsync(() -> apartmentFeeValueList.stream()
-                                                                        .map(ApartmentFeeValue::getFeeValueId)
-                                                                        .toList());
-    }
-
-    private CompletableFuture<List<Long>> getFeeKeyIdListAsync(final List<Long> feeValueIdList)
-    {
-        return CompletableFuture.supplyAsync(() -> feeValueIdList.stream()
-                                                                 .map(this.feeValueServiceImpl::getById)
-                                                                 .map(FeeValue::getFeeKeyId)
-                                                                 .distinct()
-                                                                 .toList());
     }
 
     /**
