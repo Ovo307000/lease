@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ovo307000.lease.common.exception.LeaseException;
+import com.ovo307000.lease.common.result.ResultCodeEnum;
 import com.ovo307000.lease.module.entity.*;
 import com.ovo307000.lease.module.enums.ItemType;
 import com.ovo307000.lease.web.admin.mapper.ApartmentInfoMapper;
@@ -155,7 +157,7 @@ public class ApartmentInfoServiceImpl extends ServiceImpl<ApartmentInfoMapper, A
         // 如果公寓下存在房间，则不允许删除
         if (this.roomInfoMapper.selectCount(roomInfoQueryWrapper) > 0)
         {
-            throw new RuntimeException("公寓下存在房间信息，请先删除房间信息");
+            throw new LeaseException(ResultCodeEnum.APARTMENT_HAS_ROOM);
         }
 
         // 异步删除公寓相关的图表信息、设施信息、标签信息和费用信息
