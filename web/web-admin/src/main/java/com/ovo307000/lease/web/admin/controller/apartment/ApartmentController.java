@@ -87,9 +87,13 @@ public class ApartmentController
      */
     @Operation(summary = "根据ID获取公寓详细信息")
     @GetMapping("getDetailById")
-    public Result<ApartmentDetailVo> getDetailById(@RequestParam final Long id)
+    public Result<ApartmentDetailVo> getDetailById(@RequestParam(value = "id") final Long apartmentDetailId)
     {
-        return Result.success();
+        log.info("根据ID获取公寓详细信息: {}", apartmentDetailId);
+
+        final ApartmentDetailVo apartmentDetailVo = this.apartmentInfoServiceImpl.getDetailById(apartmentDetailId);
+
+        return Result.success(apartmentDetailVo);
     }
 
     /**
@@ -102,6 +106,10 @@ public class ApartmentController
     @DeleteMapping("removeById")
     public Result<Void> removeById(@RequestParam final Long id)
     {
+        log.info("根据id删除公寓信息: {}", id);
+
+        final boolean removed = this.apartmentInfoServiceImpl.removeApartmentById(id);
+
         return Result.success();
     }
 

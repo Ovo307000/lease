@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ovo307000.lease.module.entity.ApartmentInfo;
+import com.ovo307000.lease.web.admin.vo.apartment.ApartmentDetailVo;
 import com.ovo307000.lease.web.admin.vo.apartment.ApartmentItemVo;
 import com.ovo307000.lease.web.admin.vo.apartment.ApartmentQueryVo;
 import com.ovo307000.lease.web.admin.vo.apartment.ApartmentSubmitVo;
@@ -38,4 +39,23 @@ public interface ApartmentInfoService extends IService<ApartmentInfo>
      * @return 公寓列表的分页结果，包含总记录数、当前页数据等信息
      */
     IPage<ApartmentItemVo> pageItem(Page<ApartmentItemVo> page, ApartmentQueryVo queryVo);
+
+    /**
+     * 根据ID获取公寓详细信息
+     * 该方法通过公寓ID查询并返回公寓的详细信息，封装为ApartmentDetailVo对象
+     *
+     * @param apartmentId 公寓ID
+     * @return 公寓详细信息视图对象
+     */
+    ApartmentDetailVo getDetailById(Long apartmentId);
+
+    /**
+     * 根据公寓ID删除公寓信息
+     * 此方法用于从系统中删除一个特定公寓的信息它通过公寓的唯一标识符（id）来识别该公寓
+     *
+     * @param id 公寓的唯一标识符，用于识别要删除的公寓
+     * @return 删除操作的结果如果操作成功，返回true；否则返回false
+     */
+    boolean removeApartmentById(Long id);
 }
+

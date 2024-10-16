@@ -8,13 +8,18 @@ import com.ovo307000.lease.module.entity.*;
 import com.ovo307000.lease.module.enums.ItemType;
 import com.ovo307000.lease.web.admin.mapper.ApartmentInfoMapper;
 import com.ovo307000.lease.web.admin.service.ApartmentInfoService;
+import com.ovo307000.lease.web.admin.vo.apartment.ApartmentDetailVo;
 import com.ovo307000.lease.web.admin.vo.apartment.ApartmentItemVo;
 import com.ovo307000.lease.web.admin.vo.apartment.ApartmentQueryVo;
 import com.ovo307000.lease.web.admin.vo.apartment.ApartmentSubmitVo;
+import com.ovo307000.lease.web.admin.vo.fee.FeeValueVo;
+import com.ovo307000.lease.web.admin.vo.graph.GraphVo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -32,6 +37,9 @@ public class ApartmentInfoServiceImpl extends ServiceImpl<ApartmentInfoMapper, A
     private final ApartmentFacilityServiceImpl apartmentFacilityServiceImpl;
     private final ApartmentFeeValueServiceImpl apartmentFeeValueServiceImpl;
     private final ApartmentInfoMapper          apartmentInfoMapper;
+    private final LabelInfoServiceImpl         labelInfoServiceImpl;
+    private final FacilityInfoServiceImpl      facilityInfoServiceImpl;
+    private final FeeValueServiceImpl          feeValueServiceImpl;
 
     /**
      * 保存或更新公寓信息
@@ -79,6 +87,109 @@ public class ApartmentInfoServiceImpl extends ServiceImpl<ApartmentInfoMapper, A
     public IPage<ApartmentItemVo> pageItem(final Page<ApartmentItemVo> page, final ApartmentQueryVo queryVo)
     {
         return this.apartmentInfoMapper.pageItem(page, queryVo);
+    }
+
+    @Override
+    public ApartmentDetailVo getDetailById(final Long id)
+    {
+        final CompletableFuture<ApartmentInfo>      apartmentInfoFuture = this.getApartmentInfoAsync(id);
+        final CompletableFuture<List<FacilityInfo>> facilityInfoFuture  = this.getFacilityInfoAsync(id);
+        final CompletableFuture<List<GraphVo>>      graphInfoFuture     = this.getGraphInfoAsync(id);
+        final CompletableFuture<List<LabelInfo>>    labelInfoFuture     = this.getLabelInfoAsync(id);
+        final CompletableFuture<List<FeeValueVo>>   feeValueVoFuture    = this.getFeeValueVoAsync(id);
+
+        final ApartmentDetailVo apartmentDetailVo = new ApartmentDetailVo();
+        BeanUtils.copyProperties(Objects.requireNonNull(apartmentInfoFuture.join()), apartmentDetailVo);
+        apartmentDetailVo.setFacilityInfoList(facilityInfoFuture.join());
+        apartmentDetailVo.setGraphVoList(graphInfoFuture.join());
+        apartmentDetailVo.setLabelInfoList(labelInfoFuture.join());
+        apartmentDetailVo.setFeeValueVoList(feeValueVoFuture.join());
+
+        return apartmentDetailVo;
+    }
+
+    @Override
+    public boolean removeApartmentById(final Long id)
+    {
+        CompletableFuture.allOf(this.removeGraphInfoAsync(id),
+                               this.removeApartmentFacilityAsync(id),
+                               this.removeApartmentLabelAsync(id),
+                               this.removeApartmentFeeValueAsync(id))
+                         .join();
+
+        return super.removeById(id);
+    }
+
+    private CompletableFuture<ApartmentInfo> getApartmentInfoAsync(final Long id)
+    {
+        return CompletableFuture.supplyAsync(() -> super.getById(id));
+    }
+
+    private CompletableFuture<List<FacilityInfo>> getFacilityInfoAsync(final Long id)
+    {
+        final LambdaQueryWrapper<ApartmentFacility> apartmentFacilityQueryWrapper = new LambdaQueryWrapper<>();
+        apartmentFacilityQueryWrapper.eq(ApartmentFacility::getApartmentId, id);
+        final List<ApartmentFacility> apartmentFacilityList = this.apartmentFacilityServiceImpl.list(
+                apartmentFacilityQueryWrapper);
+
+        final List<Long> facilityIdList = apartmentFacilityList.stream()
+                                                               .map(ApartmentFacility::getFacilityId)
+                                                               .toList();
+        final LambdaQueryWrapper<FacilityInfo> facilityInfoQueryWrapper = new LambdaQueryWrapper<>();
+        facilityInfoQueryWrapper.in(FacilityInfo::getId, facilityIdList);
+
+        return CompletableFuture.supplyAsync(() -> this.facilityInfoServiceImpl.list(facilityInfoQueryWrapper));
+    }
+
+    private CompletableFuture<List<GraphVo>> getGraphInfoAsync(final Long id)
+    {
+        final LambdaQueryWrapper<GraphInfo> graphInfoQueryWrapper = new LambdaQueryWrapper<>();
+        graphInfoQueryWrapper.eq(GraphInfo::getItemType, ItemType.APARTMENT)
+                             .eq(GraphInfo::getItemId, id);
+
+        return CompletableFuture.supplyAsync(() -> this.graphInfoServiceImpl.list(graphInfoQueryWrapper))
+                                .thenApply(graphInfoList -> graphInfoList.stream()
+                                                                         .map(graphInfo -> GraphVo.builder()
+                                                                                                  .name(graphInfo.getName())
+                                                                                                  .url(graphInfo.getUrl())
+                                                                                                  .build())
+                                                                         .toList());
+    }
+
+    private CompletableFuture<List<LabelInfo>> getLabelInfoAsync(final Long id)
+    {
+        final LambdaQueryWrapper<ApartmentLabel> apartmentLabelQueryWrapper = new LambdaQueryWrapper<>();
+        apartmentLabelQueryWrapper.eq(ApartmentLabel::getApartmentId, id);
+        final List<ApartmentLabel> apartmentLabelList = this.apartmentLabelServiceImpl.list(apartmentLabelQueryWrapper);
+
+        final List<Long> labelIdList = apartmentLabelList.stream()
+                                                         .map(ApartmentLabel::getLabelId)
+                                                         .toList();
+        final LambdaQueryWrapper<LabelInfo> labelInfoQueryWrapper = new LambdaQueryWrapper<>();
+        labelInfoQueryWrapper.in(LabelInfo::getId, labelIdList);
+
+        return CompletableFuture.supplyAsync(() -> this.labelInfoServiceImpl.list(labelInfoQueryWrapper));
+    }
+
+    private CompletableFuture<List<FeeValueVo>> getFeeValueVoAsync(final Long id)
+    {
+        final LambdaQueryWrapper<ApartmentFeeValue> apartmentFeeValueQueryWrapper = new LambdaQueryWrapper<>();
+        apartmentFeeValueQueryWrapper.eq(ApartmentFeeValue::getApartmentId, id);
+        final List<ApartmentFeeValue> apartmentFeeValueList = this.apartmentFeeValueServiceImpl.list(
+                apartmentFeeValueQueryWrapper);
+
+        final List<Long> feeValueIdList = apartmentFeeValueList.stream()
+                                                               .map(ApartmentFeeValue::getFeeValueId)
+                                                               .toList();
+        final LambdaQueryWrapper<FeeValue> feeValueVoQueryWrapper = new LambdaQueryWrapper<>();
+        feeValueVoQueryWrapper.in(FeeValue::getId, feeValueIdList);
+
+        return CompletableFuture.supplyAsync(() -> this.feeValueServiceImpl.list(feeValueVoQueryWrapper))
+                                .thenApply(feeValueList -> feeValueList.stream()
+                                                                       .map(feeValue -> FeeValueVo.builder()
+                                                                                                  .feeKeyName(feeValue.getName())
+                                                                                                  .build())
+                                                                       .toList());
     }
 
     /**
@@ -219,6 +330,26 @@ public class ApartmentInfoServiceImpl extends ServiceImpl<ApartmentInfoMapper, A
         return CompletableFuture.supplyAsync(() -> this.apartmentFeeValueServiceImpl.saveBatch(apartmentFeeValueList));
     }
 
+    private CompletableFuture<List<Long>> getFeeValueIdListAsync(final Long id)
+    {
+        final LambdaQueryWrapper<ApartmentFeeValue> apartmentFeeValueQueryWrapper = new LambdaQueryWrapper<>();
+        apartmentFeeValueQueryWrapper.eq(ApartmentFeeValue::getApartmentId, id);
+        final List<ApartmentFeeValue> apartmentFeeValueList = this.apartmentFeeValueServiceImpl.list(
+                apartmentFeeValueQueryWrapper);
+
+        return CompletableFuture.supplyAsync(() -> apartmentFeeValueList.stream()
+                                                                        .map(ApartmentFeeValue::getFeeValueId)
+                                                                        .toList());
+    }
+
+    private CompletableFuture<List<Long>> getFeeKeyIdListAsync(final List<Long> feeValueIdList)
+    {
+        return CompletableFuture.supplyAsync(() -> feeValueIdList.stream()
+                                                                 .map(this.feeValueServiceImpl::getById)
+                                                                 .map(FeeValue::getFeeKeyId)
+                                                                 .distinct()
+                                                                 .toList());
+    }
 
     /**
      * 用于将提交的公寓信息转换为各种实体类的工具类
