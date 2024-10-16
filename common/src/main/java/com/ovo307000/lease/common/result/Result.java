@@ -59,4 +59,12 @@ public class Result<T>
     {
         return build(null, resultCodeEnum);
     }
+
+    public static <T> Result<T> failure(final Integer code, final String message)
+    {
+        final Result<T> result = new Result<>();
+        result.setCode(code);
+        result.setMessage(message);
+        return result;
+    }
 }
