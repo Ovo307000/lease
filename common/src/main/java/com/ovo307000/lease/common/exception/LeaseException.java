@@ -7,25 +7,22 @@ package com.ovo307000.lease.common.exception;
 
 import com.ovo307000.lease.common.result.ResultCodeEnum;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
 public class LeaseException extends RuntimeException
 {
-    // 异常消息
-    private final String  message;
     // 异常代码
     private final Integer code;
 
     /**
      * 根据ResultCodeEnum创建LeaseException
+     *
      * @param resultCodeEnum 结果码枚举，包含异常消息和代码
      */
     public LeaseException(final ResultCodeEnum resultCodeEnum)
     {
         // 使用枚举中的消息和代码初始化异常
-        this.message = resultCodeEnum.getMessage();
-        this.code    = resultCodeEnum.getCode();
+        super(resultCodeEnum.getMessage());
+        this.code = resultCodeEnum.getCode();
     }
 }
