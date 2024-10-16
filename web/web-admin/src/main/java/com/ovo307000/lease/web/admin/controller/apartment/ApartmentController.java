@@ -1,6 +1,8 @@
 package com.ovo307000.lease.web.admin.controller.apartment;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ovo307000.lease.common.result.Result;
@@ -124,7 +126,15 @@ public class ApartmentController
     @PostMapping("updateReleaseStatusById")
     public Result<Void> updateReleaseStatusById(@RequestParam final Long id, @RequestParam final ReleaseStatus status)
     {
-        return Result.success();
+        log.info("根据id修改公寓发布状态: id -> {}, status -> {}", id, status);
+
+        final LambdaUpdateWrapper<ApartmentInfo> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper.eq(ApartmentInfo::getId, id)
+                     .set(ApartmentInfo::getIsRelease, status);
+
+        final boolean updated = this.apartmentInfoServiceImpl.update(updateWrapper);
+
+        return updated ? Result.success() : Result.failure(ResultCodeEnum.UPDATE_FAILED);
     }
 
     /**
@@ -137,6 +147,15 @@ public class ApartmentController
     @GetMapping("listInfoByDistrictId")
     public Result<List<ApartmentInfo>> listInfoByDistrictId(@RequestParam final Long id)
     {
-        return Result.success();
+        log.info("根据区县id查询公寓信息列表: {}", id);
+
+        final LambdaQueryWrapper<ApartmentInfo> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(ApartmentInfo::getDistrictId, id);
+
+        final List<ApartmentInfo> apartmentInfoList = this.apartmentInfoServiceImpl.list(queryWrapper);
+
+        return apartmentInfoList.isEmpty() ?
+               Result.failure(ResultCodeEnum.NO_FOUND) :
+               Result.success(apartmentInfoList);
     }
 }
