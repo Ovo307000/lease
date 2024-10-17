@@ -2,6 +2,9 @@ package com.ovo307000.lease.web.admin.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ovo307000.lease.module.entity.LabelInfo;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * @author liubo
@@ -12,6 +15,7 @@ import com.ovo307000.lease.module.entity.LabelInfo;
 public interface LabelInfoMapper extends BaseMapper<LabelInfo>
 {
 
+    List<LabelInfo> selectListByApartmentId(@Param("apartmentId") Long apartmentId);
 }
 
 

@@ -4,4 +4,17 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ovo307000.lease.web.admin.mapper.ApartmentFacilityMapper">
 
+    <select id="selectListByApartmentId" resultType="com.ovo307000.lease.module.entity.FacilityInfo">
+        select facility_info.id,
+               facility_info.type,
+               facility_info.name,
+               facility_info.icon
+        from facility_info
+        where facility_info.is_deleted = 0
+          and id in
+              (select facility_id
+              from apartment_facility
+              where apartment_facility.is_deleted = 0
+                and apartment_facility.apartment_id = #{apartmentId})
+    </select>
 </mapper>

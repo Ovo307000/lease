@@ -16,6 +16,7 @@ import com.ovo307000.lease.web.admin.vo.apartment.ApartmentQueryVo;
 import com.ovo307000.lease.web.admin.vo.apartment.ApartmentSubmitVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,16 +34,11 @@ import java.util.List;
 @Slf4j
 @Tag(name = "公寓信息管理")
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/admin/apartment")
 public class ApartmentController
 {
-
     private final ApartmentInfoServiceImpl apartmentInfoServiceImpl;
-
-    public ApartmentController(final ApartmentInfoServiceImpl apartmentInfoServiceImpl)
-    {
-        this.apartmentInfoServiceImpl = apartmentInfoServiceImpl;
-    }
 
     /**
      * 保存或更新公寓信息
@@ -89,11 +85,11 @@ public class ApartmentController
      */
     @Operation(summary = "根据ID获取公寓详细信息")
     @GetMapping("getDetailById")
-    public Result<ApartmentDetailVo> getDetailById(@RequestParam(value = "id") final Long apartmentDetailId)
+    public Result<ApartmentDetailVo> getDetailById(@RequestParam final Long id)
     {
-        log.info("根据ID获取公寓详细信息: {}", apartmentDetailId);
+        log.info("根据ID获取公寓详细信息: {}", id);
 
-        final ApartmentDetailVo apartmentDetailVo = this.apartmentInfoServiceImpl.getDetailById(apartmentDetailId);
+        final ApartmentDetailVo apartmentDetailVo = this.apartmentInfoServiceImpl.getDetailById(id);
 
         return Result.success(apartmentDetailVo);
     }

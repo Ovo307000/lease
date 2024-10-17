@@ -4,4 +4,17 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ovo307000.lease.web.admin.mapper.GraphInfoMapper">
 
+    <select id="selectListByItemTypeAndApartmentId"
+            resultType="com.ovo307000.lease.web.admin.vo.graph.GraphVo">
+        select graph.id,
+               graph.name,
+               graph.unit,
+               graph.item_type_id,
+               graph.apartment_id
+        from graph
+        where graph.is_deleted = 0
+          and graph.item_type_id = #{itemType}
+          and graph.apartment_id = #{apartmentId}
+        order by graph.id
+    </select>
 </mapper>
