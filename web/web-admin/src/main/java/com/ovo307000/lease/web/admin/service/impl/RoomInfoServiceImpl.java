@@ -11,7 +11,6 @@ import com.ovo307000.lease.web.admin.vo.room.RoomSubmitVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
@@ -113,7 +112,7 @@ public class RoomInfoServiceImpl extends ServiceImpl<RoomInfoMapper, RoomInfo> i
     private CompletableFuture<Boolean> removeGraphInfoListAsync(final Long roomId)
     {
         // 构建查询条件，用于精确查询要删除的图表信息
-        final LambdaQueryWrapper<GraphInfo> graphInfoQueryWrapper = new LambdaQueryWrapper<GraphInfo>();
+        final LambdaQueryWrapper<GraphInfo> graphInfoQueryWrapper = new LambdaQueryWrapper<>();
         graphInfoQueryWrapper.eq(GraphInfo::getItemType, ItemType.ROOM)
                              .eq(GraphInfo::getItemId, roomId);
 
@@ -130,7 +129,7 @@ public class RoomInfoServiceImpl extends ServiceImpl<RoomInfoMapper, RoomInfo> i
     private CompletableFuture<Boolean> removeRoomAttrValueListAsync(final Long roomId)
     {
         // 构建查询条件，用于精确查询要删除的房间属性值
-        final LambdaQueryWrapper<RoomAttrValue> roomAttrValueQueryWrapper = new LambdaQueryWrapper<RoomAttrValue>();
+        final LambdaQueryWrapper<RoomAttrValue> roomAttrValueQueryWrapper = new LambdaQueryWrapper<>();
         roomAttrValueQueryWrapper.eq(RoomAttrValue::getRoomId, roomId);
 
         // 异步执行删除操作，并返回删除结果的CompletableFuture
@@ -146,7 +145,7 @@ public class RoomInfoServiceImpl extends ServiceImpl<RoomInfoMapper, RoomInfo> i
     private CompletableFuture<Boolean> removeRoomFacilityListAsync(final Long roomId)
     {
         // 构建查询条件，用于精确查询要删除的房间设施
-        final LambdaQueryWrapper<RoomFacility> apartmentFacilityQueryWrapper = new LambdaQueryWrapper<RoomFacility>();
+        final LambdaQueryWrapper<RoomFacility> apartmentFacilityQueryWrapper = new LambdaQueryWrapper<>();
         apartmentFacilityQueryWrapper.eq(RoomFacility::getRoomId, roomId);
 
         // 异步执行删除操作，并返回删除结果的CompletableFuture
@@ -162,7 +161,7 @@ public class RoomInfoServiceImpl extends ServiceImpl<RoomInfoMapper, RoomInfo> i
     private CompletableFuture<Boolean> removeRoomLabelListAsync(final Long roomId)
     {
         // 构建查询条件，用于精确查询要删除的房间标签
-        final LambdaQueryWrapper<RoomLabel> roomLabelQueryWrapper = new LambdaQueryWrapper<RoomLabel>();
+        final LambdaQueryWrapper<RoomLabel> roomLabelQueryWrapper = new LambdaQueryWrapper<>();
         roomLabelQueryWrapper.eq(RoomLabel::getRoomId, roomId);
 
         // 异步执行删除操作，并返回删除结果的CompletableFuture
@@ -178,7 +177,7 @@ public class RoomInfoServiceImpl extends ServiceImpl<RoomInfoMapper, RoomInfo> i
     private CompletableFuture<Boolean> removeRoomPaymentTypeList(final Long roomId)
     {
         // 构建查询条件，用于精确查询要删除的房间支付类型
-        final LambdaQueryWrapper<RoomPaymentType> paymentTypeQueryWrapper = new LambdaQueryWrapper<RoomPaymentType>();
+        final LambdaQueryWrapper<RoomPaymentType> paymentTypeQueryWrapper = new LambdaQueryWrapper<>();
         paymentTypeQueryWrapper.eq(RoomPaymentType::getRoomId, roomId);
 
         // 异步执行删除操作，并返回删除结果的CompletableFuture
@@ -194,7 +193,7 @@ public class RoomInfoServiceImpl extends ServiceImpl<RoomInfoMapper, RoomInfo> i
     private CompletableFuture<Boolean> removeRoomLeaseTermList(final Long roomId)
     {
         // 构建查询条件，用于精确查询要删除的房间租赁期限
-        final LambdaQueryWrapper<RoomLeaseTerm> leaseTermQueryWrapper = new LambdaQueryWrapper<RoomLeaseTerm>();
+        final LambdaQueryWrapper<RoomLeaseTerm> leaseTermQueryWrapper = new LambdaQueryWrapper<>();
         leaseTermQueryWrapper.eq(RoomLeaseTerm::getRoomId, roomId);
 
         // 异步执行删除操作，并返回删除结果的CompletableFuture
@@ -325,39 +324,30 @@ public class RoomInfoServiceImpl extends ServiceImpl<RoomInfoMapper, RoomInfo> i
         return CompletableFuture.supplyAsync(() -> this.roomLeaseTermServiceImpl.saveBatch(roomLeaseTermList));
     }
 
-    private void executeAsyncTasks(final Supplier<CompletableFuture<Boolean>>... tasks) throws Exception
+    /**
+     * 执行异步任务列表，并处理任务失败
+     * 此方法接受一个任务供应商列表，每个供应商返回一个CompletableFuture<Boolean>对象
+     * 它通过流处理这些未来任务，等待它们完成，并检查是否有任务失败
+     * 如果任何任务失败（返回值为false），则抛出一个运行时异常
+     *
+     * @param taskList 任务供应商列表，每个供应商代表一个异步任务
+     * @throws Exception 如果任何任务失败，将通过运行时异常抛出
+     */
+    private void executeAsyncTasks(final List<Supplier<CompletableFuture<Boolean>>> taskList) throws Exception
     {
-
-        Arrays.stream(tasks)
-              .map(Supplier::get)
-              .map(CompletableFuture::join)
-              .filter(Boolean.FALSE::equals)
-              .findAny()
-              .ifPresent(task ->
-              {
-                  throw new RuntimeException("Task failed");
-              });
-
-
-/*
-        final List<CompletableFuture<Boolean>> futures = new ArrayList<>();
-        for (final Supplier<CompletableFuture<Boolean>> task : tasks)
-        {
-            futures.add(task.get());
-        }
-
-        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
-                         .join();
-
-        // 检查每个任务的结果
-        for (final CompletableFuture<Boolean> future : futures)
-        {
-            if (!future.isCompletedExceptionally() && !future.join())
-            {
-                throw new RuntimeException("Task failed");
-            }
-        }
-*/
+        // 将任务供应商列表转换为流，然后调用每个供应商的get方法获取CompletableFuture对象
+        // 使用map将CompletableFuture转换为Boolean，通过join方法等待任务完成并获取结果
+        // 使用filter过滤出false的结果，表示失败的任务
+        // 使用findAny查找第一个失败的任务，如果存在失败的任务，则抛出异常
+        taskList.stream()
+                .map(Supplier::get)
+                .map(CompletableFuture::join)
+                .filter(Boolean.FALSE::equals)
+                .findAny()
+                .ifPresent(task ->
+                {
+                    throw new RuntimeException("Task failed");
+                });
     }
 
     /**
@@ -370,7 +360,7 @@ public class RoomInfoServiceImpl extends ServiceImpl<RoomInfoMapper, RoomInfo> i
     {
         return CompletableFuture.supplyAsync(() ->
         {
-            final LambdaQueryWrapper<ApartmentInfo> queryWrapper = new LambdaQueryWrapper<ApartmentInfo>();
+            final LambdaQueryWrapper<ApartmentInfo> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.eq(ApartmentInfo::getId, apartmentId);
             return this.apartmentInfoServiceImpl.getOne(queryWrapper);
         });
