@@ -9,7 +9,7 @@
                fee_value.name,
                fee_value.unit,
                fee_value.fee_key_id,
-               fee_key.name as feeKeyName
+               fee_key.name as fee_key_name
         from fee_value
                  join fee_key
                       on fee_value.fee_key_id = fee_key.id
