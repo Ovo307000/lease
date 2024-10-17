@@ -19,6 +19,7 @@ import com.ovo307000.lease.web.admin.vo.graph.GraphVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -52,6 +53,7 @@ public class ApartmentInfoServiceImpl extends ServiceImpl<ApartmentInfoMapper, A
      * @return 保存或更新的结果
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean saveOrUpdateApartment(final ApartmentSubmitVo apartmentSubmitVo)
     {
         // 判断公寓是否已经存在
@@ -137,21 +139,35 @@ public class ApartmentInfoServiceImpl extends ServiceImpl<ApartmentInfoMapper, A
         return apartmentDetailVo;
     }
 
+    /**
+     * 根据公寓ID删除公寓相关信息
+     * 此方法首先检查指定的公寓ID是否存在，如果不存在，则抛出异常
+     * 接着，异步删除与公寓ID相关的各种信息，包括公寓基本信息、设施信息、标签信息、费用信息和图形信息
+     * 只有当所有相关信息都被成功删除时，此方法才返回true
+     *
+     * @param apartmentId 公寓ID，用于标识需要删除信息的公寓
+     * @return 表示是否成功删除所有相关信息的布尔值
+     * @throws LeaseException 如果未找到指定的公寓信息，则抛出此异常
+     */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean removeByApartmentId(final Long apartmentId)
     {
+        // 检查公寓是否存在，如果不存在则抛出异常
         if (this.getApartmentInfoAsync(apartmentId)
                 .join() == null)
         {
             throw new LeaseException(ResultCodeEnum.DATA_NOT_FOUND);
         }
 
+        // 异步删除公寓基本信息、设施信息、标签信息、费用信息和图形信息
         final CompletableFuture<Boolean> removeApartmentInfoFuture     = this.removeApartmentInfoAsync(apartmentId);
         final CompletableFuture<Boolean> removeApartmentFacilityFuture = this.removeApartmentFacilityAsync(apartmentId);
         final CompletableFuture<Boolean> removeApartmentLabelFuture    = this.removeApartmentLabelAsync(apartmentId);
         final CompletableFuture<Boolean> removeApartmentFeeValueFuture = this.removeApartmentFeeValueAsync(apartmentId);
         final CompletableFuture<Boolean> removeGraphInfoFuture         = this.removeGraphInfoAsync(apartmentId);
 
+        // 等待所有删除操作完成，并返回所有操作是否成功的布尔值
         return removeApartmentInfoFuture.join() &&
                removeApartmentFacilityFuture.join() &&
                removeApartmentLabelFuture.join() &&
@@ -159,6 +175,17 @@ public class ApartmentInfoServiceImpl extends ServiceImpl<ApartmentInfoMapper, A
                removeGraphInfoFuture.join();
     }
 
+    /**
+     * 异步删除公寓信息
+     *
+     * @param apartmentId 公寓ID，用于标识要删除的公寓信息
+     * @return 返回一个CompletableFuture对象，该对象的结果表明公寓信息是否被成功删除
+     * 结果为true表示成功删除，false表示删除失败
+     * <p>
+     * 此方法使用异步处理来删除指定ID的公寓信息它通过调用super.removeById方法来实现删除操作，
+     * 并使用CompletableFuture.supplyAsync来异步执行该操作这种方法的选择是为了避免在删除操作
+     * 过程中阻塞当前线程，特别是在删除操作可能消耗较多时间的场景下
+     */
     private CompletableFuture<Boolean> removeApartmentInfoAsync(final Long apartmentId)
     {
         return CompletableFuture.supplyAsync(() -> super.removeById(apartmentId));
