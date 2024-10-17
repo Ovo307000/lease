@@ -40,11 +40,11 @@ public class ApartmentInfoServiceImpl extends ServiceImpl<ApartmentInfoMapper, A
     private final ApartmentFacilityServiceImpl apartmentFacilityServiceImpl;
     private final ApartmentFeeValueServiceImpl apartmentFeeValueServiceImpl;
     private final ApartmentInfoMapper          apartmentInfoMapper;
-    private final RoomInfoMapper               roomInfoMapper;
     private final GraphInfoMapper              graphInfoMapper;
     private final LabelInfoMapper              labelInfoMapper;
     private final ApartmentFeeValueMapper      apartmentFeeValueMapper;
     private final ApartmentFacilityMapper      apartmentFacilityMapper;
+    private final RoomInfoMapper               roomInfoMapper;
 
     /**
      * 保存或更新公寓信息
@@ -159,6 +159,14 @@ public class ApartmentInfoServiceImpl extends ServiceImpl<ApartmentInfoMapper, A
         {
             throw new LeaseException(ResultCodeEnum.DATA_NOT_FOUND);
         }
+
+        final LambdaQueryWrapper<RoomInfo> roomInfoQueryWrapper = new LambdaQueryWrapper<>();
+        roomInfoQueryWrapper.eq(RoomInfo::getApartmentId, apartmentId);
+        if (this.roomInfoMapper.selectCount(roomInfoQueryWrapper) > 0)
+        {
+            throw new LeaseException(ResultCodeEnum.DATA_NOT_EMPTY);
+        }
+
 
         // 异步删除公寓基本信息、设施信息、标签信息、费用信息和图形信息
         final CompletableFuture<Boolean> removeApartmentInfoFuture     = this.removeApartmentInfoAsync(apartmentId);
