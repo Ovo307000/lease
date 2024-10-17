@@ -14,7 +14,7 @@ public class CloudflareConfiguration
         return MinioClient.builder()
                           .endpoint(properties.getEndpoint())
                           .credentials(properties.getAccessKeyId(), properties.getSecretAccessKey())
-                          .region("auto")   // 自动选择区域 <对 Cloudflare R2 存储有效>
+                          .region("auto")
                           .build();
     }
 }

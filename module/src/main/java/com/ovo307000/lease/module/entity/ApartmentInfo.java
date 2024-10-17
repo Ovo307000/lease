@@ -70,5 +70,4 @@ public class ApartmentInfo extends BaseEntity
     @Schema(description = "是否发布")
     @TableField(value = "is_release")
     private ReleaseStatus isRelease;
-
 }
