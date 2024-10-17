@@ -49,7 +49,8 @@ public enum ResultCodeEnum
     FILE_UPLOAD_FAILED(702, "文件上传失败，请检查后重试"),
 
     APARTMENT_HAS_ROOM(801, "该公寓下有房间信息，无法删除"),
-    UPDATE_FAILED(802, "更新失败，请检查后重试");
+    UPDATE_FAILED(802, "更新失败，请检查后重试"),
+    DATA_NOT_FOUND(803, "未找到相关数据，请检查后重试");
 
     private final Integer code;
     private final String  message;
