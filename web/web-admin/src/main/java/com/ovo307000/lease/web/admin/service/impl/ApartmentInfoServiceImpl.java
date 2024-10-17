@@ -164,9 +164,8 @@ public class ApartmentInfoServiceImpl extends ServiceImpl<ApartmentInfoMapper, A
         roomInfoQueryWrapper.eq(RoomInfo::getApartmentId, apartmentId);
         if (this.roomInfoMapper.selectCount(roomInfoQueryWrapper) > 0)
         {
-            throw new LeaseException(ResultCodeEnum.DATA_NOT_EMPTY);
+            throw new LeaseException(ResultCodeEnum.APARTMENT_HAS_ROOM);
         }
-
 
         // 异步删除公寓基本信息、设施信息、标签信息、费用信息和图形信息
         final CompletableFuture<Boolean> removeApartmentInfoFuture     = this.removeApartmentInfoAsync(apartmentId);
