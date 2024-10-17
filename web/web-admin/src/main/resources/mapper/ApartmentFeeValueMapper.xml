@@ -8,10 +8,14 @@
         select fee_value.id,
                fee_value.name,
                fee_value.unit,
-               fee_value.fee_key_id
+               fee_value.fee_key_id,
+               fee_key.name as feeKeyName
         from fee_value
+                 join fee_key
+                      on fee_value.fee_key_id = fee_key.id
         where fee_value.is_deleted = 0
-          and id in
+          and fee_key.is_deleted = 0
+          and fee_value.id in
               (select fee_value_id
               from apartment_fee_value
               where apartment_fee_value.is_deleted = 0
