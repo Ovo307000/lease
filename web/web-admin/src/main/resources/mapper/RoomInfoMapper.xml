@@ -4,4 +4,34 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ovo307000.lease.web.admin.mapper.RoomInfoMapper">
 
+    <select id="pageItem" resultType="com.ovo307000.lease.web.admin.vo.room.RoomItemVo">
+        select
+            room.id,
+            room.name,
+            room.floor,
+            room.room_type_id,
+            room_type.name as roomTypeName
+        from room
+            left join room_type
+                on room.room_type_id = room_type.id
+        where room.is_deleted = 0
+
+        <where>
+            <if test="provinceId != null">
+                and room.province_id = #{provinceId}
+            </if>
+            <if test="cityId != null">
+                and room.city_id = #{cityId}
+            </if>
+            <if test="districtId != null">
+                and room.district_id = #{districtId}
+            </if>
+            <if test="apartmentId != null">
+                and room.apartment_id = #{apartmentId}
+            </if>
+        </where>
+
+        order by room.floor, room.id
+        limit #{offset}, #{limit}
+    </select>
 </mapper>
