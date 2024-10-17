@@ -106,7 +106,7 @@ public class ApartmentController
     {
         log.info("根据id删除公寓信息: {}", id);
 
-        final boolean removed = this.apartmentInfoServiceImpl.removeById(id);
+        final boolean removed = this.apartmentInfoServiceImpl.removeByApartmentId(id);
 
         return removed ? Result.success() : Result.failure(ResultCodeEnum.REMOVE_FAILED);
     }

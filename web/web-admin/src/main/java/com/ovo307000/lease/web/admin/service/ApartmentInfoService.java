@@ -51,11 +51,13 @@ public interface ApartmentInfoService extends IService<ApartmentInfo>
 
     /**
      * 根据公寓ID删除公寓信息
-     * 此方法用于从系统中删除一个特定公寓的信息它通过公寓的唯一标识符（id）来识别该公寓
+     * 此方法用于从数据库中删除具有特定公寓ID的公寓信息记录
+     * 它提供了一种直接的方式来删除不再需要的公寓数据，以保持数据库的整洁和最新
      *
-     * @param id 公寓的唯一标识符，用于识别要删除的公寓
-     * @return 删除操作的结果如果操作成功，返回true；否则返回false
+     * @param apartmentId 公寓的唯一标识符，用于定位要删除的公寓信息
+     * @return 删除操作的成功与否如果返回true，则表示删除成功；否则，删除失败
      */
-    boolean removeApartmentById(Long id);
+    boolean removeByApartmentId(Long apartmentId);
 }
+
 
