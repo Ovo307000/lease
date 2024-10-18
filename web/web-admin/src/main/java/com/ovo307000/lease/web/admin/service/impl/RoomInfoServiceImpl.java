@@ -10,11 +10,12 @@ import com.ovo307000.lease.web.admin.vo.graph.GraphVo;
 import com.ovo307000.lease.web.admin.vo.room.RoomSubmitVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Supplier;
+import java.util.concurrent.CompletionException;
 
 /**
  * 针对表【room_info(房间信息表)】的数据库操作Service实现
@@ -37,69 +38,53 @@ public class RoomInfoServiceImpl extends ServiceImpl<RoomInfoMapper, RoomInfo> i
     @Override
     public boolean saveOrUpdateRoom(final RoomSubmitVo roomSubmitVo)
     {
-        final Long roomId = roomSubmitVo.getId();
-
-        final boolean isNew = roomId == null;
-
-        // 如果新增，则先删除相关数据
-        if (isNew)
+        if (this.isNewRoom(roomSubmitVo))
         {
-            final CompletableFuture<Boolean> removeGraphInfoListFuture;
-            removeGraphInfoListFuture = this.removeGraphInfoListAsync(roomId);
-
-            final CompletableFuture<Boolean> removeRoomAttrValueListFuture;
-            removeRoomAttrValueListFuture = this.removeRoomAttrValueListAsync(roomId);
-
-            final CompletableFuture<Boolean> removeRoomFacilityListFuture;
-            removeRoomFacilityListFuture = this.removeRoomFacilityListAsync(roomId);
-
-            final CompletableFuture<Boolean> removeRoomLabelListFuture;
-            removeRoomLabelListFuture = this.removeRoomLabelListAsync(roomId);
-
-            final CompletableFuture<Boolean> removeRoomPaymentTypeListFuture;
-            removeRoomPaymentTypeListFuture = this.removeRoomPaymentTypeList(roomId);
-
-            final CompletableFuture<Boolean> removeRoomLeaseTermListFuture;
-            removeRoomLeaseTermListFuture = this.removeRoomLeaseTermList(roomId);
-
-            CompletableFuture.allOf(removeGraphInfoListFuture,
-                                     removeRoomAttrValueListFuture,
-                                     removeRoomFacilityListFuture,
-                                     removeRoomLabelListFuture,
-                                     removeRoomPaymentTypeListFuture,
-                                     removeRoomLeaseTermListFuture)
-                             .join();
-
+            return this.handleNewRoom(roomSubmitVo, roomSubmitVo.getId());
         }
         else
         {
-            final CompletableFuture<Boolean> saveGraphInfoListFuture;
-            saveGraphInfoListFuture = this.saveGraphInfoListAsync(roomSubmitVo);
-
-            final CompletableFuture<Boolean> saveRoomAttrValueListFuture;
-            saveRoomAttrValueListFuture = this.saveRoomAttrValueListAsync(roomSubmitVo);
-
-            final CompletableFuture<Boolean> saveRoomFacilityListFuture;
-            saveRoomFacilityListFuture = this.saveRoomFacilityListAsync(roomSubmitVo);
-
-            final CompletableFuture<Boolean> saveRoomLabelListFuture;
-            saveRoomLabelListFuture = this.saveRoomLabelListAsync(roomSubmitVo);
-
-            final CompletableFuture<Boolean> saveRoomPaymentTypeListFuture;
-            saveRoomPaymentTypeListFuture = this.saveRoomPaymentTypeListAsync(roomSubmitVo);
-
-            final CompletableFuture<Boolean> saveRoomLeaseTermListFuture;
-            saveRoomLeaseTermListFuture = this.saveRoomLeaseTermListAsync(roomSubmitVo);
-
-            CompletableFuture.allOf(saveGraphInfoListFuture,
-                                     saveRoomAttrValueListFuture,
-                                     saveRoomFacilityListFuture,
-                                     saveRoomLabelListFuture,
-                                     saveRoomPaymentTypeListFuture,
-                                     saveRoomLeaseTermListFuture)
-                             .join();
+            return this.handleExistingRoom(roomSubmitVo);
         }
+    }
 
+    private boolean isNewRoom(final RoomSubmitVo roomSubmitVo)
+    {
+        return roomSubmitVo.getId() == null;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public boolean handleNewRoom(final RoomSubmitVo roomSubmitVo, final Long roomId)
+    {
+        final List<CompletableFuture<Boolean>> removeTasks = List.of(this.removeGraphInfoListAsync(roomId),
+                this.removeRoomAttrValueListAsync(roomId),
+                this.removeRoomFacilityListAsync(roomId),
+                this.removeRoomLabelListAsync(roomId),
+                this.removeRoomPaymentTypeList(roomId),
+                this.removeRoomLeaseTermList(roomId));
+        CompletableFuture.allOf(removeTasks.toArray(new CompletableFuture[0]))
+                         .join();
+
+        final List<CompletableFuture<Boolean>> saveTasks = List.of(this.saveOrUpdateAsync(roomSubmitVo),
+                this.saveGraphInfoListAsync(roomSubmitVo),
+                this.saveRoomAttrValueListAsync(roomSubmitVo),
+                this.saveRoomFacilityListAsync(roomSubmitVo),
+                this.saveRoomLabelListAsync(roomSubmitVo),
+                this.saveRoomPaymentTypeListAsync(roomSubmitVo),
+                this.saveRoomLeaseTermListAsync(roomSubmitVo));
+        return this.executeTasks(saveTasks);
+    }
+
+    private boolean handleExistingRoom(final RoomSubmitVo roomSubmitVo)
+    {
+        final List<CompletableFuture<Boolean>> saveTasks = List.of(this.saveGraphInfoListAsync(roomSubmitVo),
+                this.saveRoomAttrValueListAsync(roomSubmitVo),
+                this.saveRoomFacilityListAsync(roomSubmitVo),
+                this.saveRoomLabelListAsync(roomSubmitVo),
+                this.saveRoomPaymentTypeListAsync(roomSubmitVo),
+                this.saveRoomLeaseTermListAsync(roomSubmitVo));
+        CompletableFuture.allOf(saveTasks.toArray(new CompletableFuture[0]))
+                         .join();
         return true;
     }
 
@@ -200,6 +185,28 @@ public class RoomInfoServiceImpl extends ServiceImpl<RoomInfoMapper, RoomInfo> i
         return CompletableFuture.supplyAsync(() -> this.roomLeaseTermServiceImpl.remove(leaseTermQueryWrapper));
     }
 
+    /**
+     * 异步保存或更新房间信息的方法。
+     *
+     * <p>此方法会异步调用 方法，保存或更新房间信息。
+     * 使用CompletableFuture异步处理，可以提高并发性能，避免阻塞主线程。</p>
+     *
+     * @param roomSubmitVo 包含房间信息的对象，包括图片列表、属性信息列表、配套信息列表、标签信息列表、支付方式列表和可选租期列表。
+     * @return 返回一个CompletableFuture对象，其结果为布尔值，表示保存或更新操作是否成功。
+     */
+    private CompletableFuture<Boolean> saveOrUpdateAsync(final RoomSubmitVo roomSubmitVo)
+    {
+        return CompletableFuture.supplyAsync(() -> this.saveOrUpdate(roomSubmitVo));
+    }
+
+    /**
+     * 异步保存图形信息列表的方法。
+     *
+     * @param roomSubmitVo 包含图形信息和房间ID的对象
+     * @return 一个包含布尔值的CompletableFuture，表示保存操作是否成功
+     * @throws NullPointerException 如果传入的roomSubmitVo为null
+     * @throws CompletionException 如果保存操作过程出现异常
+     */
     private CompletableFuture<Boolean> saveGraphInfoListAsync(final RoomSubmitVo roomSubmitVo)
     {
         final List<GraphVo> graphVoList = roomSubmitVo.getGraphVoList();
@@ -324,30 +331,18 @@ public class RoomInfoServiceImpl extends ServiceImpl<RoomInfoMapper, RoomInfo> i
         return CompletableFuture.supplyAsync(() -> this.roomLeaseTermServiceImpl.saveBatch(roomLeaseTermList));
     }
 
-    /**
-     * 执行异步任务列表，并处理任务失败
-     * 此方法接受一个任务供应商列表，每个供应商返回一个CompletableFuture<Boolean>对象
-     * 它通过流处理这些未来任务，等待它们完成，并检查是否有任务失败
-     * 如果任何任务失败（返回值为false），则抛出一个运行时异常
-     *
-     * @param taskList 任务供应商列表，每个供应商代表一个异步任务
-     * @throws Exception 如果任何任务失败，将通过运行时异常抛出
-     */
-    private void executeAsyncTasks(final List<Supplier<CompletableFuture<Boolean>>> taskList) throws Exception
+    private boolean executeTasks(final List<CompletableFuture<Boolean>> tasks)
     {
-        // 将任务供应商列表转换为流，然后调用每个供应商的get方法获取CompletableFuture对象
-        // 使用map将CompletableFuture转换为Boolean，通过join方法等待任务完成并获取结果
-        // 使用filter过滤出false的结果，表示失败的任务
-        // 使用findAny查找第一个失败的任务，如果存在失败的任务，则抛出异常
-        taskList.stream()
-                .map(Supplier::get)
-                .map(CompletableFuture::join)
-                .filter(Boolean.FALSE::equals)
-                .findAny()
-                .ifPresent(task ->
-                {
-                    throw new RuntimeException("Task failed");
-                });
+        try
+        {
+            CompletableFuture.allOf(tasks.toArray(new CompletableFuture[0]))
+                             .join();
+            return true;
+        }
+        catch (final Exception e)
+        {
+            return false;
+        }
     }
 
     /**
