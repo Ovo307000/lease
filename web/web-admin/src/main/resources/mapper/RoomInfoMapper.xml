@@ -4,34 +4,61 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ovo307000.lease.web.admin.mapper.RoomInfoMapper">
 
-    <select id="pageItem" resultType="com.ovo307000.lease.web.admin.vo.room.RoomItemVo">
-        select
-            room.id,
-            room.name,
-            room.floor,
-            room.room_type_id,
-            room_type.name as roomTypeName
-        from room
-            left join room_type
-                on room.room_type_id = room_type.id
-        where room.is_deleted = 0
+    <resultMap id="RoomItemVoMap" type="com.ovo307000.lease.web.admin.vo.room.RoomItemVo" autoMapping="true">
+        <id property="id" column="room_id"/>
+        <association property="apartmentInfo" javaType="com.ovo307000.lease.web.admin.vo.apartment.ApartmentItemVo" autoMapping="true">
+            <id property="id" column="apartment_id"/>
+            <result property="isRelease" column="apart_is_release"/>
+        </association>
+    </resultMap>
 
+    <select id="pageItem" resultMap="RoomItemVoMap">
+        select
+        roomInfo.id as room_id,
+        roomInfo.room_number as room_number,
+        roomInfo.rent as room_rent,
+        roomInfo.apartment_id as apartment_id,
+        roomInfo.is_release as room_is_release,
+
+        leaseAgreement.id not null as is_check_in,
+        leaseAgreement.lease_end_date as lease_end_date,
+
+        apartmentInfo.id as apartment_id,
+        apartmentInfo.name as apartment_name,
+        apartmentInfo.introduction as apartment_introduction,
+        apartmentInfo.district as apartment_district,
+        ai.district_name as district_name,
+        ai.city_id as city_id,
+        ai.city_name as city_name,
+        ai.province_id as province_id,
+        ai.province_name as province_name,
+        ai.address_detail as address_detail,
+        ai.latitude as latitude,
+        ai.longitude as longitude,
+        ai.phone as phone,
+        ai.is_release as is_release,
+
+        from room_info as roomInfo
+
+        left join lease_agreement as leaseAgreement
+        on roomInfo.id = leaseAgreement.room_id
+        and leaseAgreement.is_delete = 0
+        and leaseAgreement.status in (2, 5)
+
+        left join apartment_info as apartmentInfo
+        on roomInfo.apartment_id = apartmentInfo.id
+        and apartmentInfo.is_delete = 0
         <where>
-            <if test="provinceId != null">
-                and room.province_id = #{provinceId}
+            roomInfo.is_delete = 0
+            <if test="name != null and name != ''">
+                and room.name like concat('%', #{name}, '%')
             </if>
-            <if test="cityId != null">
-                and room.city_id = #{cityId}
+            <if test="floor != null and floor != ''">
+                and room.floor = #{floor}
             </if>
-            <if test="districtId != null">
-                and room.district_id = #{districtId}
-            </if>
-            <if test="apartmentId != null">
-                and room.apartment_id = #{apartmentId}
+            <if test="roomTypeId != null and roomTypeId != ''">
+                and room.room_type_id = #{roomTypeId}
             </if>
         </where>
-
-        order by room.floor, room.id
-        limit #{offset}, #{limit}
     </select>
 </mapper>

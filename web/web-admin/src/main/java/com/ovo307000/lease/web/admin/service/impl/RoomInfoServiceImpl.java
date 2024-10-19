@@ -1,12 +1,16 @@
 package com.ovo307000.lease.web.admin.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ovo307000.lease.module.entity.*;
 import com.ovo307000.lease.module.enums.ItemType;
 import com.ovo307000.lease.web.admin.mapper.RoomInfoMapper;
 import com.ovo307000.lease.web.admin.service.RoomInfoService;
 import com.ovo307000.lease.web.admin.vo.graph.GraphVo;
+import com.ovo307000.lease.web.admin.vo.room.RoomItemVo;
+import com.ovo307000.lease.web.admin.vo.room.RoomQueryVo;
 import com.ovo307000.lease.web.admin.vo.room.RoomSubmitVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,6 +38,12 @@ public class RoomInfoServiceImpl extends ServiceImpl<RoomInfoMapper, RoomInfo> i
     private final RoomLabelServiceImpl       roomLabelServiceImpl;
     private final RoomLeaseTermServiceImpl   roomLeaseTermServiceImpl;
     private final RoomPaymentTypeServiceImpl roomPaymentTypeServiceImpl;
+
+    @Override
+    public IPage<RoomItemVo> pageItem(final Page<RoomItemVo> page, final RoomQueryVo queryVo)
+    {
+        return this.baseMapper.pageItem(page, queryVo);
+    }
 
     @Override
     public boolean saveOrUpdateRoom(final RoomSubmitVo roomSubmitVo)
