@@ -3,5 +3,68 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ovo307000.lease.web.admin.mapper.ViewAppointmentMapper">
+    <resultMap id="appointmentResultMap" type="com.ovo307000.lease.web.admin.vo.appointment.AppointmentVo"
+               autoMapping="true">
+        <id column="id" property="id"/>
+        <association property="apartmentInfo" javaType="com.ovo307000.lease.module.entity.ApartmentInfo"
+                     autoMapping="true">
+            <id column="apartmentInfo_id" property="id"/>
+            <result column="apartmentInfo_name" property="name"/>
+            <result property="phone" column="apartmentInfo_phone"/>
+        </association>
+    </resultMap>
 
+    <select id="pageAppointment" resultType="com.ovo307000.lease.web.admin.vo.appointment.AppointmentVo">
+        select viewAppointment.id as viewAppointment_id,
+        viewAppointment.user_id,
+        viewAppointment.name as viewAppointment_name,
+        viewAppointment.phone as viewAppointment_phone,
+        viewAppointment.apartment_id,
+        viewAppointment.appointment_time,
+        viewAppointment.additional_info,
+        viewAppointment.appointment_status,
+        apartmentInfo.id as apartmentInfo_id,
+        apartmentInfo.name as apartmentInfo_name,
+        apartmentInfo.introduction,
+        apartmentInfo.district_id,
+        apartmentInfo.district_name,
+        apartmentInfo.city_id,
+        apartmentInfo.city_name,
+        apartmentInfo.province_id,
+        apartmentInfo.province_name,
+        apartmentInfo.address_detail,
+        apartmentInfo.latitude,
+        apartmentInfo.longitude,
+        apartmentInfo.phone as apartmentInfo_phone,
+        apartmentInfo.is_release,
+        from view_appointment as viewAppointment
+        left join apartment_info as apartmentInfo
+        on viewAppointment.apartment_id = apartmentInfo.id and apartmentInfo.is_deleted = 0
+        <where>
+            viewAppointment.is_deleted = 0
+            <if test="queryVo.provinceId != null">
+                and apartmentInfo.province_id = #{queryVo.provinceId}
+            </if>
+
+            <if test="queryVo.cityId != null">
+                and apartmentInfo.city_id = #{queryVo.cityId}
+            </if>
+
+            <if test="queryVo.districtId != null">
+                and apartmentInfo.district_id = #{queryVo.districtId}
+            </if>
+
+            <if test="queryVo.apartmentId != null">
+                and viewAppointment.apartment_id = #{queryVo.apartmentId}
+            </if>
+
+            <if test="queryVo.name != null and queryVo.name != ''">
+                and viewAppointment.name like concat('%', #{queryVo.name}, '%')
+            </if>
+
+            <if test="queryVo.phone != null and queryVo.phone != ''">
+                and viewAppointment.phone like concat('%', #{queryVo.phone}, '%')
+            </if>
+        </where>
+    </select>
 </mapper>
