@@ -101,7 +101,9 @@ public class RoomController
     @DeleteMapping("removeById")
     public Result<Void> removeById(@RequestParam final Long id)
     {
-        return Result.success();
+        log.info("根据id删除房间信息: id = {}", id);
+
+        return this.roomInfoServiceImpl.removeRoomById(id) ? Result.success() : Result.failure();
     }
 
     /**

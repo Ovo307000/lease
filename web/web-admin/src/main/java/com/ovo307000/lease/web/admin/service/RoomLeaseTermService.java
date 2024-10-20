@@ -54,8 +54,6 @@ import java.util.concurrent.CompletableFuture;
  *
  * @see RoomLeaseTerm
  * @see LeaseTerm
- * @see RoomLeaseTermMapper
- * @see BaseEntity
  */
 public interface RoomLeaseTermService extends IService<RoomLeaseTerm>
 {

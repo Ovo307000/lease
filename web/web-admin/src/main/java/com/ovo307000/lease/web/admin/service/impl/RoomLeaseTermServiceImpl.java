@@ -24,7 +24,6 @@ public class RoomLeaseTermServiceImpl extends ServiceImpl<RoomLeaseTermMapper, R
      * 根据房间ID异步查询租期列表
      *
      * <p>这个方法将根据传入的房间ID，通过异步的方式查询数据库中的租期信息列表。
-     * @override 表示此方法重写了父类中的同名方法。
      *
      * @param roomId 房间ID，类型为 {@link Long}。这个参数用于指定需要查询租期的房间。
      * @return {@link CompletableFuture}<{@link List}<{@link LeaseTerm}>> 返回一个包含租期信息列表的异步计算结果。

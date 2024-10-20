@@ -53,4 +53,15 @@ public interface RoomInfoService extends IService<RoomInfo>
      * @return 操作是否成功执行，返回true表示成功，返回false表示失败
      */
     boolean saveOrUpdateRoom(RoomSubmitVo roomSubmitVo);
+
+    /**
+     * 根据房间ID删除房间信息
+     * <p>
+     * 此方法接收一个房间ID，删除数据库中对应的房间信息。如果房间存在且删除成功，
+     * 返回true；否则返回false。
+     *
+     * @param roomId 房间ID，需要删除的房间的唯一标识
+     * @return 如果操作成功返回true，否则返回false
+     */
+    boolean removeRoomById(Long roomId);
 }

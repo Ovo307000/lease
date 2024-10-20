@@ -43,7 +43,7 @@ public class RoomInfoServiceImpl extends ServiceImpl<RoomInfoMapper, RoomInfo> i
     private final RoomLabelServiceImpl       roomLabelServiceImpl;
     private final RoomLeaseTermServiceImpl   roomLeaseTermServiceImpl;
     private final RoomPaymentTypeServiceImpl roomPaymentTypeServiceImpl;
-    private final AttrValueServiceImpl attrValueServiceImpl;
+    private final AttrValueServiceImpl       attrValueServiceImpl;
 
     /**
      * 获取指定房间ID的详细信息。
@@ -68,26 +68,25 @@ public class RoomInfoServiceImpl extends ServiceImpl<RoomInfoMapper, RoomInfo> i
         final RoomDetailVo roomDetailVo = new RoomDetailVo();
         BeanUtils.copyProperties(roomInfoFuture.join(), roomDetailVo);
 
-        final CompletableFuture<ApartmentInfo>      apartmentInfoFuture   = this.getApartmentInfoAsync(roomId);
+        final CompletableFuture<ApartmentInfo> apartmentInfoFuture = this.getApartmentInfoAsync(roomId);
 
-        final CompletableFuture<List<GraphVo>>      graphVoFuture         = this.graphInfoServiceImpl.selectListByItemTypeAndApartmentIdAsync(
+        final CompletableFuture<List<GraphVo>> graphVoFuture = this.graphInfoServiceImpl.selectListByItemTypeAndApartmentIdAsync(
                 ItemType.ROOM,
                 roomId);
 
-        final CompletableFuture<List<AttrValueVo>>  attrValueVoFuture     = this.attrValueServiceImpl.selectListByRoomIdAsync(
+        final CompletableFuture<List<AttrValueVo>> attrValueVoFuture = this.attrValueServiceImpl.selectListByRoomIdAsync(
                 roomId);
-        final CompletableFuture<List<FacilityInfo>> facilityInfoFuture    = this.roomFacilityServiceImpl.selectListByRoomIdAsync(
+        final CompletableFuture<List<FacilityInfo>> facilityInfoFuture = this.roomFacilityServiceImpl.selectListByRoomIdAsync(
                 roomId);
 
-        final CompletableFuture<List<LabelInfo>>    labelInfoFuture       = this.roomLabelServiceImpl.selectListByRoomIdAsync(
+        final CompletableFuture<List<LabelInfo>> labelInfoFuture = this.roomLabelServiceImpl.selectListByRoomIdAsync(
                 roomId);
 
         final CompletableFuture<List<PaymentType>> paymentTypeInfoFuture = this.roomPaymentTypeServiceImpl.selectListByRoomIdAsync(
                 roomId);
 
-        final CompletableFuture<List<LeaseTerm>> leaseTermInfoFuture  = this.roomLeaseTermServiceImpl.selectListByRoomIdAsync(
+        final CompletableFuture<List<LeaseTerm>> leaseTermInfoFuture = this.roomLeaseTermServiceImpl.selectListByRoomIdAsync(
                 roomId);
-
 
 
         roomDetailVo.setApartmentInfo(apartmentInfoFuture.join());
@@ -106,7 +105,7 @@ public class RoomInfoServiceImpl extends ServiceImpl<RoomInfoMapper, RoomInfo> i
      *
      * @param roomId 需要查询的房间唯一标识符。
      * @return 包含房间信息的CompletableFuture对象。
-     *
+     * <p>
      * 使用示例：
      * <pre>{@code
      *    Long roomId = 123L;
@@ -164,6 +163,7 @@ public class RoomInfoServiceImpl extends ServiceImpl<RoomInfoMapper, RoomInfo> i
      * @return 返回一个布尔值，表示保存或更新操作是否成功。
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean saveOrUpdateRoom(final RoomSubmitVo roomSubmitVo)
     {
         if (this.isNewRoom(roomSubmitVo))
@@ -174,6 +174,34 @@ public class RoomInfoServiceImpl extends ServiceImpl<RoomInfoMapper, RoomInfo> i
         {
             return this.handleExistingRoom(roomSubmitVo);
         }
+    }
+
+    @Override
+    public boolean removeRoomById(final Long roomId)
+    {
+        final CompletableFuture<Boolean> removeRoomFuture            = this.removeRoomByIdAsync(roomId);
+        final CompletableFuture<Boolean> removeGraphInfoFuture       = this.removeGraphInfoListAsync(roomId);
+        final CompletableFuture<Boolean> removeRoomAttrValueFuture   = this.removeRoomAttrValueListAsync(roomId);
+        final CompletableFuture<Boolean> removeRoomFacilityFuture    = this.removeRoomFacilityListAsync(roomId);
+        final CompletableFuture<Boolean> removeRoomLabelFuture       = this.removeRoomLabelListAsync(roomId);
+        final CompletableFuture<Boolean> removeRoomPaymentTypeFuture = this.removeRoomPaymentTypeList(roomId);
+        final CompletableFuture<Boolean> removeRoomLeaseTermFuture   = this.removeRoomLeaseTermList(roomId);
+
+        CompletableFuture.allOf(removeGraphInfoFuture,
+                                 removeRoomAttrValueFuture,
+                                 removeRoomFacilityFuture,
+                                 removeRoomLabelFuture,
+                                 removeRoomPaymentTypeFuture,
+                                 removeRoomLeaseTermFuture,
+                                 removeRoomFuture)
+                         .join();
+
+        return true;
+    }
+
+    private CompletableFuture<Boolean> removeRoomByIdAsync(final Long roomId)
+    {
+        return CompletableFuture.supplyAsync(() -> this.removeById(roomId));
     }
 
     /**
@@ -195,7 +223,6 @@ public class RoomInfoServiceImpl extends ServiceImpl<RoomInfoMapper, RoomInfo> i
      * @param roomSubmitVo 包含新房间相关信息的对象，包括图表信息、属性值、设施、标签、支付类型和租赁期限等。
      * @param roomId       需要处理的房间ID。
      * @return 返回一个布尔值，表示处理操作是否成功。此处总是返回true，因为所有的异步任务在执行时已被显式等待完成。
-     * @throws Exception 当处理新房间操作过程中发生任何异常时，会抛出此异常并回滚事务。
      */
     @Transactional(rollbackFor = Exception.class)
     public boolean handleNewRoom(final RoomSubmitVo roomSubmitVo, final Long roomId)
@@ -346,7 +373,8 @@ public class RoomInfoServiceImpl extends ServiceImpl<RoomInfoMapper, RoomInfo> i
      * @param roomSubmitVo 包含房间信息的对象，包括图片列表、属性信息列表、配套信息列表、标签信息列表、支付方式列表和可选租期列表。
      * @return 返回一个CompletableFuture对象，其结果为布尔值，表示保存或更新操作是否成功。
      */
-    private CompletableFuture<Boolean> saveOrUpdateAsync(final RoomSubmitVo roomSubmitVo)
+    @Transactional(rollbackFor = Exception.class)
+    public CompletableFuture<Boolean> saveOrUpdateAsync(final RoomSubmitVo roomSubmitVo)
     {
         return CompletableFuture.supplyAsync(() -> this.saveOrUpdate(roomSubmitVo));
     }
