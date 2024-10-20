@@ -18,14 +18,17 @@ public interface RoomInfoService extends IService<RoomInfo>
 {
 
     /**
-     * 根据ID获取房间详细信息
+     * 根据房间ID获取房间详情
      * <p>
-     * 该方法根据传入的房间ID，到数据库中查询并返回房间的详细信息，封装到RoomDetailVo对象中
+     * 此方法根据传入的房间ID查询数据库，获取对应的房间详细信息，包括公寓信息、图片列表、
+     * 属性信息列表、配套信息列表、标签信息列表以及支付方式列表等，并将这些信息封装在
+     * {@link RoomDetailVo} 对象中返回。
      *
-     * @param id 房间ID
-     * @return 房间的详细信息视图对象
+     * @param roomId 房间ID，需要查询的房间的唯一标识
+     * @return 返回包含指定房间详细信息的 {@link RoomDetailVo} 对象，如果房间不存在，则返回 null
+     * @throws IllegalArgumentException 如果传入的房间ID为空或无效，将抛出此异常
      */
-    RoomDetailVo getDetailById(Long id);
+    RoomDetailVo getDetailByRoomId(Long roomId);
 
 
     /**

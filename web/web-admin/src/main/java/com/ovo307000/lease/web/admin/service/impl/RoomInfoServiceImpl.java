@@ -43,19 +43,19 @@ public class RoomInfoServiceImpl extends ServiceImpl<RoomInfoMapper, RoomInfo> i
     private final RoomLabelServiceImpl       roomLabelServiceImpl;
     private final RoomLeaseTermServiceImpl   roomLeaseTermServiceImpl;
     private final RoomPaymentTypeServiceImpl roomPaymentTypeServiceImpl;
+    private final AttrValueServiceImpl attrValueServiceImpl;
 
     /**
-     * 根据ID获取房间详细信息
-     * <p>
-     * 该方法根据传入的房间ID，到数据库中查询并返回房间的详细信息，封装到RoomDetailVo对象中
+     * 获取指定房间ID的详细信息。
      *
-     * @param id 房间ID
-     * @return 房间的详细信息视图对象
+     * @param roomId 房间的唯一标识符。
+     * @return 包含房间详细信息的RoomDetailVo对象。
+     * @throws LeaseException 当房间信息未找到时抛出异常。
      */
     @Override
-    public RoomDetailVo getDetailById(final Long id)
+    public RoomDetailVo getDetailByRoomId(final Long roomId)
     {
-        final CompletableFuture<RoomInfo> roomInfoFuture = this.getRoomInfoAsync(id)
+        final CompletableFuture<RoomInfo> roomInfoFuture = this.getRoomInfoAsync(roomId)
                                                                .thenApply(roomInfo ->
                                                                {
                                                                    if (roomInfo == null)
@@ -68,20 +68,27 @@ public class RoomInfoServiceImpl extends ServiceImpl<RoomInfoMapper, RoomInfo> i
         final RoomDetailVo roomDetailVo = new RoomDetailVo();
         BeanUtils.copyProperties(roomInfoFuture.join(), roomDetailVo);
 
-        final CompletableFuture<ApartmentInfo>      apartmentInfoFuture   = this.getApartmentInfoAsync(id);
+        final CompletableFuture<ApartmentInfo>      apartmentInfoFuture   = this.getApartmentInfoAsync(roomId);
+
         final CompletableFuture<List<GraphVo>>      graphVoFuture         = this.graphInfoServiceImpl.selectListByItemTypeAndApartmentIdAsync(
                 ItemType.ROOM,
-                id);
-        final CompletableFuture<List<AttrValueVo>>  attrValueVoFuture     = this.roomAttrValueServiceImpl.listAttrValueVoAsync(
-                id);
-        final CompletableFuture<List<FacilityInfo>> facilityInfoFuture    = this.roomFacilityServiceImpl.listFacilityInfoAsync(
-                id);
-        final CompletableFuture<List<LabelInfo>>    labelInfoFuture       = this.roomLabelServiceImpl.listLabelInfoAsync(
-                id);
-        final CompletableFuture<List<PaymentType>>  paymentTypeInfoFuture = this.roomPaymentTypeServiceImpl.listPaymentTypeAsync(
-                id);
-        final CompletableFuture<List<LeaseTerm>>    leaseTermInfoFuture   = this.roomLeaseTermServiceImpl.listLeaseTermAsync(
-                id);
+                roomId);
+
+        final CompletableFuture<List<AttrValueVo>>  attrValueVoFuture     = this.attrValueServiceImpl.selectListByRoomIdAsync(
+                roomId);
+        final CompletableFuture<List<FacilityInfo>> facilityInfoFuture    = this.roomFacilityServiceImpl.selectListByRoomIdAsync(
+                roomId);
+
+        final CompletableFuture<List<LabelInfo>>    labelInfoFuture       = this.roomLabelServiceImpl.selectListByRoomIdAsync(
+                roomId);
+
+        final CompletableFuture<List<PaymentType>> paymentTypeInfoFuture = this.roomPaymentTypeServiceImpl.selectListByRoomIdAsync(
+                roomId);
+
+        final CompletableFuture<List<LeaseTerm>> leaseTermInfoFuture  = this.roomLeaseTermServiceImpl.selectListByRoomIdAsync(
+                roomId);
+
+
 
         roomDetailVo.setApartmentInfo(apartmentInfoFuture.join());
         roomDetailVo.setGraphVoList(graphVoFuture.join());
@@ -94,6 +101,22 @@ public class RoomInfoServiceImpl extends ServiceImpl<RoomInfoMapper, RoomInfo> i
         return roomDetailVo;
     }
 
+    /**
+     * 异步获取指定房间的详细信息。
+     *
+     * @param roomId 需要查询的房间唯一标识符。
+     * @return 包含房间信息的CompletableFuture对象。
+     *
+     * 使用示例：
+     * <pre>{@code
+     *    Long roomId = 123L;
+     *    CompletableFuture<RoomInfo> roomInfoFuture = getRoomInfoAsync(roomId);
+     *    roomInfoFuture.thenAccept(roomInfo -> {
+     *        // 处理房间信息
+     *        System.out.println(roomInfo);
+     *    });
+     * }</pre>
+     */
     private CompletableFuture<RoomInfo> getRoomInfoAsync(final Long roomId)
     {
         return CompletableFuture.supplyAsync(() -> this.baseMapper.selectById(roomId));
