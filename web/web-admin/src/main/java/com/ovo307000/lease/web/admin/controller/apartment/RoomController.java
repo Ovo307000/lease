@@ -137,6 +137,14 @@ public class RoomController
     @Operation(summary = "根据公寓id查询房间列表")
     public Result<List<RoomInfo>> listBasicByApartmentId(final Long id)
     {
-        return Result.success();
+        log.info("根据公寓id查询房间列表: 公寓ID = {}", id);
+
+        final LambdaQueryWrapper<RoomInfo> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(RoomInfo::getApartmentId, id)
+                    .eq(RoomInfo::getIsRelease, ReleaseStatus.RELEASED);
+
+        final List<RoomInfo> roomInfoList = this.roomInfoServiceImpl.list(queryWrapper);
+
+        return roomInfoList != null ? Result.success(roomInfoList) : Result.failure();
     }
 }
