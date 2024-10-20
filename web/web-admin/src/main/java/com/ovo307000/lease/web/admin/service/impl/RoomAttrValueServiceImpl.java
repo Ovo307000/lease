@@ -48,7 +48,3 @@ public class RoomAttrValueServiceImpl extends ServiceImpl<RoomAttrValueMapper, R
         return CompletableFuture.supplyAsync(() -> this.baseMapper.listAttrValueVoByRoomId(roomId));
     }
 }
-
-
-
-
