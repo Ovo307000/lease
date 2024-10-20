@@ -4,15 +4,20 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ovo307000.lease.common.exception.LeaseException;
+import com.ovo307000.lease.common.result.ResultCodeEnum;
 import com.ovo307000.lease.module.entity.*;
 import com.ovo307000.lease.module.enums.ItemType;
 import com.ovo307000.lease.web.admin.mapper.RoomInfoMapper;
 import com.ovo307000.lease.web.admin.service.RoomInfoService;
+import com.ovo307000.lease.web.admin.vo.attr.AttrValueVo;
 import com.ovo307000.lease.web.admin.vo.graph.GraphVo;
+import com.ovo307000.lease.web.admin.vo.room.RoomDetailVo;
 import com.ovo307000.lease.web.admin.vo.room.RoomItemVo;
 import com.ovo307000.lease.web.admin.vo.room.RoomQueryVo;
 import com.ovo307000.lease.web.admin.vo.room.RoomSubmitVo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,11 +45,82 @@ public class RoomInfoServiceImpl extends ServiceImpl<RoomInfoMapper, RoomInfo> i
     private final RoomPaymentTypeServiceImpl roomPaymentTypeServiceImpl;
 
     /**
+     * 根据ID获取房间详细信息
+     * <p>
+     * 该方法根据传入的房间ID，到数据库中查询并返回房间的详细信息，封装到RoomDetailVo对象中
+     *
+     * @param id 房间ID
+     * @return 房间的详细信息视图对象
+     */
+    @Override
+    public RoomDetailVo getDetailById(final Long id)
+    {
+        final CompletableFuture<RoomInfo> roomInfoFuture = this.getRoomInfoAsync(id)
+                                                               .thenApply(roomInfo ->
+                                                               {
+                                                                   if (roomInfo == null)
+                                                                   {
+                                                                       throw new LeaseException(ResultCodeEnum.ROOM_NOT_FOUND);
+                                                                   }
+                                                                   return roomInfo;
+                                                               });
+
+        final RoomDetailVo roomDetailVo = new RoomDetailVo();
+        BeanUtils.copyProperties(roomInfoFuture.join(), roomDetailVo);
+
+        final CompletableFuture<ApartmentInfo>      apartmentInfoFuture   = this.getApartmentInfoAsync(id);
+        final CompletableFuture<List<GraphVo>>      graphVoFuture         = this.graphInfoServiceImpl.selectListByItemTypeAndApartmentIdAsync(
+                ItemType.ROOM,
+                id);
+        final CompletableFuture<List<AttrValueVo>>  attrValueVoFuture     = this.roomAttrValueServiceImpl.listAttrValueVoAsync(
+                id);
+        final CompletableFuture<List<FacilityInfo>> facilityInfoFuture    = this.roomFacilityServiceImpl.listFacilityInfoAsync(
+                id);
+        final CompletableFuture<List<LabelInfo>>    labelInfoFuture       = this.roomLabelServiceImpl.listLabelInfoAsync(
+                id);
+        final CompletableFuture<List<PaymentType>>  paymentTypeInfoFuture = this.roomPaymentTypeServiceImpl.listPaymentTypeAsync(
+                id);
+        final CompletableFuture<List<LeaseTerm>>    leaseTermInfoFuture   = this.roomLeaseTermServiceImpl.listLeaseTermAsync(
+                id);
+
+        roomDetailVo.setApartmentInfo(apartmentInfoFuture.join());
+        roomDetailVo.setGraphVoList(graphVoFuture.join());
+        roomDetailVo.setAttrValueVoList(attrValueVoFuture.join());
+        roomDetailVo.setFacilityInfoList(facilityInfoFuture.join());
+        roomDetailVo.setLabelInfoList(labelInfoFuture.join());
+        roomDetailVo.setPaymentTypeList(paymentTypeInfoFuture.join());
+        roomDetailVo.setLeaseTermList(leaseTermInfoFuture.join());
+
+        return roomDetailVo;
+    }
+
+    private CompletableFuture<RoomInfo> getRoomInfoAsync(final Long roomId)
+    {
+        return CompletableFuture.supplyAsync(() -> this.baseMapper.selectById(roomId));
+    }
+
+    /**
+     * 异步获取公寓信息
+     *
+     * @param apartmentId 公寓ID
+     * @return 返回公寓信息的CompletableFuture对象
+     */
+    private CompletableFuture<ApartmentInfo> getApartmentInfoAsync(final Long apartmentId)
+    {
+        return CompletableFuture.supplyAsync(() ->
+        {
+            final LambdaQueryWrapper<ApartmentInfo> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(ApartmentInfo::getId, apartmentId);
+            return this.apartmentInfoServiceImpl.getOne(queryWrapper);
+        });
+    }
+
+    /**
      * 分页查询房间信息的方法。
      *
      * <p>此方法接收分页对象和查询条件对象，并返回分页查询结果，包含房间信息列表及总记录数等。</p>
      *
-     * @param page 分页对象，用于指定当前页码和页面大小
+     * @param page    分页对象，用于指定当前页码和页面大小
      * @param queryVo 查询条件对象，封装了房间信息的查询参数
      * @return 返回分页查询结果，包含房间信息列表及总记录数等信息
      */
@@ -94,7 +170,7 @@ public class RoomInfoServiceImpl extends ServiceImpl<RoomInfoMapper, RoomInfo> i
      * <p>此方法会并行地异步删除旧房间信息，并保存新房间的图表信息、属性值、设施、标签、支付类型和租赁期限信息。</p>
      *
      * @param roomSubmitVo 包含新房间相关信息的对象，包括图表信息、属性值、设施、标签、支付类型和租赁期限等。
-     * @param roomId 需要处理的房间ID。
+     * @param roomId       需要处理的房间ID。
      * @return 返回一个布尔值，表示处理操作是否成功。此处总是返回true，因为所有的异步任务在执行时已被显式等待完成。
      * @throws Exception 当处理新房间操作过程中发生任何异常时，会抛出此异常并回滚事务。
      */
@@ -258,7 +334,7 @@ public class RoomInfoServiceImpl extends ServiceImpl<RoomInfoMapper, RoomInfo> i
      * @param roomSubmitVo 包含图形信息和房间ID的对象
      * @return 一个包含布尔值的CompletableFuture，表示保存操作是否成功
      * @throws NullPointerException 如果传入的roomSubmitVo为null
-     * @throws CompletionException 如果保存操作过程出现异常
+     * @throws CompletionException  如果保存操作过程出现异常
      */
     private CompletableFuture<Boolean> saveGraphInfoListAsync(final RoomSubmitVo roomSubmitVo)
     {
@@ -320,7 +396,7 @@ public class RoomInfoServiceImpl extends ServiceImpl<RoomInfoMapper, RoomInfo> i
      * @param roomSubmitVo 包含房间提交信息的对象，包括设施ID列表。
      * @return 返回一个CompletableFuture对象，其结果为布尔值，表示保存操作是否成功。
      * @throws NullPointerException 如果传入的roomSubmitVo或其中的设施ID列表为null。
-     * @throws CompletionException 如果批量保存操作过程中发生异常。
+     * @throws CompletionException  如果批量保存操作过程中发生异常。
      */
     private CompletableFuture<Boolean> saveRoomFacilityListAsync(final RoomSubmitVo roomSubmitVo)
     {
@@ -407,7 +483,7 @@ public class RoomInfoServiceImpl extends ServiceImpl<RoomInfoMapper, RoomInfo> i
      * 异步保存房间租赁条款列表的方法。
      *
      * @param roomSubmitVo 包含房间信息和租赁条款ID的对象。
-     *                      该对象用于从房间提交表单中获取相关数据。
+     *                     该对象用于从房间提交表单中获取相关数据。
      * @return 一个CompletableFuture, 它在操作完成后返回布尔值，标示保存是否成功。如果输入的租赁条款ID列表中有null值，则返回false。
      * @throws NullPointerException 如果roomSubmitVo或其需要的属性为null，可能会抛出此异常。
      */
@@ -450,21 +526,5 @@ public class RoomInfoServiceImpl extends ServiceImpl<RoomInfoMapper, RoomInfo> i
         {
             return false;
         }
-    }
-
-    /**
-     * 异步获取公寓信息
-     *
-     * @param apartmentId 公寓ID
-     * @return 返回公寓信息的CompletableFuture对象
-     */
-    private CompletableFuture<ApartmentInfo> getApartmentInfoAsync(final Long apartmentId)
-    {
-        return CompletableFuture.supplyAsync(() ->
-        {
-            final LambdaQueryWrapper<ApartmentInfo> queryWrapper = new LambdaQueryWrapper<>();
-            queryWrapper.eq(ApartmentInfo::getId, apartmentId);
-            return this.apartmentInfoServiceImpl.getOne(queryWrapper);
-        });
     }
 }
