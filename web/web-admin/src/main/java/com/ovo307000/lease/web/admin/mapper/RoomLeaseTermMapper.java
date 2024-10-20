@@ -15,7 +15,6 @@ import java.util.List;
  */
 public interface RoomLeaseTermMapper extends BaseMapper<RoomLeaseTerm>
 {
-
     /**
      * 根据房间ID查询租期列表
      *
