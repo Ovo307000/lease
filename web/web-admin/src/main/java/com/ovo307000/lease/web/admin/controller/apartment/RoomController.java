@@ -1,6 +1,7 @@
 package com.ovo307000.lease.web.admin.controller.apartment;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ovo307000.lease.common.result.Result;
@@ -117,7 +118,13 @@ public class RoomController
     @PostMapping("updateReleaseStatusById")
     public Result<Void> updateReleaseStatusById(final Long id, final ReleaseStatus status)
     {
-        return Result.success();
+        log.info("根据id修改房间发布状态: id = {}, 发布状态 = {}", id, status);
+
+        final LambdaUpdateWrapper<RoomInfo> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper.eq(RoomInfo::getId, id)
+                     .set(RoomInfo::getIsRelease, status);
+
+        return this.roomInfoServiceImpl.update(updateWrapper) ? Result.success() : Result.failure();
     }
 
     /**
