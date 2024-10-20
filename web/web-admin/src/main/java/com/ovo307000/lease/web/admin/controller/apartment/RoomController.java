@@ -65,7 +65,7 @@ public class RoomController
     {
         log.info("根据条件分页查询房间列表: 当前页码 = {}, 每页显示条数 = {}, 查询条件 = {}", current, size, queryVo);
 
-        final Page<RoomItemVo> page = new Page<>(current, size);
+        final Page<RoomItemVo>  page            = new Page<>(current, size);
         final IPage<RoomItemVo> roomItemVoIPage = this.roomInfoServiceImpl.pageItem(page, queryVo);
 
         return roomItemVoIPage != null ? Result.success(roomItemVoIPage) : Result.failure();
@@ -83,10 +83,10 @@ public class RoomController
     {
         log.info("根据id获取房间详细信息: id = {}", id);
 
-        LambdaQueryWrapper<RoomDetailVo> queryWrapper = new LambdaQueryWrapper<>();
+        final LambdaQueryWrapper<RoomDetailVo> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(RoomDetailVo::getId, id);
 
-        final RoomDetailVo roomDetailVo = this.roomInfoServiceImpl.getDetailById(id);
+        final RoomDetailVo roomDetailVo = this.roomInfoServiceImpl.getDetailByRoomId(id);
 
         return roomDetailVo != null ? Result.success(roomDetailVo) : Result.failure();
     }
