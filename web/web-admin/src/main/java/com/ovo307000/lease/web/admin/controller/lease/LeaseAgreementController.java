@@ -47,6 +47,8 @@ public class LeaseAgreementController
 
         final Page<AgreementVo> page = new Page<>(current, size);
         final IPage<AgreementVo> agreementVoIPage = this.leaseAgreementServiceImpl.pageAgreement(page, queryVo);
+
+        return Result.success(agreementVoIPage);
     }
 
     @Operation(summary = "根据id查询租约信息")
