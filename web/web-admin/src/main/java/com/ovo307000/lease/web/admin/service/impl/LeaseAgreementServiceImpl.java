@@ -19,7 +19,15 @@ import org.springframework.stereotype.Service;
 public class LeaseAgreementServiceImpl extends ServiceImpl<LeaseAgreementMapper, LeaseAgreement>
         implements LeaseAgreementService
 {
-
+    /**
+     * 根据条件分页查询租约列表
+     * <p>
+     * 该方法接受一个分页对象和一个查询条件对象作为参数，返回一个IPage对象，包含了当前页的租约信息和总记录数
+     * </p>
+     * @param page  Page
+     * @param queryVo  AgreementQueryVo
+     * @return IPage<AgreementVo>
+     */
     @Override
     public IPage<AgreementVo> pageAgreement(final Page<AgreementVo> page, final AgreementQueryVo queryVo)
     {
