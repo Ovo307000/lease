@@ -14,7 +14,7 @@
         </association>
     </resultMap>
 
-    <select id="pageAppointment" resultType="com.ovo307000.lease.web.admin.vo.appointment.AppointmentVo">
+    <select id="pageAppointment" resultMap="appointmentResultMap">
         select viewAppointment.id as viewAppointment_id,
         viewAppointment.user_id,
         viewAppointment.name as viewAppointment_name,
