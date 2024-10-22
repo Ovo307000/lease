@@ -1,6 +1,5 @@
 package com.ovo307000.lease.web.admin.controller.lease;
 
-
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -16,7 +15,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-
+/**
+ * 租约管理控制器
+ * 提供租约信息的保存、更新、删除和查询等操作
+ */
 @Slf4j
 @RestController
 @Tag(name = "租约管理")
@@ -35,7 +37,6 @@ public class LeaseAgreementController
      * @return Result 对象，表示操作结果
      */
     @Operation(summary = "保存或修改租约信息")
-
     @PostMapping("saveOrUpdate")
     public Result<Void> saveOrUpdate(@RequestBody final LeaseAgreement leaseAgreement)
     {
@@ -82,7 +83,6 @@ public class LeaseAgreementController
     public Result<AgreementVo> getById(@RequestParam final Long id)
     {
         log.info("查询租约信息: {}", id);
-
 
         final AgreementVo agreement = this.leaseAgreementServiceImpl.getAgreementById(id);
 
