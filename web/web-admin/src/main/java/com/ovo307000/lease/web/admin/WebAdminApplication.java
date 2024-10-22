@@ -8,8 +8,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @Slf4j
+@EnableScheduling
 @SpringBootApplication
 @ComponentScan("com.ovo307000.lease.common")
 @ComponentScan("com.ovo307000.lease.web.admin")
