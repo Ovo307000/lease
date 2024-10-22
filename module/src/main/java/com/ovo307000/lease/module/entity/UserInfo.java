@@ -24,6 +24,7 @@ public class UserInfo extends BaseEntity
     @TableField(value = "phone")
     private String phone;
 
+    @JsonIgnore
     @Schema(description = "密码")
     @TableField(value = "password", select = false)
     private String password;
