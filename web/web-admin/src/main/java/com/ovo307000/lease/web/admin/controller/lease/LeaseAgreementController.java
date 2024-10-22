@@ -1,6 +1,7 @@
 package com.ovo307000.lease.web.admin.controller.lease;
 
 
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ovo307000.lease.common.result.Result;
@@ -108,11 +109,29 @@ public class LeaseAgreementController
         return removed ? Result.success() : Result.failure();
     }
 
+    /**
+     * 根据id更新租约状态
+     * <p>
+     * 该方法接受一个Long类型的id参数和一个LeaseStatus类型的status参数，更新对应的租约信息的状态
+     * </p>
+     *
+     * @param id     租约id
+     * @param status 租约状态
+     * @return 操作结果
+     */
     @Operation(summary = "根据id更新租约状态")
     @PostMapping("updateStatusById")
     public Result<Void> updateStatusById(@RequestParam final Long id, @RequestParam final LeaseStatus status)
     {
-        return Result.success();
+        log.info("根据id更新租约状态: id={}, status={}", id, status);
+
+        final LambdaUpdateWrapper<LeaseAgreement> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper.eq(LeaseAgreement::getId, id)
+                     .set(LeaseAgreement::getStatus, status);
+
+        final boolean updated = this.leaseAgreementServiceImpl.update(updateWrapper);
+
+        return updated ? Result.success() : Result.failure();
     }
 
 }
