@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ovo307000.lease.common.result.Result;
+import com.ovo307000.lease.common.result.ResultCodeEnum;
 import com.ovo307000.lease.module.entity.SystemPost;
 import com.ovo307000.lease.module.enums.BaseStatus;
 import com.ovo307000.lease.web.admin.service.impl.SystemPostServiceImpl;
@@ -86,6 +87,11 @@ public class SystemPostController
     public Result<Void> removeById(@RequestParam final Long id)
     {
         log.info("删除岗位信息: id={}", id);
+
+        if (this.systemPostServiceImpl.count(new LambdaQueryWrapper<SystemPost>().eq(SystemPost::getId, id)) == 0)
+        {
+            return Result.failure(ResultCodeEnum.DATA_NOT_FOUND);
+        }
 
         final boolean removed = this.systemPostServiceImpl.removeById(id);
 
