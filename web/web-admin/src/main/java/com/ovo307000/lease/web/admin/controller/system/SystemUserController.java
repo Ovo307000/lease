@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -76,19 +77,22 @@ public class SystemUserController
     }
 
     /**
-     * 保存或更新后台用户信息
-     * <p>
-     * 该方法接受一个 SystemUser 对象作为请求体，用于保存或更新后台用户信息
-     * </p>
+     * 保存或更新后台用户信息。
      *
-     * @param systemUser 后台用户信息实体
-     * @return 操作结果
+     * <p>此方法用于保存或更新 {@link SystemUser} 对象的详细信息。</p>
+     * <p>如果指定的用户信息存在，则更新记录；否则保存新的用户信息。</p>
+     *
+     * @param systemUser 传入的用户信息对象，包含用户的详细信息。
+     * @return 返回一个包含操作结果的 {@link Result} 对象。
      */
     @Operation(summary = "保存或更新后台用户信息")
     @PostMapping("saveOrUpdate")
     public Result<Void> saveOrUpdate(@RequestBody final SystemUser systemUser)
     {
         log.info("保存或更新后台用户信息: {}", systemUser);
+
+        final String hashedPassword = DigestUtils.sha256Hex(systemUser.getPassword());
+        systemUser.setPassword(hashedPassword);
 
         final boolean saved = this.systemUserServiceImpl.saveOrUpdate(systemUser);
 
