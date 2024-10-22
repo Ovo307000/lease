@@ -12,6 +12,7 @@ import com.ovo307000.lease.web.admin.vo.system.user.SystemUserItemVo;
 import com.ovo307000.lease.web.admin.vo.system.user.SystemUserQueryVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,22 +21,13 @@ import org.springframework.web.bind.annotation.*;
  * 提供后台用户信息的保存、更新、删除和查询等操作
  */
 @Slf4j
-@Tag(name = "后台用户信息管理")
 @RestController
+@RequiredArgsConstructor
+@Tag(name = "后台用户信息管理")
 @RequestMapping("/admin/system/user")
 public class SystemUserController
 {
     private final SystemUserServiceImpl systemUserServiceImpl;
-
-    /**
-     * 构造函数，注入 SystemUserServiceImpl
-     *
-     * @param systemUserServiceImpl 后台用户服务实现类
-     */
-    public SystemUserController(final SystemUserServiceImpl systemUserServiceImpl)
-    {
-        this.systemUserServiceImpl = systemUserServiceImpl;
-    }
 
     /**
      * 根据条件分页查询后台用户列表
