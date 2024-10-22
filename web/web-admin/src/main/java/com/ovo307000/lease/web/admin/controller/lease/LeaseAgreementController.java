@@ -23,10 +23,18 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/admin/agreement")
 public class LeaseAgreementController
 {
-
     private final LeaseAgreementServiceImpl leaseAgreementServiceImpl;
 
+    /**
+     * 保存或修改租约信息
+     * <p>
+     * 该方法接受一个 LeaseAgreement 对象作为请求体，用于保存或修改租约信息。
+     *
+     * @param leaseAgreement 租约信息实体
+     * @return Result 对象，表示操作结果
+     */
     @Operation(summary = "保存或修改租约信息")
+
     @PostMapping("saveOrUpdate")
     public Result<Void> saveOrUpdate(@RequestBody final LeaseAgreement leaseAgreement)
     {
@@ -37,6 +45,17 @@ public class LeaseAgreementController
         return saved ? Result.success() : Result.failure();
     }
 
+    /**
+     * 根据条件分页查询租约列表
+     * <p>
+     * 该方法接受一个分页对象和一个查询条件对象作为参数，返回一个IPage对象，包含了当前页的租约信息和总记录数
+     * </p>
+     *
+     * @param current 当前页码
+     * @param size    页大小
+     * @param queryVo 查询条件对象
+     * @return 返回包含AgreementVo对象的分页结果
+     */
     @Operation(summary = "根据条件分页查询租约列表")
     @GetMapping("page")
     public Result<IPage<AgreementVo>> page(@RequestParam final long current,
