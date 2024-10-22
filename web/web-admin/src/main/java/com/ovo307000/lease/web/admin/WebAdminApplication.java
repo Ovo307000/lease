@@ -1,7 +1,6 @@
 package com.ovo307000.lease.web.admin;
 
 import com.ovo307000.lease.common.utils.logger.ApplicationLogger;
-import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,7 +16,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  * 扫描、定时任务等功能。
  * </p>
  */
-@Slf4j
 @EnableScheduling
 @SpringBootApplication
 @ComponentScan(basePackages = {"com.ovo307000.lease.common", "com.ovo307000.lease.web.admin"})
