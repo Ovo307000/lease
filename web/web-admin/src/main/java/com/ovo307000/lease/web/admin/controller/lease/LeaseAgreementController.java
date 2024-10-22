@@ -45,17 +45,28 @@ public class LeaseAgreementController
     {
         log.info("分页查询租约信息: {}", queryVo);
 
-        final Page<AgreementVo> page = new Page<>(current, size);
+        final Page<AgreementVo>  page             = new Page<>(current, size);
         final IPage<AgreementVo> agreementVoIPage = this.leaseAgreementServiceImpl.pageAgreement(page, queryVo);
 
         return Result.success(agreementVoIPage);
     }
 
+    /**
+     * 根据id查询租约信息
+     *
+     * @param id 租约id
+     * @return 租约信息
+     */
     @Operation(summary = "根据id查询租约信息")
     @GetMapping(name = "getById")
     public Result<AgreementVo> getById(@RequestParam final Long id)
     {
-        return Result.success();
+        log.info("查询租约信息: {}", id);
+
+
+        final AgreementVo agreement = this.leaseAgreementServiceImpl.getAgreementById(id);
+
+        return Result.success(agreement);
     }
 
     @Operation(summary = "根据id删除租约信息")

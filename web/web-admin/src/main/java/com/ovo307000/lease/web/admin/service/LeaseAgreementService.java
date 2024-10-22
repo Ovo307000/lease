@@ -20,9 +20,21 @@ public interface LeaseAgreementService extends IService<LeaseAgreement>
      * <p>
      * 该方法接受一个分页对象和一个查询条件对象作为参数，返回一个IPage对象，包含了当前页的租约信息和总记录数
      * </p>
-     * @param page  Page
-     * @param queryVo  AgreementQueryVo
+     *
+     * @param page    Page
+     * @param queryVo AgreementQueryVo
      * @return IPage<AgreementVo>
      */
     IPage<AgreementVo> pageAgreement(Page<AgreementVo> page, AgreementQueryVo queryVo);
+
+    /**
+     * 根据id查询租约信息
+     * <p>
+     * 该方法接受一个租约id作为参数，返回一个AgreementVo对象，包含了对应的租约信息
+     * </p>
+     *
+     * @param id 租约id
+     * @return AgreementVo
+     */
+    AgreementVo getAgreementById(Long id);
 }
