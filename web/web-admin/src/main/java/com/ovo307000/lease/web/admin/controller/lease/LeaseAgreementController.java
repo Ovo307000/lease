@@ -88,11 +88,24 @@ public class LeaseAgreementController
         return Result.success(agreement);
     }
 
+    /**
+     * 根据id删除租约信息
+     * <p>
+     * 该方法接受一个Long类型的id参数，删除对应的租约信息
+     * </p>
+     *
+     * @param id 租约id
+     * @return 操作结果
+     */
     @Operation(summary = "根据id删除租约信息")
     @DeleteMapping("removeById")
     public Result<Void> removeById(@RequestParam final Long id)
     {
-        return Result.success();
+        log.info("根据id删除租约信息: {}", id);
+
+        final boolean removed = this.leaseAgreementServiceImpl.removeById(id);
+
+        return removed ? Result.success() : Result.failure();
     }
 
     @Operation(summary = "根据id更新租约状态")
