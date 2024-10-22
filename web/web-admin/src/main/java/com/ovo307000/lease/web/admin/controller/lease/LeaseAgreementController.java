@@ -133,6 +133,4 @@ public class LeaseAgreementController
 
         return updated ? Result.success() : Result.failure();
     }
-
 }
-
