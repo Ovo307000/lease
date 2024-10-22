@@ -91,8 +91,11 @@ public class SystemUserController
     {
         log.info("保存或更新后台用户信息: {}", systemUser);
 
-        final String hashedPassword = DigestUtils.sha256Hex(systemUser.getPassword());
-        systemUser.setPassword(hashedPassword);
+        // 只有在密码不为空的情况下才对密码进行加密
+        if (systemUser.getPassword() != null)
+        {
+            systemUser.setPassword(DigestUtils.sha256Hex(systemUser.getPassword()));
+        }
 
         final boolean saved = this.systemUserServiceImpl.saveOrUpdate(systemUser);
 
