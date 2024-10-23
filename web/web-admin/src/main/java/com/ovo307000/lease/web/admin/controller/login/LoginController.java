@@ -36,7 +36,11 @@ public class LoginController
     @PostMapping("login")
     public Result<String> login(@RequestBody final LoginVo loginVo)
     {
-        return Result.success();
+        log.info("登录 {}", loginVo);
+
+        final String token = this.adminLoginService.login(loginVo);
+
+        return Result.success(token);
     }
 
     @Operation(summary = "获取登陆用户个人信息")

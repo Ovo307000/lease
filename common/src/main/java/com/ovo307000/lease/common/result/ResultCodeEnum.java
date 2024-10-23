@@ -51,7 +51,10 @@ public enum ResultCodeEnum
     APARTMENT_HAS_ROOM(801, "该公寓下有房间信息，无法删除"),
     UPDATE_FAILED(802, "更新失败，请检查后重试"),
     DATA_NOT_FOUND(803, "未找到相关数据，请检查后重试"),
-    ROOM_NOT_FOUND(804, "未找到相关房间信息，请检查后重试");
+    ROOM_NOT_FOUND(804, "未找到相关房间信息，请检查后重试"),
+    CAPTCHA_INVALID(805, "验证码无效，请重新获取"),
+    AUTH_CAPTCHA_EXPIRED(806, "验证码已过期，请重新获取"),
+    ADMIN_USER_NOT_FOUND(807, "未找到相关用户信息，请检查后重试");
 
 
     private final Integer code;
