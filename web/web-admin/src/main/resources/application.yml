@@ -64,3 +64,8 @@ storage:
 
 springdoc:
     default-flat-param-object: true                                   # 默认扁平化参数对象: 使用扁平化参数对象，即将参数对象的属性展开到请求参数中
+auth:
+    captcha:
+        captcha-height: 40                                            # 验证码高度: 40 像素
+        captcha-width: 100                                            # 验证码宽度: 100 像素
+        captcha-length: 1                                             # 验证码长度: 1 位
