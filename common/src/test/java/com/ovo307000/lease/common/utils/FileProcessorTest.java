@@ -17,10 +17,8 @@ class FileProcessorTest
     @Test
     void getFileNameWithoutFilePath_shouldThrowExceptionForEmptyFileName()
     {
-        final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
-        {
-            this.fileProcessor.getFileNameWithoutFilePath("/path/to/");
-        });
+        final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+                () -> this.fileProcessor.getFileNameWithoutFilePath("/path/to/"));
         assertEquals("文件名为空", exception.getMessage());
     }
 
@@ -34,10 +32,8 @@ class FileProcessorTest
     @Test
     void generateRandomName_shouldThrowExceptionForEmptyOriginalName()
     {
-        final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
-        {
-            this.fileProcessor.generateRandomName("");
-        });
+        final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+                () -> this.fileProcessor.generateRandomName(""));
         assertEquals("原始文件名为空", exception.getMessage());
     }
 
