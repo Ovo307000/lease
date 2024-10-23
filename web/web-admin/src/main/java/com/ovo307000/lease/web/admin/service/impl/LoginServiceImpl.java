@@ -72,7 +72,7 @@ public class LoginServiceImpl implements LoginService
     private void saveCaptchaToRedis(final String code)
     {
         this.redisTemplate.opsForValue()
-                          .set(KEY, code, 5, TimeUnit.MINUTES);
+                          .set(KEY, code, this.captchaProperties.getCaptchaTtlMillis(), TimeUnit.MILLISECONDS);
     }
 
     /**

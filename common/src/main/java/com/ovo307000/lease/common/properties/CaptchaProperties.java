@@ -14,4 +14,5 @@ public class CaptchaProperties
     private Integer captchaWidth;
     private Integer captchaHeight;
     private Integer captchaLength;
+    private Long    captchaTtlMillis;
 }
