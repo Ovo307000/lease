@@ -32,6 +32,7 @@ public class LoginServiceImpl implements LoginService
     @Override
     public CaptchaVo getCaptcha()
     {
+        // TODO 后续通过配置文件配置验证码的宽度和高度，以及验证码的长度
         final SpecCaptcha specCaptcha = new SpecCaptcha(130, 48, 1);
 
         final String code = specCaptcha.text()
