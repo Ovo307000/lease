@@ -1,8 +1,10 @@
 package com.ovo307000.lease.common.utils;
 
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 
 import java.security.Key;
 import java.util.Date;
@@ -12,6 +14,7 @@ import java.util.Map;
  * JWT 工具类
  * 提供创建和验证 JWT 的方法
  */
+@Slf4j
 public class JWTUtils
 {
     /**
@@ -59,8 +62,11 @@ public class JWTUtils
 
             return true;
         }
-        catch (final Exception e)
+        catch (final JwtException jwtException)
         {
+            // 如果 JWT 解析失败，则记录错误日志并返回 false
+            log.error("JWT 解析失败", jwtException);
+
             return false;
         }
     }
