@@ -95,7 +95,7 @@ public class LoginServiceImpl implements LoginService
 
         final Map<String, Object> claims = Map.of("userId", user.getId(), "userName", user.getName());
 
-        return JWTUtils.createJWT(user.getName(),
+        return JWTUtils.createJWTToken(user.getName(),
                 this.jWTProperties.getSecret(),
                 this.jWTProperties.getTtlMillis(),
                 claims);
