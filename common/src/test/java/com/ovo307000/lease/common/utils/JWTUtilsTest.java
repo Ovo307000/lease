@@ -14,9 +14,9 @@ class JWTUtilsTest
     private static final String SECRET = "mysecretkeymysecretkeymysecretkeymysecretkey";
 
     @Test
-    void createJWT_shouldReturnValidJWT()
+    void createJWTToken_shouldReturnValidJWT()
     {
-        final String jwt = JWTUtils.createJWT("subject", SECRET, 1000, Collections.emptyMap());
+        final String jwt = JWTUtils.createJWTToken("subject", SECRET, 1000, Collections.emptyMap());
         assertNotNull(Jwts.parserBuilder()
                           .setSigningKey(Keys.hmacShaKeyFor(SECRET.getBytes()))
                           .build()
@@ -24,38 +24,45 @@ class JWTUtilsTest
     }
 
     @Test
-    void validateJWT_shouldReturnTrueForValidJWT()
+    void parseJWTToken_shouldReturnTrueForValidJWT()
     {
-        final String jwt = JWTUtils.createJWT("subject", SECRET, 1000, Collections.emptyMap());
-        assertTrue(JWTUtils.validateJWT(jwt, SECRET));
+        final String jwt = JWTUtils.createJWTToken("subject", SECRET, 1000, Collections.emptyMap());
+        assertTrue(JWTUtils.parseJWTToken(jwt, SECRET));
     }
 
     @Test
-    void validateJWT_shouldReturnFalseForInvalidJWT()
+    void parseJWTToken_shouldReturnFalseForInvalidJWT()
     {
-        final String jwt = JWTUtils.createJWT("subject", SECRET, 1000, Collections.emptyMap());
-        assertFalse(JWTUtils.validateJWT(jwt, "wrongsecret"));
+        final String jwt = JWTUtils.createJWTToken("subject", SECRET, 1000, Collections.emptyMap());
+        assertFalse(JWTUtils.parseJWTToken(jwt, "wrongsecret"));
     }
 
     @Test
-    void validateJWT_shouldReturnFalseForExpiredJWT() throws InterruptedException
+    void parseJWTToken_shouldReturnFalseForExpiredJWT() throws InterruptedException
     {
-        final String jwt = JWTUtils.createJWT("subject", SECRET, 1, Collections.emptyMap());
+        final String jwt = JWTUtils.createJWTToken("subject", SECRET, 1, Collections.emptyMap());
         Thread.sleep(2);
-        assertFalse(JWTUtils.validateJWT(jwt, SECRET));
+        assertFalse(JWTUtils.parseJWTToken(jwt, SECRET));
     }
 
     @Test
-    void createJWT_shouldIncludeClaims()
+    void createJWTToken_shouldIncludeClaims()
     {
         final Map<String, Object> claims = Map.of("claimKey", "claimValue");
-        final String              jwt    = JWTUtils.createJWT("subject", SECRET, 1000, claims);
-        assertEquals("claimValue", Jwts.parserBuilder()
-                                       .setSigningKey(Keys.hmacShaKeyFor(SECRET.getBytes()))
-                                       .build()
-                                       .parseClaimsJws(jwt)
-                                       .getBody()
-                                       .get("claimKey"));
+        final String              jwt    = JWTUtils.createJWTToken("subject", SECRET, 1000, claims);
+        assertEquals("claimValue",
+                Jwts.parserBuilder()
+                    .setSigningKey(Keys.hmacShaKeyFor(SECRET.getBytes()))
+                    .build()
+                    .parseClaimsJws(jwt)
+                    .getBody()
+                    .get("claimKey"));
     }
 
+    @Test
+    void parseJWTToken_shouldReturnFalseForMalformedJWT()
+    {
+        final String malformedJwt = "malformed.jwt.token";
+        assertFalse(JWTUtils.parseJWTToken(malformedJwt, SECRET));
+    }
 }
