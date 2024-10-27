@@ -74,7 +74,7 @@ auth:
         ttl-millis: 86400000                                          # JWT 有效期: 24 小时，即 JWT 有效期为 1 天
         secret: 4f4e6f6e65204d616e20436f6e74726f6c20416e6f74686572    # JWT 密钥: 用于签发和验证 JWT 的密钥
     interception:
-        exclude-path-patterns: [ /auth/login, /auth/captcha, /doc.html ]    # 排除路径模式: 不拦截 /auth/login、/auth/captcha 和 /doc.html 路径下的请求
-        include-path-patterns: [ /api/** ]                                  # 包含路径模式: 只拦截 /api/** 路径下的请求
-        exclude-http-methods: [ OPTIONS ]                                   # 排除 HTTP 方法: 不拦截 OPTIONS 请求
-        include-http-methods: [ GET, POST, PUT, DELETE ]                    # 包含 HTTP 方法: 只拦截 GET、POST、PUT 和 DELETE 请求
+        exclude-path-patterns: [ /admin/login, /user/login, /user/register, /captcha, /doc.html ] # 排除路径模式: 不拦截 /admin/login、/user/login、/user/register、/captcha 和 /doc.html 路径下的请求
+        include-path-patterns: [ /api/** ]                            # 包含路径模式: 只拦截 /api/** 路径下的请求
+        exclude-http-methods: [ OPTIONS ]                             # 排除 HTTP 方法: 不拦截 OPTIONS 请求
+        include-http-methods: [ GET, POST, PUT, DELETE ]              # 包含 HTTP 方法: 只拦截 GET、POST、PUT 和 DELETE 请求
