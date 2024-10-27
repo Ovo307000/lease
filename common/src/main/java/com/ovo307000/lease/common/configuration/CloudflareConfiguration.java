@@ -1,6 +1,6 @@
 package com.ovo307000.lease.common.configuration;
 
-import com.ovo307000.lease.common.properties.CloudflareProperties;
+import com.ovo307000.lease.common.properties.storage.CloudflareProperties;
 import io.minio.MinioClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,11 +1,9 @@
-package com.ovo307000.lease.common.properties;
+package com.ovo307000.lease.common.properties.storage;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-
-import java.util.Collection;
 
 /**
  * Cloudflare R2 存储相关的配置项

@@ -1,4 +1,4 @@
-package com.ovo307000.lease.common.properties;
+package com.ovo307000.lease.common.properties.auth;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

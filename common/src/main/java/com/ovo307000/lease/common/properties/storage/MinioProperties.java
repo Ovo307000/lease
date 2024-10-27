@@ -1,4 +1,4 @@
-package com.ovo307000.lease.common.properties;
+package com.ovo307000.lease.common.properties.storage;
 
 import lombok.Getter;
 import lombok.Setter;
