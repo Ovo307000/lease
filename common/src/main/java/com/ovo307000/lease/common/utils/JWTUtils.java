@@ -1,5 +1,6 @@
 package com.ovo307000.lease.common.utils;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -63,10 +64,24 @@ public class JWTUtils
 
             return true;
         }
+        catch (final ExpiredJwtException expiredJwtException)
+        {
+            // 如果 JWT 已过期，则记录错误日志并返回 false
+            log.error("JWT 已过期", expiredJwtException);
+
+            return false;
+        }
         catch (final JwtException jwtException)
         {
             // 如果 JWT 解析失败，则记录错误日志并返回 false
             log.error("JWT 解析失败", jwtException);
+
+            return false;
+        }
+        catch (final Exception exception)
+        {
+            // 如果发生其他异常，则记录错误日志并返回 false
+            log.error("JWT 验证失败", exception);
 
             return false;
         }
