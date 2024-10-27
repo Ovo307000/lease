@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.lang.NonNull;
 
 import java.security.Key;
 import java.util.Date;
@@ -26,10 +27,10 @@ public class JWTUtils
      * @param claims    额外的声明信息
      * @return 生成的 JWT 字符串
      */
-    public static String createJWTToken(final String subject,
-                                        final String secret,
-                                        final long ttlMillis,
-                                        final Map<String, Object> claims)
+    public static String createJWTToken(@NonNull final String subject,
+                                        @NonNull final String secret,
+                                        @NonNull final long ttlMillis,
+                                        @NonNull final Map<String, Object> claims)
     {
         // 生成签名密钥
         final Key key = Keys.hmacShaKeyFor(secret.getBytes());
@@ -50,7 +51,7 @@ public class JWTUtils
      * @param secret 用于签名的密钥
      * @return 如果 JWT 有效则返回 true，否则返回 false
      */
-    public static boolean parseJWTToken(final String jwt, final String secret)
+    public static boolean parseJWTToken(@NonNull final String jwt, @NonNull final String secret)
     {
         try
         {
