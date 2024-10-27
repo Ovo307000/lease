@@ -25,7 +25,6 @@ public class WebMvcConfiguration implements WebMvcConfigurer
     private final JWTProperties                    jWTProperties;
     private final InterceptionProperties           interceptionProperties;
 
-
     /**
      * 添加自定义的转换器工厂到 FormatterRegistry。
      *
@@ -38,6 +37,11 @@ public class WebMvcConfiguration implements WebMvcConfigurer
         registry.addConverterFactory(this.stringToBaseEnumConverterFactory);
     }
 
+    /**
+     * 添加自定义的拦截器到 InterceptorRegistry。
+     *
+     * @param registry InterceptorRegistry 对象，用于注册拦截器。
+     */
     @Override
     public void addInterceptors(final InterceptorRegistry registry)
     {
@@ -46,7 +50,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer
         final String[] excludeHttpMethods  = Objects.requireNonNull(this.interceptionProperties.getExcludeHttpMethods());
         final String[] includeHttpMethods  = Objects.requireNonNull(this.interceptionProperties.getIncludeHttpMethods());
 
-
+        // 将 AuthenticationInterceptor 添加到注册表中，并配置路径和方法的包含和排除规则
         registry.addInterceptor(new AuthenticationInterceptor(this.jWTProperties))
                 .addPathPatterns(includePathPatterns)
                 .excludePathPatterns(excludePathPatterns)
