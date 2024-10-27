@@ -2,8 +2,8 @@ package com.ovo307000.lease.web.admin.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.ovo307000.lease.common.exception.LeaseException;
-import com.ovo307000.lease.common.properties.CaptchaProperties;
-import com.ovo307000.lease.common.properties.JWTProperties;
+import com.ovo307000.lease.common.properties.auth.CaptchaProperties;
+import com.ovo307000.lease.common.properties.auth.JWTProperties;
 import com.ovo307000.lease.common.result.ResultCodeEnum;
 import com.ovo307000.lease.common.utils.JWTUtils;
 import com.ovo307000.lease.module.entity.SystemUser;

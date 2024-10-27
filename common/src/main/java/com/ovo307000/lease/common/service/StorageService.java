@@ -1,6 +1,6 @@
 package com.ovo307000.lease.common.service;
 
-import com.ovo307000.lease.common.properties.StorageProperties;
+import com.ovo307000.lease.common.properties.storage.StorageProperties;
 import io.minio.MinioClient;
 import io.minio.ObjectWriteResponse;
 import org.springframework.web.multipart.MultipartFile;

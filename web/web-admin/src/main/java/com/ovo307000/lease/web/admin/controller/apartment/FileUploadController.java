@@ -1,6 +1,6 @@
 package com.ovo307000.lease.web.admin.controller.apartment;
 
-import com.ovo307000.lease.common.properties.MinioProperties;
+import com.ovo307000.lease.common.properties.storage.MinioProperties;
 import com.ovo307000.lease.common.result.Result;
 import com.ovo307000.lease.common.result.ResultCodeEnum;
 import com.ovo307000.lease.common.service.MinioService;

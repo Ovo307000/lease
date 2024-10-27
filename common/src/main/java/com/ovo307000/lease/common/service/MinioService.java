@@ -1,7 +1,7 @@
 package com.ovo307000.lease.common.service;
 
 import com.ovo307000.lease.common.enumeration.OperationType;
-import com.ovo307000.lease.common.properties.StorageProperties;
+import com.ovo307000.lease.common.properties.storage.StorageProperties;
 import com.ovo307000.lease.common.utils.CloudStorageUtils;
 import com.ovo307000.lease.common.utils.FileProcessor;
 import com.ovo307000.lease.common.utils.logger.CloudflareOperationLogger;
