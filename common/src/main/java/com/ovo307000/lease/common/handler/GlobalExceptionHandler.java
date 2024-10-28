@@ -25,7 +25,7 @@ public class GlobalExceptionHandler
     public <R> Result<R> handleException(final Exception exception)
     {
         // 记录异常日志
-        log.error("发生异常", exception);
+        log.error("发生[{}]异常", exception.getClass().getName(), exception);
 
         // 返回一个表示失败的Result对象，表明异常发生
         return Result.failure();
@@ -36,7 +36,7 @@ public class GlobalExceptionHandler
     public <R> Result<R> handleLeaseException(final LeaseException exception)
     {
         // 记录异常日志
-        log.error("发生异常", exception);
+        log.error("发生[{}]异常", exception.getClass().getName(), exception);
 
         // 返回一个表示失败的Result对象，表明异常发生
         return Result.failure(exception.getCode(), exception.getMessage());
