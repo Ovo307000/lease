@@ -11,23 +11,51 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ThreadLocalUtilsTest
 {
-    // 测试 set 和 get 方法
     @Test
-    void testSetAndGet()
+    void setAndGetWithDifferentTypes()
     {
-        // 设置 USER_ID 和 SESSION_ID
         ThreadLocalUtils.set(ThreadLocalKey.USER_ID, 12345);
         ThreadLocalUtils.set(ThreadLocalKey.SESSION_ID, "session-abc");
 
-        // 验证 USER_ID 的值是否正确
-        final Optional<Integer> userId = ThreadLocalUtils.get(ThreadLocalKey.USER_ID, Integer.class);
+        final Optional<Integer> userId    = ThreadLocalUtils.get(ThreadLocalKey.USER_ID, Integer.class);
+        final Optional<String>  sessionId = ThreadLocalUtils.get(ThreadLocalKey.SESSION_ID, String.class);
+
         assertTrue(userId.isPresent());
         assertEquals(12345, userId.get());
-
-        // 验证 SESSION_ID 的值是否正确
-        final Optional<String> sessionId = ThreadLocalUtils.get(ThreadLocalKey.SESSION_ID, String.class);
         assertTrue(sessionId.isPresent());
         assertEquals("session-abc", sessionId.get());
+    }
+
+    @Test
+    void getWithNonExistentKey()
+    {
+        final Optional<Integer> userId = ThreadLocalUtils.get(ThreadLocalKey.USER_ID, Integer.class);
+        assertFalse(userId.isPresent());
+    }
+
+    @Test
+    void removeNonExistentKey()
+    {
+        final boolean removed = ThreadLocalUtils.remove(ThreadLocalKey.USER_ID);
+        assertFalse(removed);
+    }
+
+    @Test
+    void clearThreadLocalVariables()
+    {
+        ThreadLocalUtils.set(ThreadLocalKey.USER_ID, 12345);
+        ThreadLocalUtils.set(ThreadLocalKey.SESSION_ID, "session-abc");
+
+        final Map<ThreadLocalKey, Object> clearedMap = ThreadLocalUtils.clear();
+
+        assertEquals(2, clearedMap.size());
+        assertEquals(12345, clearedMap.get(ThreadLocalKey.USER_ID));
+        assertEquals("session-abc", clearedMap.get(ThreadLocalKey.SESSION_ID));
+
+        assertFalse(ThreadLocalUtils.get(ThreadLocalKey.USER_ID, Integer.class)
+                                    .isPresent());
+        assertFalse(ThreadLocalUtils.get(ThreadLocalKey.SESSION_ID, String.class)
+                                    .isPresent());
     }
 
     // 测试类型转换错误

@@ -10,7 +10,8 @@ public enum ThreadLocalKey
     USER_NAME("userName"),
     SESSION_ID("sessionId"),
     ACCESS_TOKEN("accessToken"),
-    USER_CLAIMS("userClaims");
+    USER_CLAIMS("userClaims"),
+    USER_ID("userId");
 
     private final String key;
 
