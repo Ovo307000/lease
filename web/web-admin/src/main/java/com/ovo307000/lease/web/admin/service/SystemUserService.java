@@ -3,7 +3,9 @@ package com.ovo307000.lease.web.admin.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.ovo307000.lease.common.result.Result;
 import com.ovo307000.lease.module.entity.SystemUser;
+import com.ovo307000.lease.web.admin.vo.system.user.SystemUserInfoVo;
 import com.ovo307000.lease.web.admin.vo.system.user.SystemUserItemVo;
 import com.ovo307000.lease.web.admin.vo.system.user.SystemUserQueryVo;
 
@@ -30,4 +32,11 @@ public interface SystemUserService extends IService<SystemUser>
      * @return SystemUserItemVo
      */
     SystemUserItemVo getSystemUserItemVoById(Long id);
+
+    /**
+     * 获取当前登录用户信息
+     *
+     * @return SystemUserInfoVo
+     */
+    SystemUserInfoVo getLoggedUserInfoByToken(String token);
 }

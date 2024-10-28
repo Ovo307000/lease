@@ -3,6 +3,7 @@ package com.ovo307000.lease.web.admin.controller.login;
 
 import com.ovo307000.lease.common.result.Result;
 import com.ovo307000.lease.web.admin.service.impl.LoginServiceImpl;
+import com.ovo307000.lease.web.admin.service.impl.SystemUserServiceImpl;
 import com.ovo307000.lease.web.admin.vo.login.CaptchaVo;
 import com.ovo307000.lease.web.admin.vo.login.LoginVo;
 import com.ovo307000.lease.web.admin.vo.system.user.SystemUserInfoVo;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class LoginController
 {
     private final LoginServiceImpl adminLoginService;
+    private final SystemUserServiceImpl systemUserServiceImpl;
 
     @Operation(summary = "获取图形验证码")
     @GetMapping("login/captcha")
@@ -45,8 +47,8 @@ public class LoginController
 
     @Operation(summary = "获取登陆用户个人信息")
     @GetMapping("info")
-    public Result<SystemUserInfoVo> info()
+    public Result<SystemUserInfoVo> info(@RequestHeader("access-token") final String token)
     {
-        return Result.success();
+        return Result.success(this.systemUserServiceImpl.getLoggedUserInfoByToken(token));
     }
 }

@@ -39,6 +39,7 @@ public class JWTUtils
         // 构建 JWT 并返回
         return Jwts.builder()
                    .setSubject(subject)
+                   .setIssuedAt(Date.from(now))
                    .setExpiration(Date.from(now.plusMillis(ttlMillis)))
                    .addClaims(claims)
                    .signWith(key, SignatureAlgorithm.HS256)
