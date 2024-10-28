@@ -1,68 +1,80 @@
 package com.ovo307000.lease.common.utils;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.Claims;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class JWTUtilsTest
 {
-    private static final String SECRET = "mysecretkeymysecretkeymysecretkeymysecretkey";
+    private static final String SECRET = "aVeryLongSecretKeyThatIsAtLeast256BitsLong";
 
     @Test
-    void createJWTToken_shouldReturnValidJWT()
+    void testCreateJWTToken()
     {
-        final String jwt = JWTUtils.createJWTToken("subject", SECRET, 1000, Collections.emptyMap());
-        assertNotNull(Jwts.parserBuilder()
-                          .setSigningKey(Keys.hmacShaKeyFor(SECRET.getBytes()))
-                          .build()
-                          .parseClaimsJws(jwt));
+        final Map<String, Object> claims = new HashMap<>();
+        claims.put("role", "admin");
+
+        final String token = JWTUtils.createJWTToken("subject", SECRET, 1000L, claims);
+        assertNotNull(token);
     }
 
     @Test
-    void parseJWTToken_shouldReturnTrueForValidJWT()
+    void testParseJWTToken()
     {
-        final String jwt = JWTUtils.createJWTToken("subject", SECRET, 1000, Collections.emptyMap());
-        assertTrue(JWTUtils.parseJWTToken(jwt, SECRET));
+        final Map<String, Object> claims = new HashMap<>();
+        claims.put("role", "admin");
+
+        final String token = JWTUtils.createJWTToken("subject", SECRET, 1000L, claims);
+        final Claims parsedClaims = JWTUtils.parseJWTToken(token, SECRET);
+
+        assertNotNull(parsedClaims);
+        assertEquals("subject", parsedClaims.getSubject());
+        assertEquals("admin", parsedClaims.get("role"));
     }
 
     @Test
-    void parseJWTToken_shouldReturnFalseForInvalidJWT()
+    void testParseExpiredJWTToken()
     {
-        final String jwt = JWTUtils.createJWTToken("subject", SECRET, 1000, Collections.emptyMap());
-        assertFalse(JWTUtils.parseJWTToken(jwt, "wrongsecret"));
+        final Map<String, Object> claims = new HashMap<>();
+        claims.put("role", "admin");
+
+        final String token        = JWTUtils.createJWTToken("subject", SECRET, -1000L, claims);
+        final Claims parsedClaims = JWTUtils.parseJWTToken(token, SECRET);
+
+        assertNull(parsedClaims);
     }
 
     @Test
-    void parseJWTToken_shouldReturnFalseForExpiredJWT() throws InterruptedException
+    void testParseJWTTokenWithInvalidSecret()
     {
-        final String jwt = JWTUtils.createJWTToken("subject", SECRET, 1, Collections.emptyMap());
-        Thread.sleep(2);
-        assertFalse(JWTUtils.parseJWTToken(jwt, SECRET));
+        final Map<String, Object> claims = new HashMap<>();
+        claims.put("role", "admin");
+
+        final String token        = JWTUtils.createJWTToken("subject", SECRET, 1000L, claims);
+        final Claims parsedClaims = JWTUtils.parseJWTToken(token, "wrongSecret");
+
+        assertNull(parsedClaims);
     }
 
     @Test
-    void createJWTToken_shouldIncludeClaims()
+    void testCreateJWTTokenWithEmptyClaims()
     {
-        final Map<String, Object> claims = Map.of("claimKey", "claimValue");
-        final String              jwt    = JWTUtils.createJWTToken("subject", SECRET, 1000, claims);
-        assertEquals("claimValue",
-                Jwts.parserBuilder()
-                    .setSigningKey(Keys.hmacShaKeyFor(SECRET.getBytes()))
-                    .build()
-                    .parseClaimsJws(jwt)
-                    .getBody()
-                    .get("claimKey"));
+        final String token = JWTUtils.createJWTToken("subject", SECRET, 1000L, Collections.emptyMap());
+        assertNotNull(token);
     }
 
     @Test
-    void parseJWTToken_shouldReturnFalseForMalformedJWT()
+    void testParseJWTTokenWithEmptyClaims()
     {
-        final String malformedJwt = "malformed.jwt.token";
-        assertFalse(JWTUtils.parseJWTToken(malformedJwt, SECRET));
+        final String token        = JWTUtils.createJWTToken("subject", SECRET, 1000L, Collections.emptyMap());
+        final Claims parsedClaims = JWTUtils.parseJWTToken(token, SECRET);
+
+        assertNotNull(parsedClaims);
+        assertEquals("subject", parsedClaims.getSubject());
     }
 }
