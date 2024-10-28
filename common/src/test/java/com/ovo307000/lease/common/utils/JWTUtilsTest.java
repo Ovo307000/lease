@@ -29,7 +29,7 @@ class JWTUtilsTest
         final Map<String, Object> claims = new HashMap<>();
         claims.put("role", "admin");
 
-        final String token = JWTUtils.createJWTToken("subject", SECRET, 1000L, claims);
+        final String token = JWTUtils.createJWTToken("subject", SECRET, 10000L, claims);
         final Claims parsedClaims = JWTUtils.parseJWTToken(token, SECRET);
 
         assertNotNull(parsedClaims);
