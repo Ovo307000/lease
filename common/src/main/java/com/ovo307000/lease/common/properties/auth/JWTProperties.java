@@ -13,4 +13,5 @@ public class JWTProperties
 {
     private String secret;
     private long   ttlMillis;
+    private long   allowClockSkewMillis;
 }
