@@ -7,11 +7,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ThreadLocalKey
 {
-    USER_ID("userId"),
     USER_NAME("userName"),
-    USER_ROLE("userRole"),
-    USER_PERMISSION("userPermission"),
-    SESSION_ID("sessionId");
+    SESSION_ID("sessionId"),
+    ACCESS_TOKEN("accessToken"),
+    USER_CLAIMS("userClaims");
 
     private final String key;
 

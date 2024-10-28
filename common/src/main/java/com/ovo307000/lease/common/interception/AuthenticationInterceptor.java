@@ -1,7 +1,11 @@
 package com.ovo307000.lease.common.interception;
 
+import com.ovo307000.lease.common.enumeration.ThreadLocalKey;
 import com.ovo307000.lease.common.properties.auth.JWTProperties;
 import com.ovo307000.lease.common.utils.JWTUtils;
+import com.ovo307000.lease.common.utils.ThreadLocalUtils;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
@@ -34,17 +38,22 @@ public class AuthenticationInterceptor implements HandlerInterceptor
                              @NotNull final HttpServletResponse response,
                              @NotNull final Object handler) throws Exception
     {
-        final String token = request.getHeader(ACCESS_TOKEN);
+        final String token  = request.getHeader(ACCESS_TOKEN);
+        final Claims claims = this.isRequestValid(token);
 
-        if (!this.isRequestValid(token))
+        if (claims != null)
         {
-            // 否则返回未授权状态
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // 如果请求有效，则将用户声明信息和令牌放入线程本地变量中
+            ThreadLocalUtils.set(ThreadLocalKey.USER_CLAIMS, claims);
+            ThreadLocalUtils.set(ThreadLocalKey.ACCESS_TOKEN, token);
 
+            return true;
+        }
+        else
+        {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return false;
         }
-
-        return true;
     }
 
     /**
@@ -53,18 +62,17 @@ public class AuthenticationInterceptor implements HandlerInterceptor
      * @param token 当前请求的JWT令牌
      * @return 如果令牌有效，则返回true；否则返回false
      */
-    private boolean isRequestValid(@NonNull final String token)
+    private Claims isRequestValid(@NonNull final String token)
     {
         try
         {
-            JWTUtils.parseJWTToken(token, this.jWTProperties.getSecret());
+            return JWTUtils.parseJWTToken(token, this.jWTProperties.getSecret());
         }
-        catch (final Exception e)
+        catch (final JwtException jwtException)
         {
-            log.error("JWT 验证失败: {}", e.getMessage());
-            return false;
-        }
+            log.error("JWT 验证失败: {}", jwtException.getMessage());
 
-        return true;
+            return null;
+        }
     }
 }
