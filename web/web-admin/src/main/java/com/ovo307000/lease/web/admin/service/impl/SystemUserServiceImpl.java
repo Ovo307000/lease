@@ -4,8 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ovo307000.lease.common.enumeration.ThreadLocalKey;
 import com.ovo307000.lease.common.properties.auth.JWTProperties;
-import com.ovo307000.lease.common.utils.JWTUtils;
+import com.ovo307000.lease.common.utils.ThreadLocalUtils;
 import com.ovo307000.lease.module.entity.SystemPost;
 import com.ovo307000.lease.module.entity.SystemUser;
 import com.ovo307000.lease.web.admin.mapper.SystemUserMapper;
@@ -19,6 +20,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.OptionalLong;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -89,10 +91,11 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
     @Override
     public SystemUserInfoVo getLoggedUserInfoByToken(final String token)
     {
-        final Claims claims = JWTUtils.parseJWTToken(token, this.jWTProperties.getSecret());
+        final Claims claims = ThreadLocalUtils.get(ThreadLocalKey.USER_CLAIMS, Claims.class)
+                                              .orElseThrow(() -> new IllegalArgumentException("无效的用户信息"));
 
-        final Long userId = Optional.ofNullable(claims.get("userId", Long.class))
-                                    .orElseThrow(() -> new IllegalArgumentException("无效的用户信息"));
+        final Long userId = OptionalLong.of(Long.parseLong(claims.get("userId", String.class)))
+                                        .orElseThrow(() -> new IllegalArgumentException("未能从令牌中解析出用户 ID"));
 
         final SystemUser systemUser = Optional.ofNullable(this.baseMapper.selectById(userId))
                                               .orElseThrow(() -> new IllegalArgumentException("用户不存在"));
