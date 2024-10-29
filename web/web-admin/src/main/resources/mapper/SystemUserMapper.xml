@@ -6,19 +6,19 @@
 
     <select id="pageSystemUser" resultType="com.ovo307000.lease.web.admin.vo.system.user.SystemUserItemVo">
         select systemUser.id,
-               systemUser.username,
-               systemUser.password,
-               systemUser.name,
-               systemUser.type,
-               systemUser.phone,
-               systemUser.avatar_url,
-               systemUser.additional_info,
-               systemUser.post_id,
-               systemUser.status,
-               systemPost.name as post_name,
+        systemUser.username,
+        systemUser.password,
+        systemUser.name,
+        systemUser.type,
+        systemUser.phone,
+        systemUser.avatar_url,
+        systemUser.additional_info,
+        systemUser.post_id,
+        systemUser.status,
+        systemPost.name as post_name,
         from system_user as systemUser
-                 left join system_post as systemPost
-                           on systemPost.is_deleted = 0 and systemUser.post_id = systemPost.id
+        left join system_post as systemPost
+        on systemPost.is_deleted = 0 and systemUser.post_id = systemPost.id
         <where>
             systemUser.is_deleted = 0
 
@@ -31,5 +31,8 @@
             </if>
         </where>
 
+    </select>
+    <select id="selectByUserName" resultType="com.ovo307000.lease.module.entity.SystemUser">
+        select * from system_user where username = #{username} and is_deleted = 0
     </select>
 </mapper>
