@@ -34,8 +34,8 @@ public class PaymentTypeController
      * @param id 房间id
      * @return 包含支付方式列表的结果对象
      */
-    @Operation(summary = "根据房间id获取可选支付方式列表")
     @GetMapping("listByRoomId")
+    @Operation(summary = "根据房间id获取可选支付方式列表")
     public Result<List<PaymentType>> list(@RequestParam final Long id)
     {
         log.info("根据房间id获取可选支付方式列表: id={}", id);
@@ -53,8 +53,8 @@ public class PaymentTypeController
      *
      * @return 包含支付方式列表的结果对象
      */
-    @Operation(summary = "获取全部支付方式列表")
     @GetMapping("list")
+    @Operation(summary = "获取全部支付方式列表")
     public Result<List<PaymentType>> list()
     {
         log.info("获取全部支付方式列表");
