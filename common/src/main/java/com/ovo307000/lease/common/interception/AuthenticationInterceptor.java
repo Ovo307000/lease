@@ -75,4 +75,28 @@ public class AuthenticationInterceptor implements HandlerInterceptor
             return null;
         }
     }
+
+    /**
+     * 在请求处理之后进行拦截。
+     *
+     * @param request  当前的HTTP请求
+     * @param response 当前的HTTP响应
+     * @param handler  处理器
+     * @param ex       异常
+     * @throws Exception 处理过程中可能抛出的异常
+     */
+    @Override
+    public void afterCompletion(@NotNull final HttpServletRequest request,
+                                @NotNull final HttpServletResponse response,
+                                @NotNull final Object handler,
+                                final Exception ex) throws Exception
+    {
+        // 清除线程本地变量, 防止内存泄漏
+        ThreadLocalUtils.clear();
+        
+        if (ex != null)
+        {
+            log.error("请求处理过程中发生异常: {}", ex.getMessage());
+        }
+    }
 }
