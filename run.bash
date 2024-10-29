@@ -1,6 +1,6 @@
 #!/bin/bash
 
-key_file_and_dir=("docker-compose.yml" "Dockerfile" "requirements.txt" "common" "model" "web")
+key_file_and_dir=("docker-compose.yml" "Dockerfile"  "common" "model" "web")
 current_dir=$(pwd)
 
 # Check if the required files and directories are present in the current directory
