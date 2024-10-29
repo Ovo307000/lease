@@ -36,7 +36,7 @@
         apartmentInfo.latitude,
         apartmentInfo.longitude,
         apartmentInfo.phone as apartmentInfo_phone,
-        apartmentInfo.is_release,
+        apartmentInfo.is_release
         from view_appointment as viewAppointment
         left join apartment_info as apartmentInfo
         on viewAppointment.apartment_id = apartmentInfo.id and apartmentInfo.is_deleted = 0
