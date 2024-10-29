@@ -15,7 +15,7 @@
         systemUser.additional_info,
         systemUser.post_id,
         systemUser.status,
-        systemPost.name as post_name,
+        systemPost.name as post_name
         from system_user as systemUser
         left join system_post as systemPost
         on systemPost.is_deleted = 0 and systemUser.post_id = systemPost.id
