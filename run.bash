@@ -11,5 +11,8 @@ for item in "${key_file_and_dir[@]}"; do
     fi
 done
 
+apt-get update
+apt-get install -y docker.io docker-compose
+
 # Run the program
 docker-compose up --build
