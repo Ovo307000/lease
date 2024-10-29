@@ -23,7 +23,3 @@ public interface RoomInfoMapper extends BaseMapper<RoomInfo>
      */
     Page<RoomItemVo> pageItem(Page<RoomItemVo> page, RoomQueryVo queryVo);
 }
-
-
-
-
