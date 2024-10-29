@@ -1,9 +1,10 @@
 spring:
     datasource:
         type: com.zaxxer.hikari.HikariDataSource                    # 数据库连接池类型: HikariCP，一个高性能的 JDBC 连接池
-        url: jdbc:mysql://localhost:3306/lease?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8    # 数据库连接地址: 本地 MySQL，数据库名为 lease，设置编码等参数
+        url: jdbc:mysql://localhost:3306/lease?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true    # 数据库连接地址: 本地 MySQL，数据库名为 lease，设置编码等参数
         username: root                                              # 数据库登录用户名: root 用户（建议在生产环境中使用更安全的账户）
         password: root                                              # 数据库登录密码: 与用户名对应的密码
+        driver-class-name: com.mysql.cj.jdbc.Driver                 # MySQL 驱动类名: 用于连接 MySQL 数据库的 JDBC 驱动
         hikari:
             connection-test-query: SELECT 1                         # 连接测试查询: 用于检查数据库连接是否仍然有效
             connection-timeout: 60000                               # 连接超时时间: 60 秒，即建立连接最多等待 1 分钟
@@ -12,7 +13,7 @@ spring:
             maximum-pool-size: 12                                   # 连接池最大大小: 最多同时维护 12 个数据库连接
             minimum-idle: 10                                        # 最小空闲连接: 连接池中至少保持 10 个空闲连接
             pool-name: SPHHikariPool                                # 连接池名称: 用于日志和监控，方便识别不同的连接池
-        driver-class-name: com.mysql.cj.jdbc.Driver                 # MySQL 驱动类名: 用于连接 MySQL 数据库的 JDBC 驱动
+
     application:
         name: web-admin                                             # 应用名称: Web 管理端，用于 Loggers 日志记录
     servlet:
