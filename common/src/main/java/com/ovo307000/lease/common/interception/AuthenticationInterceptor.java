@@ -93,7 +93,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor
     {
         // 清除线程本地变量, 防止内存泄漏
         ThreadLocalUtils.clear();
-        
+
         if (ex != null)
         {
             log.error("请求处理过程中发生异常: {}", ex.getMessage());
