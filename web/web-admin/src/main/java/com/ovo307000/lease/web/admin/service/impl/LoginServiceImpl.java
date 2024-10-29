@@ -1,6 +1,5 @@
 package com.ovo307000.lease.web.admin.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.ovo307000.lease.common.exception.LeaseException;
 import com.ovo307000.lease.common.properties.auth.CaptchaProperties;
 import com.ovo307000.lease.common.properties.auth.JWTProperties;
@@ -8,12 +7,14 @@ import com.ovo307000.lease.common.result.ResultCodeEnum;
 import com.ovo307000.lease.common.utils.JWTUtils;
 import com.ovo307000.lease.module.entity.SystemUser;
 import com.ovo307000.lease.module.enums.BaseStatus;
+import com.ovo307000.lease.web.admin.mapper.SystemUserMapper;
 import com.ovo307000.lease.web.admin.service.LoginService;
 import com.ovo307000.lease.web.admin.vo.login.CaptchaVo;
 import com.ovo307000.lease.web.admin.vo.login.LoginVo;
 import com.wf.captcha.SpecCaptcha;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ import java.util.concurrent.TimeUnit;
  * 登录服务实现类
  * 提供获取图形验证码和用户登录的功能
  */
+@Slf4j
 @RequiredArgsConstructor
 @Service("adminLoginService")
 public class LoginServiceImpl implements LoginService
@@ -37,6 +39,7 @@ public class LoginServiceImpl implements LoginService
     private final        SystemUserServiceImpl         systemUserServiceImpl;
     private final        CaptchaProperties             captchaProperties;
     private final        JWTProperties                 jWTProperties;
+    private final        SystemUserMapper              systemUserMapper;
 
     /**
      * 获取图形验证码
@@ -139,10 +142,7 @@ public class LoginServiceImpl implements LoginService
      */
     private @Nullable SystemUser getUserByUserName(final String userName)
     {
-        final LambdaQueryWrapper<SystemUser> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(SystemUser::getName, userName);
-
-        return this.systemUserServiceImpl.getOne(queryWrapper);
+        return this.systemUserMapper.selectByUserName(userName);
     }
 
     /**
@@ -187,8 +187,15 @@ public class LoginServiceImpl implements LoginService
      */
     private void isPasswordValid(final SystemUser user, final String password)
     {
-        if (!Objects.equals(DigestUtils.sha256Hex(password.getBytes()), user.getPassword()))
+        final String encodedPassword  = DigestUtils.sha256Hex(password.getBytes());
+        final String databasePassword = user.getPassword();
+
+        if (!Objects.equals(encodedPassword, databasePassword))
         {
+            log.info("用户密码错误: {}", user.getName());
+
+            log.info("Encoded password: {} | Database password: {}", encodedPassword, databasePassword);
+
             throw new LeaseException(ResultCodeEnum.ADMIN_ACCOUNT_ERROR);
         }
     }
