@@ -12,7 +12,9 @@ import lombok.RequiredArgsConstructor;
 public enum ThreadLocalKey
 {
     ACCESS_TOKEN("accessToken"),    // 访问令牌
-    USER_CLAIMS("userClaims");      // 用户声明
+    USER_CLAIMS("userClaims"),      // 用户声明
+
+    CURRENT_THREAD("currentThread");
 
     /**
      * 线程本地变量的键

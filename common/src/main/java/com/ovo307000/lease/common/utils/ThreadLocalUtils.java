@@ -25,6 +25,9 @@ public class ThreadLocalUtils
     public static <T> void set(final ThreadLocalKey key, final T value)
     {
         threadLocalMap.get().put(key, value);
+
+        // 为了方便在拦截器中获取当前线程，将当前线程也存储在线程本地变量中
+        threadLocalMap.get().put(ThreadLocalKey.CURRENT_THREAD, Thread.currentThread());
     }
 
     /**
