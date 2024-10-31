@@ -1,22 +1,31 @@
 spring:
-  datasource:
-    type: com.zaxxer.hikari.HikariDataSource                    # 数据库连接池类型: HikariCP，高性能的 JDBC 连接池
-    url: jdbc:mysql://localhost:3306/lease?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8    # 数据库连接地址: 本地 MySQL，数据库名为 lease，设置编码和时区
-    username: root                                              # 数据库登录用户名: root 用户（生产环境建议使用权限受限的账户）
-    password: root                                              # 数据库登录密码: 对应用户名的密码
-    hikari:
-      connection-test-query: SELECT 1                           # 连接测试查询: 用于检查数据库连接是否有效
-      connection-timeout: 60000                                 # 连接超时时间: 60 秒，即尝试建立连接最多等待 1 分钟
-      idle-timeout: 500000                                      # 空闲连接超时: 500 秒，空闲连接在池中最多保留约 8.3 分钟
-      max-lifetime: 540000                                      # 连接最大生存时间: 540 秒，一个连接最多可以使用 9 分钟
-      maximum-pool-size: 12                                     # 连接池最大大小: 最多同时维护 12 个数据库连接
-      minimum-idle: 10                                          # 最小空闲连接: 连接池中至少保持 10 个空闲连接
-      pool-name: SPHHikariPool                                  # 连接池名称: 用于日志和监控，便于识别
-    driver-class-name: com.mysql.cj.jdbc.Driver                 # MySQL 驱动类名: 用于连接 MySQL 数据库的 JDBC 驱动
+    datasource:
+        type: com.zaxxer.hikari.HikariDataSource                  # 数据库连接池类型: HikariCP，高性能的 JDBC 连接池
+        url: jdbc:mysql://localhost:3306/lease?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8    # 数据库连接地址: 本地 MySQL，数据库名为 lease，设置编码和时区
+        username: root                                            # 数据库登录用户名: root 用户（生产环境建议使用权限受限的账户）
+        password: root                                            # 数据库登录密码: 对应用户名的密码
+        hikari:
+            connection-test-query: SELECT 1                       # 连接测试查询: 用于检查数据库连接是否有效
+            connection-timeout: 60000                             # 连接超时时间: 60 秒，即尝试建立连接最多等待 1 分钟
+            idle-timeout: 500000                                  # 空闲连接超时: 500 秒，空闲连接在池中最多保留约 8.3 分钟
+            max-lifetime: 540000                                  # 连接最大生存时间: 540 秒，一个连接最多可以使用 9 分钟
+            maximum-pool-size: 12                                 # 连接池最大大小: 最多同时维护 12 个数据库连接
+            minimum-idle: 10                                      # 最小空闲连接: 连接池中至少保持 10 个空闲连接
+            pool-name: SPHHikariPool                              # 连接池名称: 用于日志和监控，便于识别
+        driver-class-name: com.mysql.cj.jdbc.Driver               # MySQL 驱动类名: 用于连接 MySQL 数据库的 JDBC 驱动
 
 mybatis-plus:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl       # SQL 日志实现: 将 MyBatis 生成的 SQL 语句打印到控制台，便于调试
+    configuration:
+        log-impl: org.apache.ibatis.logging.stdout.StdOutImpl     # SQL 日志实现: 将 MyBatis 生成的 SQL 语句打印到控制台，便于调试
 
 server:
-  port: 8862                                                    # 应用服务端口: Web 应用监听的 HTTP 端口号，这里设置为 8862
+    port: 8862                                                    # 应用服务端口: Web 应用监听的 HTTP 端口号，这里设置为 8862
+
+auth:
+    sms:
+        twilio:
+            account-sid: ${TWILIO_ACCOUNT_SID}                    # Twilio 账户 SID: 用于访问 Twilio 服务的账户 SID
+            auth-token: ${TWILIO_AUTH_TOKEN}                      # Twilio 认证令牌: 用于访问 Twilio 服务的认证令牌
+            phone-number: ${TWILIO_PHONE_NUMBER}                  # Twilio 电话号码: 用于发送短信的 Twilio 电话号码
+    code:
+        length: 6                                                 # 验证码长度: 6 位，即生成的验证码长度为 6 位
