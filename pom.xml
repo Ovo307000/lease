@@ -36,8 +36,8 @@
         <jwt.version>0.11.2</jwt.version>
         <easycaptcha.version>1.6.2</easycaptcha.version>
         <minio.version>8.2.0</minio.version>
-        <aliyun.sms.version>2.0.23</aliyun.sms.version>
         <mysql.version>8.0.33</mysql.version>
+        <twilio.version>10.4.1</twilio.version>
     </properties>
 
     <!-- 依赖管理 -->
@@ -90,11 +90,11 @@
                 <version>${minio.version}</version>
             </dependency>
 
-            <!-- 阿里云短信服务: 阿里云短信服务 SDK -->
+            <!-- Twilio：短信验证码服务 -->
             <dependency>
-                <groupId>com.aliyun</groupId>
-                <artifactId>dysmsapi20170525</artifactId>
-                <version>${aliyun.sms.version}</version>
+                <groupId>com.twilio.sdk</groupId>
+                <artifactId>twilio</artifactId>
+                <version>${twilio.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
