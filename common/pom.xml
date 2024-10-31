@@ -66,6 +66,12 @@
             <artifactId>minio</artifactId>
         </dependency>
 
+        <!-- Twilio：短信服务 -->
+        <dependency>
+            <groupId>com.twilio.sdk</groupId>
+            <artifactId>twilio</artifactId>
+        </dependency>
+
         <!-- JJwt：JSON Web Token: 用于生成和解析 JWT -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
