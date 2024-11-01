@@ -18,9 +18,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  */
 @EnableScheduling
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.ovo307000.lease.common", "com.ovo307000.lease.web.admin"})
 @MapperScan("com.ovo307000.lease.web.admin.mapper")
 @ConfigurationPropertiesScan("com.ovo307000.lease.common.properties")
+@ComponentScan(basePackages = {"com.ovo307000.lease.common", "com.ovo307000.lease.web.admin"})
 public class WebAdminApplication
 {
     /**
