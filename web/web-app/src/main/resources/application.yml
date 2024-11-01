@@ -1,9 +1,9 @@
 spring:
     datasource:
         type: com.zaxxer.hikari.HikariDataSource                  # 数据库连接池类型: HikariCP，高性能的 JDBC 连接池
-        url: jdbc:mysql://localhost:3306/lease?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8    # 数据库连接地址: 本地 MySQL，数据库名为 lease，设置编码和时区
-        username: root                                            # 数据库登录用户名: root 用户（生产环境建议使用权限受限的账户）
-        password: root                                            # 数据库登录密码: 对应用户名的密码
+        url: ${SPRING_DATASOURCE_URL}                             # 数据库连接地址: 从环境变量中获取，用于连接 MySQL 数据库
+        username: ${SPRING_DATASOURCE_USERNAME}                   # 数据库登录用户名: 从环境变量中获取，用于连接 MySQL 数据库
+        password: ${SPRING_DATASOURCE_PASSWORD}                   # 数据库登录密码: 从环境变量中获取，用于连接 MySQL 数据库
         hikari:
             connection-test-query: SELECT 1                       # 连接测试查询: 用于检查数据库连接是否有效
             connection-timeout: 60000                             # 连接超时时间: 60 秒，即尝试建立连接最多等待 1 分钟
