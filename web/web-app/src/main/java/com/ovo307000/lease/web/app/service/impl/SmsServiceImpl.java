@@ -40,7 +40,7 @@ public class SmsServiceImpl implements SmsService
 
             log.info("Code generated: [{}] notify user: [{}]", code, phoneNum);
             this.twilioService.notifyUser(phoneNum, message);
-            this.saveCodeToRedis(phoneNum, code);
+            this.saveCodeToRedisAsync(phoneNum, code);
 
             return true;
         }
@@ -61,5 +61,10 @@ public class SmsServiceImpl implements SmsService
     {
         this.stringRedisTemplate.opsForValue()
                                 .set(phone, code);
+    }
+
+    private void saveCodeToRedisAsync(final String phone, final String code)
+    {
+        CompletableFuture.runAsync(() -> this.saveCodeToRedis(phone, code));
     }
 }
