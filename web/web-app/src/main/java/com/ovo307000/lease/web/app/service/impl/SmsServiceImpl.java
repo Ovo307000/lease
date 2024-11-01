@@ -1,6 +1,8 @@
 package com.ovo307000.lease.web.app.service.impl;
 
+import com.ovo307000.lease.common.exception.LeaseException;
 import com.ovo307000.lease.common.properties.auth.CodeProperties;
+import com.ovo307000.lease.common.result.ResultCodeEnum;
 import com.ovo307000.lease.common.service.TwilioService;
 import com.ovo307000.lease.common.utils.CodeGenerator;
 import com.ovo307000.lease.web.app.service.SmsService;
@@ -35,7 +37,7 @@ public class SmsServiceImpl implements SmsService
     {
         if (this.isCooldown(phone))
         {
-            throw new RuntimeException("Failed to send verification code to user: user sms service is in cooldown");
+            throw new LeaseException(ResultCodeEnum.APP_SEND_SMS_TOO_OFTEN);
         }
 
         try
