@@ -1,9 +1,9 @@
 spring:
     datasource:
         type: com.zaxxer.hikari.HikariDataSource                    # 数据库连接池类型: HikariCP，一个高性能的 JDBC 连接池
-        url: ${SPRING_DATASOURCE_URL}                               # 数据库连接地址: 从环境变量中获取，用于连接 MySQL 数据库
-        username: ${SPRING_DATASOURCE_USERNAME}                     # 数据库登录用户名: 从环境变量中获取，用于连接 MySQL 数据库
-        password: ${SPRING_DATASOURCE_PASSWORD}                     # 数据库登录密码: 从环境变量中获取，用于连接 MySQL 数据库
+        url: ${env.LEASE_ADMIN_SPRING_DATASOURCE_URL}               # 数据库连接地址: 从环境变量中获取，用于连接 MySQL 数据库
+        username: ${env.LEASE_ADMIN_SPRING_DATASOURCE_USERNAME}     # 数据库登录用户名: 从环境变量中获取，用于连接 MySQL 数据库
+        password: ${env.LEASE_ADMIN_SPRING_DATASOURCE_PASSWORD}     # 数据库登录密码: 从环境变量中获取，用于连接 MySQL 数据库
         driver-class-name: com.mysql.cj.jdbc.Driver                 # MySQL 驱动类名: 用于连接 MySQL 数据库的 JDBC 驱动
         hikari:
             connection-test-query: SELECT 1                         # 连接测试查询: 用于检查数据库连接是否仍然有效
@@ -47,18 +47,18 @@ server:
 storage:
     cloudflare:
         r2:
-            access-key-id: ${CLOUDFLARE_R2_ACCESS_KEY_ID}               # Cloudflare R2 Access Key ID: 用于访问 Cloudflare R2 API 的 Access Key ID
-            secret-access-key: ${CLOUDFLARE_R2_SECRET_ACCESS_KEY}       # Cloudflare R2 Secret Access Key: 用于访问 Cloudflare R2 API 的 Secret Access Key
-            account-id: ${CLOUDFLARE_R2_ACCOUNT_ID}                     # Cloudflare R2 账户 ID: 用于访问 Cloudflare R2 API 的账户 ID
+            access-key-id: ${env.CLOUDFLARE_R2_ACCESS_KEY_ID}           # Cloudflare R2 Access Key ID: 用于访问 Cloudflare R2 API 的 Access Key ID
+            secret-access-key: ${env.CLOUDFLARE_R2_SECRET_ACCESS_KEY}   # Cloudflare R2 Secret Access Key: 用于访问 Cloudflare R2 API 的 Secret Access Key
+            account-id: ${env.CLOUDFLARE_R2_ACCOUNT_ID}                 # Cloudflare R2 账户 ID: 用于访问 Cloudflare R2 API 的账户 ID
             bucket-name: lease                                          # Cloudflare R2 存储桶名称: 用于存储文件的存储桶名称
-            endpoint: ${CLOUDFLARE_R2_ENDPOINT}                         # Cloudflare R2 服务地址: 云存储服务地址
+            endpoint: ${env.CLOUDFLARE_R2_ENDPOINT}                     # Cloudflare R2 服务地址: 云存储服务地址
             max-file-sizeof-bytes: 10485760000                          # 最大文件大小: 10 GB，即最大支持上传 10 GB 的文件
             large-file-threshold-of-bytes: 104857600                    # 大文件大小: 100 MB，即大于 100 MB 的文件将使用分片上传
     minio:
-        bucket-name: lease                                            # MinIO 存储桶名称: 用于存储文件的存储桶名称
-        endpoint: http://localhost:9000                               # MinIO 服务地址: 本地 MinIO 服务地址
-        access-key-id: ${MINIO_ACCESS_KEY_ID}                         # MinIO 访问密钥 ID: 用于访问 MinIO 服务的访问密钥 ID
-        secret-access-key: ${MINIO_SECRET_ACCESS_KEY}                 # MinIO 访问密钥: 用于访问 MinIO 服务的访问密钥
+        bucket-name: ${env.LEASE_MINIO_BUCKET_NAME}                   # MinIO 存储桶名称: 用于存储文件的存储桶名称
+        endpoint: ${env.LEASE_MINIO_ENDPOINT}                         # MinIO 服务地址: 本地 MinIO 服务地址
+        access-key-id: ${env.LEASE_MINIO_ACCESS_KEY_ID}               # MinIO 访问密钥 ID: 用于访问 MinIO 服务的访问密钥 ID
+        secret-access-key: ${env.LEASE_MINIO_SECRET_ACCESS_KEY}       # MinIO 访问密钥: 用于访问 MinIO 服务的访问密钥
         large-file-threshold-of-bytes: 104857600                      # 大文件大小: 100 MB，即大于 100 MB 的文件将使用分片上传
         max-file-sizeof-bytes: 10485760000                            # 最大文件大小: 10 GB，即最大支持上传 10 GB 的文件
 
