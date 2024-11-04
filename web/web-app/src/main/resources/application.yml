@@ -1,7 +1,7 @@
 spring:
     datasource:
         type: com.zaxxer.hikari.HikariDataSource                  # 数据库连接池类型: HikariCP，高性能的 JDBC 连接池
-        url: ${env.LEASE_USER_SPRING_DATASOURCE_URL}                             # 数据库连接地址: 从环境变量中获取，用于连接 MySQL 数据库
+        url: ${env.LEASE_SPRING_DATASOURCE_URL}                             # 数据库连接地址: 从环境变量中获取，用于连接 MySQL 数据库
         username: ${env.LEASE_USER_SPRING_DATASOURCE_USERNAME}                   # 数据库登录用户名: 从环境变量中获取，用于连接 MySQL 数据库
         password: ${env.LEASE_USER_SPRING_DATASOURCE_PASSWORD}                   # 数据库登录密码: 从环境变量中获取，用于连接 MySQL 数据库
         hikari:
