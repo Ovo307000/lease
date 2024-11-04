@@ -15,6 +15,5 @@ public class TwilioProperties
 {
     private String accountSid;      // 账户 SID 用于验证, 从 Twilio 控制台获取
     private String authToken;       // 认证令牌用于验证, 从 Twilio 控制台获取
-
     private String phoneNumber;     // Twilio 电话号码, 从 Twilio 控制台获取
 }
