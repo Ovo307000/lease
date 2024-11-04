@@ -25,7 +25,7 @@ auth:
     sms:
         twilio:
             account-sid: ${env.LEASE_TWILIO_ACCOUNT_SID}                    # Twilio 账户 SID: 用于访问 Twilio 服务的账户 SID
-            auth-token: ${env.TWILIO_AUTH_TOKEN}                      # Twilio 认证令牌: 用于访问 Twilio 服务的认证令牌
-            phone-number: ${env.TWILIO_PHONE_NUMBER}                  # Twilio 电话号码: 用于发送短信的 Twilio 电话号码
+            auth-token: ${env.LEASE_TWILIO_AUTH_TOKEN}                      # Twilio 认证令牌: 用于访问 Twilio 服务的认证令牌
+            phone-number: ${env.LEASE_TWILIO_PHONE_NUMBER}                  # Twilio 电话号码: 用于发送短信的 Twilio 电话号码
     code:
         length: 6                                                 # 验证码长度: 6 位，即生成的验证码长度为 6 位
