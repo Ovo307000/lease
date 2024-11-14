@@ -7,6 +7,7 @@ import com.ovo307000.lease.common.service.TwilioService;
 import com.ovo307000.lease.common.utils.CodeGenerator;
 import com.ovo307000.lease.web.app.vo.user.LoginVo;
 import com.ovo307000.lease.web.app.vo.user.UserInfoVo;
+import com.twilio.rest.chat.v2.service.channel.Message;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
@@ -29,9 +30,9 @@ public class LoginController
     @Operation(summary = "获取短信验证码")
     public Result<Void> getCode(@RequestParam final String phone)
     {
-        this.twilioService.notifyUser(phone, CodeGenerator.generateCode(this.codeProperties.getLength()));
-
-        return Result.success();
+        final String  code   = CodeGenerator.generateCode(this.codeProperties.getLength());
+        
+        return this.twilioService.notifyUser(phone, code) ? Result.success() : Result.failure();
     }
 
     @PostMapping("login")
