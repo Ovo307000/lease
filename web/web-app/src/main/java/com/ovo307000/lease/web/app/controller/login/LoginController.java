@@ -10,8 +10,10 @@ import com.ovo307000.lease.web.app.vo.user.LoginVo;
 import com.ovo307000.lease.web.app.vo.user.UserInfoVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @Tag(name = "登录管理")
 @RestController
 @RequestMapping("/app/")
@@ -34,6 +36,8 @@ public class LoginController
     @Operation(summary = "获取短信验证码")
     public Result<Void> getCode(@RequestParam final String phone)
     {
+        log.info("Get code for phone: {}", phone);
+
         return this.loginServiceImpl.sendCode(phone, CodeGenerator.generateCode(this.codeProperties.getLength())) ?
                Result.success() :
                Result.failure();
