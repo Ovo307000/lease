@@ -1,9 +1,9 @@
 spring:
     datasource:
         type: com.zaxxer.hikari.HikariDataSource                  # 数据库连接池类型: HikariCP，高性能的 JDBC 连接池
-        url: ${env.LEASE_SPRING_DATASOURCE_URL}                             # 数据库连接地址: 从环境变量中获取，用于连接 MySQL 数据库
-        username: ${env.LEASE_USER_SPRING_DATASOURCE_USERNAME}                   # 数据库登录用户名: 从环境变量中获取，用于连接 MySQL 数据库
-        password: ${env.LEASE_USER_SPRING_DATASOURCE_PASSWORD}                   # 数据库登录密码: 从环境变量中获取，用于连接 MySQL 数据库
+        url: ${LEASE_SPRING_DATASOURCE_URL}                       # 数据库连接地址: 从环境变量中获取，用于连接 MySQL 数据库
+        username: ${LEASE_USER_SPRING_DATASOURCE_USERNAME}        # 数据库登录用户名: 从环境变量中获取，用于连接 MySQL 数据库
+        password: ${LEASE_USER_SPRING_DATASOURCE_PASSWORD}        # 数据库登录密码: 从环境变量中获取，用于连接 MySQL 数据库
         hikari:
             connection-test-query: SELECT 1                       # 连接测试查询: 用于检查数据库连接是否有效
             connection-timeout: 60000                             # 连接超时时间: 60 秒，即尝试建立连接最多等待 1 分钟
@@ -24,8 +24,8 @@ server:
 auth:
     sms:
         twilio:
-            account-sid: ${env.LEASE_TWILIO_ACCOUNT_SID}                    # Twilio 账户 SID: 用于访问 Twilio 服务的账户 SID
-            auth-token: ${env.LEASE_TWILIO_AUTH_TOKEN}                      # Twilio 认证令牌: 用于访问 Twilio 服务的认证令牌
-            phone-number: ${env.LEASE_TWILIO_PHONE_NUMBER}                  # Twilio 电话号码: 用于发送短信的 Twilio 电话号码
+            account-sid: ${LEASE_TWILIO_ACCOUNT_SID}              # Twilio 账户 SID: 用于访问 Twilio 服务的账户 SID
+            auth-token: ${LEASE_TWILIO_AUTH_TOKEN}                # Twilio 认证令牌: 用于访问 Twilio 服务的认证令牌
+            phone-number: ${LEASE_TWILIO_PHONE_NUMBER}            # Twilio 电话号码: 用于发送短信的 Twilio 电话号码
     code:
         length: 6                                                 # 验证码长度: 6 位，即生成的验证码长度为 6 位
