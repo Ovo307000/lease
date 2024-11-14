@@ -17,8 +17,4 @@ public class LoginServiceImpl implements LoginService
         return this.notificationService.notifyUser(phone, this.generateMessage(code));
     }
 
-    private String generateMessage(final String code)
-    {
-        return "[Lease] Your verification code is " + code;
-    }
 }
