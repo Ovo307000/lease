@@ -4,11 +4,13 @@ import com.ovo307000.lease.common.properties.storage.CloudflareProperties;
 import io.minio.MinioClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 
 @Configuration
 public class CloudflareConfiguration
 {
     @Bean
+    @Lazy
     public MinioClient cloudflareClient(final CloudflareProperties properties)
     {
         return MinioClient.builder()

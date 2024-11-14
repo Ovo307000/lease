@@ -3,6 +3,7 @@ package com.ovo307000.lease.common.configuration;
 import com.ovo307000.lease.common.properties.storage.MinioProperties;
 import io.minio.MinioClient;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
@@ -19,6 +20,7 @@ public class MinioConfiguration
      * @return 配置好的MinioClient实例
      */
     @Bean
+    @Lazy
     public MinioClient minioClient(final MinioProperties properties)
     {
         // 确保访问密钥不为空
