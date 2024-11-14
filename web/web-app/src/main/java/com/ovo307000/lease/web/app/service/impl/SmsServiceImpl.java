@@ -3,7 +3,7 @@ package com.ovo307000.lease.web.app.service.impl;
 import com.ovo307000.lease.common.exception.LeaseException;
 import com.ovo307000.lease.common.properties.auth.CodeProperties;
 import com.ovo307000.lease.common.result.ResultCodeEnum;
-import com.ovo307000.lease.common.service.TwilioService;
+import com.ovo307000.lease.common.service.NotificationService;
 import com.ovo307000.lease.common.utils.CodeGenerator;
 import com.ovo307000.lease.web.app.service.SmsService;
 import lombok.RequiredArgsConstructor;
@@ -24,19 +24,12 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class SmsServiceImpl implements SmsService
 {
-    // 短信验证码的过期时间（秒）
-    private static final Long                TTL_SECONDS      = 300L;
-    // 短信验证码的冷却时间（秒）
-    private static final Long                COOLDOWN_SECONDS = 60L;
-    // Redis中保存短信验证码的键前缀
-    private static final String              CODE_KEY_PREFIX  = "sms:code:";
-
-    // Twilio服务用于发送短信
-    private final        TwilioService       twilioService;
     // Redis模板用于存储短信验证码
-    private final        StringRedisTemplate stringRedisTemplate;
+    private final StringRedisTemplate stringRedisTemplate;
     // 配置属性用于获取验证码长度等信息
-    private final        CodeProperties      codeProperties;
+    private final CodeProperties      codeProperties;
+    // 通知服务用于发送短信
+    private final NotificationService notificationService;
 
     /**
      * 异步发送验证码
@@ -73,14 +66,14 @@ public class SmsServiceImpl implements SmsService
                                               .orElse(6);
 
             // 生成验证码
-            final String code    = CodeGenerator.generateCode(codeLength);
+            final String code = CodeGenerator.generateCode(codeLength);
             // 创建短信消息内容
             final String message = this.createMessage(Integer.parseInt(code));
 
             // 记录日志
             log.info("Code generated: [{}] notify user: [{}]", code, phoneNumber);
             // 发送短信
-            this.twilioService.notifyUser(phoneNumber, message);
+            this.notificationService.notifyUser(phoneNumber, message);
             // 将验证码保存到Redis
             this.saveCodeToRedisAsync(phoneNumber, code);
 
@@ -108,7 +101,7 @@ public class SmsServiceImpl implements SmsService
                                         .orElse(0L);
 
         // 如果过期时间大于0并且小于冷却时间，则表示用户仍在冷却中
-        if (expireTime > 0 && expireTime < COOLDOWN_SECONDS)
+        if (expireTime > 0 && expireTime < this.codeProperties.getCooldownOfSeconds())
         {
             log.warn("User [{}] is in cooldown, remaining time: [{}]", key, expireTime);
 
@@ -133,7 +126,7 @@ public class SmsServiceImpl implements SmsService
      * 异步将验证码保存到Redis
      *
      * @param phone 手机号
-     * @param code 验证码
+     * @param code  验证码
      */
     private void saveCodeToRedisAsync(final String phone, final String code)
     {
@@ -144,13 +137,13 @@ public class SmsServiceImpl implements SmsService
      * 将验证码保存到Redis
      *
      * @param phone 手机号
-     * @param code 验证码
+     * @param code  验证码
      */
     private void saveCodeToRedis(final String phone, final String code)
     {
-        final String key = CODE_KEY_PREFIX + phone;
+        final String key = this.codeProperties.getKeyPrefix() + phone;
 
         this.stringRedisTemplate.opsForValue()
-                                .set(key, code, TTL_SECONDS);
+                                .set(key, code, this.codeProperties.getExpirationOfSeconds(), TimeUnit.SECONDS);
     }
 }

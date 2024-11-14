@@ -29,3 +29,7 @@ auth:
             phone-number: ${LEASE_TWILIO_PHONE_NUMBER}            # Twilio 电话号码: 用于发送短信的 Twilio 电话号码
     code:
         length: 6                                                 # 验证码长度: 6 位，即生成的验证码长度为 6 位
+        enable-verification: false                                # 启用验证码验证: 默认关闭验证码验证功能
+        expiration-of-seconds: 300                                # 验证码过期时间: 300 秒，即验证码有效期为 5 分钟
+        cooldown-of-seconds: 60                                   # 验证码冷却时间: 60 秒，即发送验证码的冷却时间为 1 分钟
+        key-prefix: "auth:code:"                                  # 验证码键前缀: 用于生成验证码的 Redis 键前缀

@@ -12,4 +12,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class CodeProperties
 {
     private int length;
+    private long expirationOfSeconds;
+    private boolean enableVerification;
+    private long cooldownOfSeconds;
+    private String keyPrefix;
 }
