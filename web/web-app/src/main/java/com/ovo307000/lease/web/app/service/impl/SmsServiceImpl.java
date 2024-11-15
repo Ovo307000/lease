@@ -58,8 +58,7 @@ public class SmsServiceImpl implements SmsService
 
         try
         {
-            // 移除电话号码中的非数字字符
-            final String phoneNumber = phone.replaceAll("[^0-9]", "");
+            final String phoneNumber = this.appendCountryCode(phone.trim());
 
             // 获取验证码长度配置，如果没有配置则使用默认值6
             final int codeLength = OptionalInt.of(this.codeProperties.getLength())
@@ -145,5 +144,10 @@ public class SmsServiceImpl implements SmsService
 
         this.stringRedisTemplate.opsForValue()
                                 .set(key, code, this.codeProperties.getExpirationOfSeconds(), TimeUnit.SECONDS);
+    }
+
+    private String appendCountryCode(final String phone)
+    {
+        return phone.startsWith("+") ? phone : "+86" + phone;
     }
 }
