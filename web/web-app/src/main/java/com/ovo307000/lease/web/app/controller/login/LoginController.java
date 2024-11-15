@@ -42,7 +42,9 @@ public class LoginController
     {
         log.info("Login with phone: {}", Objects.requireNonNull(loginVo.getPhone(), "Phone must not be null"));
 
-        return this.loginServiceImpl.login(loginVo) ? Result.success() : Result.failure();
+        final String token = this.loginServiceImpl.login(loginVo);
+
+        return token.isEmpty() ? Result.success() : Result.success(token);
     }
 
     @GetMapping("info")
