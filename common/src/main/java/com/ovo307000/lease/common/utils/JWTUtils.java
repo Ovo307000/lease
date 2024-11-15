@@ -88,4 +88,9 @@ public class JWTUtils
             return null;
         }
     }
+
+    public static Map<String, Object> generateUserClaims(@NonNull final Long id, @NonNull final String phone)
+    {
+        return Map.of("id", id, "phone", phone);
+    }
 }
