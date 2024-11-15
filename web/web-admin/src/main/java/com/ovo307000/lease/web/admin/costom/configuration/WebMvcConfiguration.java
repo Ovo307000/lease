@@ -1,6 +1,6 @@
 package com.ovo307000.lease.web.admin.costom.configuration;
 
-import com.ovo307000.lease.common.interception.AuthenticationInterceptor;
+import com.ovo307000.lease.web.admin.interception.AuthenticationInterceptor;
 import com.ovo307000.lease.common.properties.auth.InterceptionProperties;
 import com.ovo307000.lease.common.properties.auth.JWTProperties;
 import com.ovo307000.lease.web.admin.costom.configuration.converter.StringToBaseEnumConverterFactory;

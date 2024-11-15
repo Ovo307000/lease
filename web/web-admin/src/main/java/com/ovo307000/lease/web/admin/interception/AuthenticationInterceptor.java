@@ -1,4 +1,4 @@
-package com.ovo307000.lease.common.interception;
+package com.ovo307000.lease.web.admin.interception;
 
 import com.ovo307000.lease.common.enumeration.ThreadLocalKey;
 import com.ovo307000.lease.common.properties.auth.JWTProperties;
