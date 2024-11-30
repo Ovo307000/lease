@@ -60,7 +60,7 @@ public class LoginServiceImpl implements LoginService
             return token;
         }
 
-        if (!this.isUserStatusEnable(loginVo.getPhone()))
+        if (!this.isAccountEnabled(loginVo.getPhone()))
         {
             log.error("User account disabled, phone: {}", loginVo.getPhone());
 
@@ -134,7 +134,7 @@ public class LoginServiceImpl implements LoginService
      * @param phone 手机号
      * @return 用户状态是否启用
      */
-    private boolean isUserStatusEnable(final String phone)
+    private boolean isAccountEnabled(final String phone)
     {
         final LambdaQueryWrapper<UserInfo> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(UserInfo::getPhone, phone)

@@ -66,7 +66,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor
     {
         try
         {
-            return JWTUtils.parseJWTToken(token, this.jWTProperties.getSecret());
+            return JWTUtils.extractJwtClaims(token, this.jWTProperties.getSecret());
         }
         catch (final JwtException jwtException)
         {

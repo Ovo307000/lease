@@ -33,7 +33,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor
 
         try
         {
-            final Claims claims = JWTUtils.parseJWTToken(token, this.jWTProperties.getSecret());
+            final Claims claims = JWTUtils.extractJwtClaims(token, this.jWTProperties.getSecret());
 
             final Long userId = Objects.requireNonNull(claims.get("userId", Long.class), "Not found user id in token");
             final String phone = Objects.requireNonNull(claims.get("phone", String.class), "Not found phone in token");

@@ -56,7 +56,7 @@ public class JWTUtils
      * @throws JwtException        如果 JWT 解析失败，抛出此异常
      * @throws Exception           如果发生其他异常，在日志中记录错误信息并抛出异常
      */
-    public static @Nullable Claims parseJWTToken(@NonNull final String jwt, @NonNull final String secret)
+    public static @Nullable Claims extractJwtClaims(@NonNull final String jwt, @NonNull final String secret)
     {
         try
         {

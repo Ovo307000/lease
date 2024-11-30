@@ -30,7 +30,7 @@ class JWTUtilsTest
         claims.put("role", "admin");
 
         final String token = JWTUtils.createJWTToken("subject", SECRET, 10000L, claims);
-        final Claims parsedClaims = JWTUtils.parseJWTToken(token, SECRET);
+        final Claims parsedClaims = JWTUtils.extractJwtClaims(token, SECRET);
 
         assertNotNull(parsedClaims);
         assertEquals("subject", parsedClaims.getSubject());
@@ -44,7 +44,7 @@ class JWTUtilsTest
         claims.put("role", "admin");
 
         final String token        = JWTUtils.createJWTToken("subject", SECRET, -1000L, claims);
-        final Claims parsedClaims = JWTUtils.parseJWTToken(token, SECRET);
+        final Claims parsedClaims = JWTUtils.extractJwtClaims(token, SECRET);
 
         assertNull(parsedClaims);
     }
@@ -56,7 +56,7 @@ class JWTUtilsTest
         claims.put("role", "admin");
 
         final String token        = JWTUtils.createJWTToken("subject", SECRET, 1000L, claims);
-        final Claims parsedClaims = JWTUtils.parseJWTToken(token, "wrongSecret");
+        final Claims parsedClaims = JWTUtils.extractJwtClaims(token, "wrongSecret");
 
         assertNull(parsedClaims);
     }
@@ -72,7 +72,7 @@ class JWTUtilsTest
     void testParseJWTTokenWithEmptyClaims()
     {
         final String token        = JWTUtils.createJWTToken("subject", SECRET, 1000L, Collections.emptyMap());
-        final Claims parsedClaims = JWTUtils.parseJWTToken(token, SECRET);
+        final Claims parsedClaims = JWTUtils.extractJwtClaims(token, SECRET);
 
         assertNotNull(parsedClaims);
         assertEquals("subject", parsedClaims.getSubject());
